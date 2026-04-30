@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My AI Curator</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f1117;
+      color: #e8e8e8;
+      min-height: 100vh;
+    }
+
+    /* ── 온보딩 ── */
+    .onboarding {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 64px 24px 48px;
+    }
+
+    .onboarding .logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #4a9eff;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .onboarding h2 {
+      font-size: 26px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .onboarding p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      color: #444;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+      margin-bottom: 36px;
+    }
+
+    .topic-btn {
+      padding: 10px 14px;
+      background: transparent;
+      border: 1px solid #222230;
+      border-radius: 8px;
+      color: #666;
+      font-size: 13px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topic-btn:hover { border-color: #333350; color: #aaa; }
+
+    .topic-btn.selected {
+      background: #0d1f3c;
+      border-color: #4a9eff;
+      color: #fff;
+    }
+
+    .topic-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #333;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .topic-btn.selected .topic-dot { background: #4a9eff; }
+
+    /* ── 커스텀 키워드 ── */
+    .custom-keyword-section {
+      margin-bottom: 32px;
+    }
+
+    .keyword-input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .keyword-input {
+      flex: 1;
+      padding: 10px 14px;
+      background: #0d0d18;
+      border: 1px solid #222230;
+      border-radius: 8px;
+      color: #e8e8e8;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .keyword-input:focus { border-color: #4a9eff; }
+    .keyword-input::placeholder { color: #333; }
+
+    .keyword-add-btn {
+      padding: 10px 16px;
+      background: transparent;
+      border: 1px solid #222230;
+      border-radius: 8px;
+      color: #4a9eff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .keyword-add-btn:hover { border-color: #4a9eff; background: #0d1f3c; }
+
+    .keyword-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 0;
+    }
+
+    .keyword-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px 5px 12px;
+      background: #0d1f3c;
+      border: 1px solid #1a3a6a;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #4a9eff;
+    }
+
+    .keyword-remove {
+      background: none;
+      border: none;
+      color: #4a9eff;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      opacity: 0.6;
+      padding: 0;
+      transition: opacity 0.15s;
+    }
+
+    .keyword-remove:hover { opacity: 1; }
+
+    .keyword-hint {
+      font-size: 11px;
+      color: #333;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    /* ── 시작 버튼 ── */
+    .start-btn {
+      width: 100%;
+      padding: 13px;
+      background: #4a9eff;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      letter-spacing: 0.3px;
+    }
+
+    .start-btn:hover { background: #3a8eef; }
+
+    .start-btn:disabled {
+      background: #161620;
+      color: #333;
+      cursor: not-allowed;
+    }
+
+    /* ── 헤더 ── */
+    .main-view { display: none; }
+
+    header {
+      padding: 14px 24px;
+      border-bottom: 1px solid #1a1a28;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: #4a9eff;
+      text-transform: uppercase;
+    }
+
+    .header-btns { display: flex; gap: 8px; }
+
+    .icon-btn {
+      background: none;
+      border: 1px solid #1a1a28;
+      border-radius: 6px;
+      color: #555;
+      font-size: 12px;
+      cursor: pointer;
+      padding: 6px 12px;
+      letter-spacing: 0.3px;
+      transition: all 0.15s;
+    }
+
+    .icon-btn:hover { border-color: #333350; color: #aaa; }
+
+    /* ── 검색바 ── */
+    .search-bar {
+      padding: 14px 24px;
+      border-bottom: 1px solid #1a1a28;
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 10px 14px;
+      background: #0d0d18;
+      border: 1px solid #1a1a28;
+      border-radius: 7px;
+      color: #e8e8e8;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-bar input:focus { border-color: #4a9eff; }
+    .search-bar input::placeholder { color: #333; }
+
+    .fetch-btn {
+      padding: 10px 18px;
+      background: #4a9eff;
+      border: none;
+      border-radius: 7px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .fetch-btn:hover { background: #3a8eef; }
+
+    /* ── 토픽 바 ── */
+    .topic-bar {
+      padding: 10px 24px;
+      border-bottom: 1px solid #1a1a28;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .topic-tag {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      border: 1px solid #1a1a28;
+      background: transparent;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .topic-tag.active {
+      background: #0d1f3c;
+      border-color: #4a9eff;
+      color: #4a9eff;
+    }
+
+    .topic-tag.custom {
+      border-style: dashed;
+    }
+
+    /* ── 피드 ── */
+    .feed-container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 16px 24px;
+    }
+
+    .status-box {
+      text-align: center;
+      padding: 64px 24px;
+      color: #333;
+    }
+
+    .status-box p { font-size: 15px; margin-bottom: 8px; color: #444; }
+    .status-box small { font-size: 13px; color: #333; }
+
+    .post-card {
+      background: #0d0d18;
+      border: 1px solid #1a1a28;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .post-card:hover { border-color: #2a2a40; }
+    .post-card.read { opacity: 0.4; }
+    .post-card.highlighted { border-color: #1a3a6a; background: #0a111f; }
+
+    .post-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #131320;
+      border: 1px solid #1a1a28;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4a9eff;
+      flex-shrink: 0;
+    }
+
+    .author-info .name { font-size: 13px; font-weight: 600; color: #ccc; }
+    .author-info .handle { font-size: 12px; color: #444; }
+
+    .post-text {
+      font-size: 14px;
+      line-height: 1.65;
+      color: #aaa;
+      margin-bottom: 12px;
+      word-break: break-word;
+    }
+
+    .post-footer {
+      display: flex;
+      gap: 14px;
+      font-size: 12px;
+      color: #444;
+      align-items: center;
+    }
+
+    .match-badge {
+      margin-left: auto;
+      padding: 2px 8px;
+      background: #0d1f3c;
+      border: 1px solid #1a3a6a;
+      border-radius: 10px;
+      font-size: 11px;
+      color: #4a9eff;
+    }
+
+    .filter-info {
+      font-size: 12px;
+      color: #333;
+      padding: 6px 0 14px;
+      text-align: center;
+    }
+
+    .loading { text-align: center; padding: 48px; color: #333; font-size: 13px; }
+
+    .error-box {
+      background: #180d0d;
+      border: 1px solid #3a1a1a;
+      border-radius: 8px;
+      padding: 16px;
+      color: #cc5555;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .error-box strong { display: block; margin-bottom: 6px; color: #ff6b6b; }
+
+    /* ── 설정 패널 ── */
+    .panel-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 100;
+    }
+
+    .panel-overlay.open { display: block; }
+
+    .settings-panel {
+      position: fixed;
+      right: 0; top: 0; bottom: 0;
+      width: 300px;
+      background: #0a0a14;
+      border-left: 1px solid #1a1a28;
+      z-index: 101;
+      transform: translateX(100%);
+      transition: transform 0.2s ease;
+      overflow-y: auto;
+    }
+
+    .settings-panel.open { transform: translateX(0); }
+
+    .panel-header {
+      padding: 20px;
+      border-bottom: 1px solid #1a1a28;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-header h2 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #aaa;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: #444;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover { color: #888; }
+
+    .setting-section {
+      padding: 20px;
+      border-bottom: 1px solid #111120;
+    }
+
+    .setting-section h3 {
+      font-size: 10px;
+      font-weight: 600;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 16px;
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .setting-row:last-child { margin-bottom: 0; }
+    .setting-label { font-size: 13px; color: #888; }
+    .setting-label small { display: block; font-size: 11px; color: #444; margin-top: 2px; }
+
+    .toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: #1a1a28;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toggle input:checked + .toggle-track { background: #4a9eff; }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 14px; height: 14px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+      pointer-events: none;
+    }
+
+    .toggle input:checked ~ .toggle-thumb { transform: translateX(16px); }
+
+    .pod-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: #0d0d18;
+      border-radius: 7px;
+      margin-bottom: 16px;
+      border: 1px solid #1a1a28;
+    }
+
+    .pod-dot { width: 7px; height: 7px; border-radius: 50%; background: #2a9a5a; flex-shrink: 0; }
+    .pod-dot.off { background: #333; }
+    .pod-status-text { font-size: 12px; color: #555; }
+    .pod-status-text strong { display: block; font-size: 13px; color: #888; }
+
+    .log-list { max-height: 200px; overflow-y: auto; }
+
+    .log-item {
+      display: flex;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid #111120;
+      font-size: 11px;
+    }
+
+    .log-item:last-child { border-bottom: none; }
+    .log-time { color: #333; min-width: 52px; flex-shrink: 0; }
+    .log-action { color: #555; line-height: 1.4; }
+    .log-type { color: #4a9eff; }
+    .log-empty { font-size: 12px; color: #333; text-align: center; padding: 20px 0; }
+
+    .access-count {
+      font-size: 10px;
+      background: #0d1f3c;
+      color: #4a9eff;
+      padding: 2px 7px;
+      border-radius: 8px;
+      margin-left: 6px;
+    }
+
+    .data-btn {
+      width: 100%;
+      padding: 9px 12px;
+      background: transparent;
+      border: 1px solid #1a1a28;
+      border-radius: 7px;
+      color: #666;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: left;
+      margin-bottom: 6px;
+      transition: all 0.15s;
+    }
+
+    .data-btn:hover { border-color: #2a2a40; color: #aaa; }
+    .data-btn.danger { color: #664444; border-color: #1f1010; }
+    .data-btn.danger:hover { background: #180d0d; border-color: #cc5555; color: #cc5555; }
+
+    /* ── 설정 패널 내 커스텀 키워드 ── */
+    .panel-keyword-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .panel-keyword-input {
+      flex: 1;
+      padding: 8px 10px;
+      background: #0d0d18;
+      border: 1px solid #1a1a28;
+      border-radius: 6px;
+      color: #e8e8e8;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .panel-keyword-input:focus { border-color: #4a9eff; }
+    .panel-keyword-input::placeholder { color: #333; }
+
+    .panel-keyword-add {
+      padding: 8px 12px;
+      background: transparent;
+      border: 1px solid #1a1a28;
+      border-radius: 6px;
+      color: #4a9eff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .panel-keyword-add:hover { border-color: #4a9eff; background: #0d1f3c; }
+
+    .panel-keyword-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .panel-keyword-tag {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px 4px 10px;
+      background: #0d1f3c;
+      border: 1px solid #1a3a6a;
+      border-radius: 12px;
+      font-size: 11px;
+      color: #4a9eff;
+    }
+
+    .panel-keyword-remove {
+      background: none;
+      border: none;
+      color: #4a9eff;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1;
+      opacity: 0.6;
+      padding: 0;
+      transition: opacity 0.15s;
+    }
+
+    .panel-keyword-remove:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- ── 온보딩 ── -->
+  <div class="onboarding" id="onboarding">
+    <div class="logo">My AI Curator</div>
+    <h2>What are you interested in?</h2>
+    <p>Select topics you care about. We'll surface relevant posts from Bluesky and keep your preferences on your device — nothing leaves your browser.</p>
+
+    <div class="section-label">Choose topics</div>
+    <div class="topic-grid" id="topic-grid"></div>
+
+    <div class="custom-keyword-section">
+      <div class="section-label">Add your own keywords</div>
+      <div class="keyword-input-row">
+        <input
+          type="text"
+          class="keyword-input"
+          id="custom-keyword-input"
+          placeholder="e.g. k-drama, climate, yoga, hiking..."
+          maxlength="30"
+        />
+        <button class="keyword-add-btn" onclick="addCustomKeyword()">Add</button>
+      </div>
+      <div class="keyword-tags" id="keyword-tags"></div>
+      <p class="keyword-hint">
+        Custom keywords are matched directly against post text — just like the topics above.<br>
+        You can add up to 10 keywords.
+      </p>
+    </div>
+
+    <button class="start-btn" id="start-btn" disabled onclick="startApp()">
+      Select at least one topic to continue
+    </button>
+  </div>
+
+  <!-- ── 메인 화면 ── -->
+  <div class="main-view" id="main-view">
+    <header>
+      <div class="header-logo">My AI Curator</div>
+      <div class="header-btns">
+        <button class="icon-btn" onclick="openSettings()">Settings & Log</button>
+      </div>
+    </header>
+
+    <div class="search-bar">
+      <input type="text" id="handle-input" placeholder="Enter Bluesky handle (e.g. bsky.app)"/>
+      <button class="fetch-btn" onclick="loadFeed()">Load</button>
+    </div>
+
+    <div class="topic-bar" id="topic-bar"></div>
+
+    <div class="feed-container">
+      <div class="status-box" id="status-box">
+        <p>Enter a Bluesky handle above</p>
+        <small>and press Load to fetch their feed</small>
+      </div>
+      <div class="filter-info" id="filter-info"></div>
+      <div id="feed-list"></div>
+    </div>
+  </div>
+
+  <!-- ── 오버레이 ── -->
+  <div class="panel-overlay" id="overlay" onclick="closeSettings()"></div>
+
+  <!-- ── 설정 패널 ── -->
+  <div class="settings-panel" id="settings-panel">
+    <div class="panel-header">
+      <h2>Settings & Log</h2>
+      <button class="close-btn" onclick="closeSettings()">✕</button>
+    </div>
+
+    <div class="setting-section">
+      <h3>Pod Access Control</h3>
+      <div class="pod-status" id="pod-status">
+        <div class="pod-dot" id="pod-dot"></div>
+        <div class="pod-status-text">
+          <strong id="pod-status-text">Access allowed</strong>
+          <span id="pod-access-count"></span>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Full pod access<small>Turn off to disable preference reading</small></div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-pod" checked onchange="togglePod()">
+          <div class="toggle-track"></div><div class="toggle-thumb"></div>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Read topic preferences<small>Which topics you selected</small></div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-topics" checked onchange="savePermissions()">
+          <div class="toggle-track"></div><div class="toggle-thumb"></div>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Read history<small>Posts you've already read</small></div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-read" checked onchange="savePermissions()">
+          <div class="toggle-track"></div><div class="toggle-thumb"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="setting-section">
+      <h3>Data Saving</h3>
+      <div class="setting-row">
+        <div class="setting-label">Auto-load images<small>Turn off to save mobile data</small></div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-image" checked onchange="savePermissions()">
+          <div class="toggle-track"></div><div class="toggle-thumb"></div>
+        </label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-label">Wi-Fi only prefetch<small>Minimize mobile data usage</small></div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-wifi" onchange="savePermissions()">
+          <div class="toggle-track"></div><div class="toggle-thumb"></div>
+        </label>
+      </div>
+    </div>
+
+    <!-- 설정 패널 내 커스텀 키워드 관리 -->
+    <div class="setting-section">
+      <h3>Custom Keywords</h3>
+      <div class="panel-keyword-row">
+        <input
+          type="text"
+          class="panel-keyword-input"
+          id="panel-keyword-input"
+          placeholder="Add keyword..."
+          maxlength="30"
+        />
+        <button class="panel-keyword-add" onclick="addCustomKeywordFromPanel()">Add</button>
+      </div>
+      <div class="panel-keyword-tags" id="panel-keyword-tags"></div>
+    </div>
+
+    <div class="setting-section">
+      <h3>Access Log <span class="access-count" id="log-count">0</span></h3>
+      <div class="log-list" id="log-list">
+        <div class="log-empty">No activity yet</div>
+      </div>
+    </div>
+
+    <div class="setting-section">
+      <h3>My Data</h3>
+      <button class="data-btn" onclick="exportData()">Export preferences (JSON)</button>
+      <button class="data-btn" onclick="importData()">Import preferences</button>
+      <button class="data-btn" onclick="clearReadHistory()">Clear read history</button>
+      <button class="data-btn danger" onclick="resetApp()">Reset all data</button>
+    </div>
+  </div>
+
+  <script>
+    // ── 기본 주제 목록 ─────────────────────────────────────
+    const TOPICS = [
+      { id: 'tech',    label: 'Technology',  keywords: ['ai', 'tech', 'dev', 'code', 'software', '개발', '기술', 'programming', 'python', 'javascript'] },
+      { id: 'startup', label: 'Startups',    keywords: ['startup', 'founder', 'vc', '창업', 'saas', 'product', 'entrepreneur'] },
+      { id: 'design',  label: 'Design',      keywords: ['design', 'ui', 'ux', 'figma', 'typography', 'creative', 'branding'] },
+      { id: 'science', label: 'Science',     keywords: ['science', 'research', 'physics', 'biology', '과학', 'climate', 'space'] },
+      { id: 'crypto',  label: 'Web3',        keywords: ['crypto', 'web3', 'blockchain', 'nft', 'defi', 'bitcoin', 'ethereum'] },
+      { id: 'privacy', label: 'Privacy',     keywords: ['privacy', 'security', 'decentralized', '탈중앙화', 'fediverse', 'data rights'] },
+      { id: 'art',     label: 'Art & Photo', keywords: ['art', 'photo', 'photography', '사진', 'illustration', 'drawing', 'gallery'] },
+      { id: 'music',   label: 'Music',       keywords: ['music', 'song', 'album', 'artist', 'playlist', 'concert', 'band'] },
+      { id: 'game',    label: 'Gaming',      keywords: ['game', 'gaming', 'indie', 'steam', 'nintendo', 'playstation', 'xbox'] },
+      { id: 'sports',  label: 'Sports',      keywords: ['sports', 'football', 'soccer', 'basketball', 'baseball', 'tennis', 'nfl'] },
+      { id: 'news',    label: 'News',        keywords: ['news', 'politics', 'election', 'policy', 'government', 'media'] },
+      { id: 'life',    label: 'Lifestyle',   keywords: ['life', 'food', 'travel', 'coffee', 'health', 'fitness', 'cooking'] },
+    ]
+
+    // ── 상태 ───────────────────────────────────────────────
+    let selectedTopics  = []      // 선택된 기본 주제 id 목록
+    let customKeywords  = []      // 사용자 직접 입력 키워드 목록
+    let activeFilter    = 'all'
+    let allPosts        = []
+    let readPosts       = new Set()
+    let accessLog       = []
+    let permissions     = { pod: true, topics: true, readHistory: true, images: true, wifiOnly: false }
+
+    // ── 저장/불러오기 ──────────────────────────────────────
+    function loadSaved() {
+      const savedTopics   = localStorage.getItem('curator-topics')
+      const savedKeywords = localStorage.getItem('curator-keywords')
+      if (savedTopics) selectedTopics = JSON.parse(savedTopics)
+      if (savedKeywords) customKeywords = JSON.parse(savedKeywords)
+      return !!savedTopics
+    }
+
+    function saveTopics() {
+      localStorage.setItem('curator-topics',   JSON.stringify(selectedTopics))
+      localStorage.setItem('curator-keywords', JSON.stringify(customKeywords))
+    }
+
+    function loadPermissions() {
+      const saved = localStorage.getItem('curator-permissions')
+      if (saved) permissions = { ...permissions, ...JSON.parse(saved) }
+    }
+
+    function savePermissions() {
+      permissions.pod         = document.getElementById('toggle-pod').checked
+      permissions.topics      = document.getElementById('toggle-topics').checked
+      permissions.readHistory = document.getElementById('toggle-read').checked
+      permissions.images      = document.getElementById('toggle-image').checked
+      permissions.wifiOnly    = document.getElementById('toggle-wifi').checked
+      localStorage.setItem('curator-permissions', JSON.stringify(permissions))
+      updatePodStatus()
+    }
+
+    // ── Pod 상태 ───────────────────────────────────────────
+    function updatePodStatus() {
+      const dot   = document.getElementById('pod-dot')
+      const text  = document.getElementById('pod-status-text')
+      const count = document.getElementById('pod-access-count')
+      dot.classList.toggle('off', !permissions.pod)
+      text.textContent = permissions.pod ? 'Access allowed' : 'Access blocked'
+      text.style.color = permissions.pod ? '#2a9a5a' : '#cc5555'
+      count.textContent = accessLog.length > 0 ? `${accessLog.length} events this session` : ''
+    }
+
+    function togglePod() {
+      permissions.pod = document.getElementById('toggle-pod').checked
+      ;['toggle-topics', 'toggle-read'].forEach(id => {
+        document.getElementById(id).checked  = permissions.pod
+        document.getElementById(id).disabled = !permissions.pod
+      })
+      savePermissions()
+      addLog(permissions.pod ? 'Full access enabled' : 'Full access blocked', 'setting')
+    }
+
+    // ── 접근 로그 ──────────────────────────────────────────
+    function addLog(action, type = 'read') {
+      const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
+      accessLog.unshift({ time, action, type })
+      if (accessLog.length > 50) accessLog.pop()
+      renderLog()
+      updatePodStatus()
+    }
+
+    function renderLog() {
+      const list    = document.getElementById('log-list')
+      const countEl = document.getElementById('log-count')
+      countEl.textContent = accessLog.length
+      if (accessLog.length === 0) {
+        list.innerHTML = '<div class="log-empty">No activity yet</div>'
+        return
+      }
+      list.innerHTML = accessLog.map(item => `
+        <div class="log-item">
+          <span class="log-time">${item.time}</span>
+          <span class="log-action"><span class="log-type">[${item.type}]</span> ${item.action}</span>
+        </div>
+      `).join('')
+    }
+
+    // ── 온보딩: 기본 주제 그리기 ──────────────────────────
+    function renderTopicGrid() {
+      document.getElementById('topic-grid').innerHTML = TOPICS.map(t => `
+        <div class="topic-btn" data-id="${t.id}" onclick="toggleTopic('${t.id}')">
+          <div class="topic-dot"></div>${t.label}
+        </div>
+      `).join('')
+    }
+
+    function toggleTopic(id) {
+      selectedTopics = selectedTopics.includes(id)
+        ? selectedTopics.filter(t => t !== id)
+        : [...selectedTopics, id]
+
+      document.querySelectorAll('.topic-btn').forEach(btn => {
+        btn.classList.toggle('selected', selectedTopics.includes(btn.dataset.id))
+      })
+      updateStartBtn()
+    }
+
+    function updateStartBtn() {
+      const total = selectedTopics.length + customKeywords.length
+      const btn   = document.getElementById('start-btn')
+      btn.disabled    = total === 0
+      btn.textContent = total > 0
+        ? `Continue with ${total} interest${total > 1 ? 's' : ''}`
+        : 'Select at least one topic to continue'
+    }
+
+    // ── 커스텀 키워드: 온보딩 ─────────────────────────────
+    function addCustomKeyword() {
+      const input = document.getElementById('custom-keyword-input')
+      const val   = input.value.trim().toLowerCase()
+      if (!val) return
+      if (customKeywords.length >= 10) { alert('You can add up to 10 custom keywords.'); return }
+      if (customKeywords.includes(val)) { input.value = ''; return }
+      customKeywords.push(val)
+      input.value = ''
+      renderKeywordTags()
+      updateStartBtn()
+    }
+
+    function removeCustomKeyword(kw) {
+      customKeywords = customKeywords.filter(k => k !== kw)
+      renderKeywordTags()
+      renderPanelKeywordTags()
+      updateStartBtn()
+      saveTopics()
+      renderTopicBar()
+      if (allPosts.length > 0) renderFeed()
+    }
+
+    function renderKeywordTags() {
+      const container = document.getElementById('keyword-tags')
+      if (!container) return
+      container.innerHTML = customKeywords.map(kw => `
+        <div class="keyword-tag">
+          ${kw}
+          <button class="keyword-remove" onclick="removeCustomKeyword('${kw}')">✕</button>
+        </div>
+      `).join('')
+    }
+
+    // ── 커스텀 키워드: 설정 패널 ──────────────────────────
+    function addCustomKeywordFromPanel() {
+      const input = document.getElementById('panel-keyword-input')
+      const val   = input.value.trim().toLowerCase()
+      if (!val) return
+      if (customKeywords.length >= 10) { alert('You can add up to 10 custom keywords.'); return }
+      if (customKeywords.includes(val)) { input.value = ''; return }
+      customKeywords.push(val)
+      input.value = ''
+      renderPanelKeywordTags()
+      renderTopicBar()
+      saveTopics()
+      addLog(`Custom keyword added: "${val}"`, 'write')
+      if (allPosts.length > 0) renderFeed()
+    }
+
+    function removeCustomKeywordFromPanel(kw) {
+      customKeywords = customKeywords.filter(k => k !== kw)
+      renderPanelKeywordTags()
+      renderKeywordTags()
+      renderTopicBar()
+      saveTopics()
+      addLog(`Custom keyword removed: "${kw}"`, 'write')
+      if (allPosts.length > 0) renderFeed()
+    }
+
+    function renderPanelKeywordTags() {
+      const container = document.getElementById('panel-keyword-tags')
+      if (!container) return
+      if (customKeywords.length === 0) {
+        container.innerHTML = '<span style="font-size:11px;color:#333">No custom keywords yet</span>'
+        return
+      }
+      container.innerHTML = customKeywords.map(kw => `
+        <div class="panel-keyword-tag">
+          ${kw}
+          <button class="panel-keyword-remove" onclick="removeCustomKeywordFromPanel('${kw}')">✕</button>
+        </div>
+      `).join('')
+    }
+
+    // ── 앱 시작 ────────────────────────────────────────────
+    function startApp() {
+      saveTopics()
+      const allSelected = [
+        ...selectedTopics.map(id => TOPICS.find(t => t.id === id)?.label),
+        ...customKeywords
+      ]
+      addLog('Preferences saved: ' + allSelected.join(', '), 'write')
+      showMainView()
+    }
+
+    function showMainView() {
+      document.getElementById('onboarding').style.display  = 'none'
+      document.getElementById('main-view').style.display   = 'block'
+      renderTopicBar()
+      renderPanelKeywordTags()
+    }
+
+    // ── 설정 패널 ──────────────────────────────────────────
+    function openSettings() {
+      document.getElementById('settings-panel').classList.add('open')
+      document.getElementById('overlay').classList.add('open')
+      renderLog()
+      renderPanelKeywordTags()
+    }
+
+    function closeSettings() {
+      document.getElementById('settings-panel').classList.remove('open')
+      document.getElementById('overlay').classList.remove('open')
+    }
+
+    // ── 토픽 바 ───────────────────────────────────────────
+    function renderTopicBar() {
+      const myTopics   = TOPICS.filter(t => selectedTopics.includes(t.id))
+      const customTags = customKeywords.map(kw =>
+        `<span class="topic-tag custom" data-filter="custom:${kw}" onclick="setFilter('custom:${kw}')">${kw}</span>`
+      )
+
+      document.getElementById('topic-bar').innerHTML = [
+        `<span class="topic-tag active" data-filter="all" onclick="setFilter('all')">All</span>`,
+        ...myTopics.map(t =>
+          `<span class="topic-tag" data-filter="${t.id}" onclick="setFilter('${t.id}')">${t.label}</span>`
+        ),
+        ...customTags
+      ].join('')
+    }
+
+    function setFilter(filterId) {
+      activeFilter = filterId
+      document.querySelectorAll('.topic-tag').forEach(tag => {
+        tag.classList.toggle('active', tag.dataset.filter === filterId)
+      })
+      if (permissions.pod && permissions.topics) {
+        const label = filterId === 'all' ? 'All'
+          : filterId.startsWith('custom:') ? filterId.replace('custom:', '')
+          : TOPICS.find(t => t.id === filterId)?.label
+        addLog(`Filter applied: ${label}`, 'read')
+      }
+      renderFeed()
+    }
+
+    // ── 매칭 점수 ─────────────────────────────────────────
+    function matchScore(text, filterTopicIds, filterCustomKws) {
+      const lower = text.toLowerCase()
+      let score = 0
+      let matchedLabels = []
+
+      // 기본 주제 매칭
+      filterTopicIds.forEach(id => {
+        const topic = TOPICS.find(t => t.id === id)
+        if (!topic) return
+        topic.keywords.forEach(kw => {
+          if (lower.includes(kw.toLowerCase())) {
+            score++
+            if (!matchedLabels.includes(topic.label)) matchedLabels.push(topic.label)
+          }
+        })
+      })
+
+      // 커스텀 키워드 매칭
+      filterCustomKws.forEach(kw => {
+        if (lower.includes(kw.toLowerCase())) {
+          score++
+          if (!matchedLabels.includes(kw)) matchedLabels.push(kw)
+        }
+      })
+
+      return { score, matchedLabels }
+    }
+
+    // ── 피드 렌더링 ───────────────────────────────────────
+    function renderFeed() {
+      const feedList   = document.getElementById('feed-list')
+      const filterInfo = document.getElementById('filter-info')
+      const useFilter  = permissions.pod && permissions.topics
+
+      // 필터 대상 결정
+      let filterTopicIds = []
+      let filterCustomKws = []
+
+      if (!useFilter) {
+        // Pod 꺼져있으면 필터 없음
+      } else if (activeFilter === 'all') {
+        filterTopicIds  = selectedTopics
+        filterCustomKws = customKeywords
+      } else if (activeFilter.startsWith('custom:')) {
+        filterCustomKws = [activeFilter.replace('custom:', '')]
+      } else {
+        filterTopicIds = [activeFilter]
+      }
+
+      const scored = allPosts.map(item => {
+        const text = item.post.record?.text || ''
+        const { score, matchedLabels } = useFilter
+          ? matchScore(text, filterTopicIds, filterCustomKws)
+          : { score: 0, matchedLabels: [] }
+        return { ...item, score, matchedLabels }
+      })
+
+      scored.sort((a, b) => b.score - a.score)
+      const matched = scored.filter(p => p.score > 0)
+      const others  = scored.filter(p => p.score === 0)
+
+      if (!useFilter) {
+        filterInfo.textContent = 'Pod access is off — showing chronological feed'
+      } else if (activeFilter === 'all') {
+        filterInfo.textContent = matched.length > 0
+          ? `${matched.length} posts match your interests — shown first`
+          : 'No matches found — showing all posts chronologically'
+      } else {
+        const label = activeFilter.startsWith('custom:')
+          ? `"${activeFilter.replace('custom:', '')}"`
+          : `"${TOPICS.find(t => t.id === activeFilter)?.label}"`
+        filterInfo.textContent = `${matched.length} posts matching ${label}`
+      }
+
+      const timeAgo = (d) => {
+        const s = (Date.now() - new Date(d)) / 1000
+        if (s < 60) return 'just now'
+        if (s < 3600) return Math.floor(s/60) + 'm ago'
+        if (s < 86400) return Math.floor(s/3600) + 'h ago'
+        return Math.floor(s/86400) + 'd ago'
+      }
+
+      const renderCard = (item) => {
+        const post   = item.post
+        const author = post.author
+        const text   = post.record?.text || ''
+        const isRead = readPosts.has(post.uri)
+        return `
+          <div class="post-card ${isRead?'read':''} ${item.score>0?'highlighted':''}"
+               onclick="markRead('${post.uri}', this)">
+            <div class="post-author">
+              <div class="avatar">${(author.displayName||author.handle||'?')[0].toUpperCase()}</div>
+              <div class="author-info">
+                <div class="name">${author.displayName||author.handle}</div>
+                <div class="handle">@${author.handle}</div>
+              </div>
+            </div>
+            <div class="post-text">${text.replace(/\n/g,'<br>')}</div>
+            <div class="post-footer">
+              <span>♥ ${post.likeCount||0}</span>
+              <span>↻ ${post.repostCount||0}</span>
+              <span>${timeAgo(post.record?.createdAt)}</span>
+              ${item.matchedLabels.length>0
+                ? `<span class="match-badge">${item.matchedLabels.join(', ')}</span>`
+                : ''}
+            </div>
+          </div>
+        `
+      }
+
+      feedList.innerHTML = [...matched, ...others].map(renderCard).join('')
+    }
+
+    // ── 읽음 처리 ─────────────────────────────────────────
+    function markRead(uri, el) {
+      readPosts.add(uri)
+      el.classList.add('read')
+      if (permissions.pod && permissions.readHistory) {
+        localStorage.setItem('curator-read', JSON.stringify([...readPosts]))
+        addLog('Post marked as read', 'write')
+      }
+    }
+
+    // ── API 호출 ───────────────────────────────────────────
+    async function loadFeed() {
+      const handle = document.getElementById('handle-input').value.trim()
+      if (!handle) return
+      document.getElementById('status-box').style.display = 'none'
+      document.getElementById('filter-info').textContent  = ''
+      document.getElementById('feed-list').innerHTML = '<div class="loading">Fetching feed...</div>'
+      if (permissions.pod) addLog(`Fetching feed: @${handle}`, 'network')
+      try {
+        const res = await fetch(`https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=30`)
+        if (!res.ok) throw new Error(`Handle not found (error ${res.status})`)
+        const data = await res.json()
+        allPosts = data.feed || []
+        if (permissions.pod) addLog(`Received ${allPosts.length} posts`, 'read')
+        if (allPosts.length === 0) {
+          document.getElementById('feed-list').innerHTML = '<div class="status-box"><p>No posts found</p></div>'
+          return
+        }
+        renderFeed()
+      } catch (err) {
+        document.getElementById('feed-list').innerHTML = `
+          <div class="error-box">
+            <strong>Something went wrong</strong>
+            ${err.message}<br><br>
+            · Check the handle spelling (e.g. username.bsky.social)<br>
+            · Check your internet connection
+          </div>
+        `
+      }
+    }
+
+    // ── 데이터 내보내기/가져오기 ──────────────────────────
+    function exportData() {
+      const data = {
+        exportedAt: new Date().toISOString(),
+        selectedTopics,
+        customKeywords,
+        permissions,
+        readCount: readPosts.size
+      }
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }))
+      a.download = 'my-curator-data.json'
+      a.click()
+      addLog('Data exported', 'export')
+    }
+
+    function importData() {
+      const input = document.createElement('input')
+      input.type = 'file'
+      input.accept = '.json'
+      input.onchange = (e) => {
+        const reader = new FileReader()
+        reader.onload = (ev) => {
+          try {
+            const data = JSON.parse(ev.target.result)
+            if (data.selectedTopics) {
+              selectedTopics  = data.selectedTopics
+              customKeywords  = data.customKeywords || []
+              saveTopics()
+              renderTopicBar()
+              renderPanelKeywordTags()
+              addLog('Data imported', 'import')
+              alert('Preferences imported successfully!')
+            }
+          } catch { alert('Invalid file format') }
+        }
+        reader.readAsText(e.target.files[0])
+      }
+      input.click()
+    }
+
+    function clearReadHistory() {
+      if (!confirm('Clear all read history?')) return
+      readPosts.clear()
+      localStorage.removeItem('curator-read')
+      addLog('Read history cleared', 'delete')
+      renderFeed()
+    }
+
+    function resetApp() {
+      if (!confirm('Reset all data and start over?')) return
+      localStorage.clear()
+      location.reload()
+    }
+
+    function applyPermissionsToUI() {
+      document.getElementById('toggle-pod').checked    = permissions.pod
+      document.getElementById('toggle-topics').checked = permissions.topics
+      document.getElementById('toggle-read').checked   = permissions.readHistory
+      document.getElementById('toggle-image').checked  = permissions.images
+      document.getElementById('toggle-wifi').checked   = permissions.wifiOnly
+      ;['toggle-topics', 'toggle-read'].forEach(id => {
+        document.getElementById(id).disabled = !permissions.pod
+      })
+      updatePodStatus()
+    }
+
+    // ── Enter 키 지원 ──────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('handle-input')?.addEventListener('keydown', e => {
+        if (e.key === 'Enter') loadFeed()
+      })
+      document.getElementById('custom-keyword-input')?.addEventListener('keydown', e => {
+        if (e.key === 'Enter') addCustomKeyword()
+      })
+      document.getElementById('panel-keyword-input')?.addEventListener('keydown', e => {
+        if (e.key === 'Enter') addCustomKeywordFromPanel()
+      })
+      const savedRead = localStorage.getItem('curator-read')
+      if (savedRead) readPosts = new Set(JSON.parse(savedRead))
+    })
+
+    // ── 앱 초기화 ─────────────────────────────────────────
+    renderTopicGrid()
+    loadPermissions()
+    applyPermissionsToUI()
+
+    if (loadSaved()) {
+      // 저장된 데이터 있으면 온보딩 건너뜀
+      showMainView()
+      addLog('Saved preferences loaded', 'read')
+    } else {
+      // 처음 방문이면 온보딩에 키워드 태그 렌더링
+      renderKeywordTags()
+    }
+  </script>
+
+</body>
+</html>
