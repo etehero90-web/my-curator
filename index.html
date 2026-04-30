@@ -4,12 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My AI Curator</title>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PRVZ2XV1JY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PRVZ2XV1JY');
+
+    // 커스텀 이벤트 추적 함수
+    function trackEvent(action, category, label) {
+      gtag('event', action, {
+        event_category: category,
+        event_label: label
+      });
+    }
+  </script>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f0fdf8;
+      background: #ecfdf5;
       color: #052e20;
       min-height: 100vh;
     }
@@ -77,558 +95,280 @@
       gap: 8px;
     }
 
-    .topic-btn:hover {
-      border-color: #6ee7b7;
-      color: #1f4d38;
-      background: #f0fdf8;
-    }
-
-    .topic-btn.selected {
-      background: #ecfdf5;
-      border-color: #0d9e75;
-      color: #065f46;
-      font-weight: 500;
-    }
-
-    .topic-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #a7f3d0;
-      flex-shrink: 0;
-      transition: background 0.15s;
-    }
-
+    .topic-btn:hover { border-color: #6ee7b7; color: #1f4d38; background: #f0fdf8; }
+    .topic-btn.selected { background: #ecfdf5; border-color: #0d9e75; color: #065f46; font-weight: 500; }
+    .topic-dot { width: 6px; height: 6px; border-radius: 50%; background: #a7f3d0; flex-shrink: 0; transition: background 0.15s; }
     .topic-btn.selected .topic-dot { background: #0d9e75; }
 
     /* ── 커스텀 키워드 ── */
     .custom-keyword-section { margin-bottom: 32px; }
-
-    .keyword-input-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .keyword-input {
-      flex: 1;
-      padding: 10px 14px;
-      background: #fff;
-      border: 1px solid #d1fae5;
-      border-radius: 8px;
-      color: #052e20;
-      font-size: 13px;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-
+    .keyword-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+    .keyword-input { flex: 1; padding: 10px 14px; background: #fff; border: 1px solid #d1fae5; border-radius: 8px; color: #052e20; font-size: 13px; outline: none; transition: border-color 0.15s; }
     .keyword-input:focus { border-color: #0d9e75; }
     .keyword-input::placeholder { color: #a7c4b8; }
-
-    .keyword-add-btn {
-      padding: 10px 16px;
-      background: transparent;
-      border: 1px solid #d1fae5;
-      border-radius: 8px;
-      color: #0d9e75;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
+    .keyword-add-btn { padding: 10px 16px; background: transparent; border: 1px solid #d1fae5; border-radius: 8px; color: #0d9e75; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
     .keyword-add-btn:hover { border-color: #0d9e75; background: #ecfdf5; }
-
     .keyword-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-
-    .keyword-tag {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 10px 5px 12px;
-      background: #ecfdf5;
-      border: 1px solid #6ee7b7;
-      border-radius: 20px;
-      font-size: 12px;
-      color: #065f46;
-    }
-
-    .keyword-remove {
-      background: none;
-      border: none;
-      color: #0d9e75;
-      cursor: pointer;
-      font-size: 14px;
-      line-height: 1;
-      opacity: 0.6;
-      padding: 0;
-      transition: opacity 0.15s;
-    }
-
+    .keyword-tag { display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 12px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 20px; font-size: 12px; color: #065f46; }
+    .keyword-remove { background: none; border: none; color: #0d9e75; cursor: pointer; font-size: 14px; line-height: 1; opacity: 0.6; padding: 0; transition: opacity 0.15s; }
     .keyword-remove:hover { opacity: 1; }
-
-    .keyword-hint {
-      font-size: 11px;
-      color: #6bab90;
-      margin-top: 10px;
-      line-height: 1.6;
-    }
+    .keyword-hint { font-size: 11px; color: #6bab90; margin-top: 10px; line-height: 1.6; }
 
     /* ── 시작 버튼 ── */
-    .start-btn {
-      width: 100%;
-      padding: 13px;
-      background: #0d9e75;
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-      letter-spacing: 0.3px;
-    }
-
+    .start-btn { width: 100%; padding: 13px; background: #0d9e75; border: none; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; letter-spacing: 0.3px; }
     .start-btn:hover { background: #0b8a65; }
-
-    .start-btn:disabled {
-      background: #d1fae5;
-      color: #6bab90;
-      cursor: not-allowed;
-    }
+    .start-btn:disabled { background: #d1fae5; color: #6bab90; cursor: not-allowed; }
 
     /* ── 메인 화면 ── */
     .main-view { display: none; }
 
-    header {
-      padding: 14px 24px;
-      border-bottom: 1px solid #d1fae5;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .header-logo {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      color: #0d9e75;
-      text-transform: uppercase;
-    }
-
+    header { padding: 14px 24px; border-bottom: 1px solid #d1fae5; background: #fff; display: flex; align-items: center; justify-content: space-between; }
+    .header-logo { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; color: #0d9e75; text-transform: uppercase; }
     .header-btns { display: flex; gap: 8px; }
-
-    .icon-btn {
-      background: none;
-      border: 1px solid #d1fae5;
-      border-radius: 6px;
-      color: #4b7360;
-      font-size: 12px;
-      cursor: pointer;
-      padding: 6px 12px;
-      transition: all 0.15s;
-    }
-
+    .icon-btn { background: none; border: 1px solid #d1fae5; border-radius: 6px; color: #4b7360; font-size: 12px; cursor: pointer; padding: 6px 12px; transition: all 0.15s; }
     .icon-btn:hover { border-color: #0d9e75; color: #065f46; background: #ecfdf5; }
 
-    /* ── 검색바 ── */
-    .search-bar {
-      padding: 14px 24px;
-      border-bottom: 1px solid #d1fae5;
-      background: #fff;
-      display: flex;
-      gap: 10px;
-    }
-
-    .search-bar input {
-      flex: 1;
-      padding: 10px 14px;
-      background: #f0fdf8;
-      border: 1px solid #d1fae5;
-      border-radius: 7px;
-      color: #052e20;
-      font-size: 14px;
-      outline: none;
-    }
-
+    .search-bar { padding: 14px 24px; border-bottom: 1px solid #d1fae5; background: #fff; display: flex; gap: 10px; }
+    .search-bar input { flex: 1; padding: 10px 14px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 7px; color: #052e20; font-size: 14px; outline: none; }
     .search-bar input:focus { border-color: #0d9e75; }
     .search-bar input::placeholder { color: #a7c4b8; }
-
-    .fetch-btn {
-      padding: 10px 18px;
-      background: #0d9e75;
-      border: none;
-      border-radius: 7px;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
+    .fetch-btn { padding: 10px 18px; background: #0d9e75; border: none; border-radius: 7px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
     .fetch-btn:hover { background: #0b8a65; }
 
-    /* ── 토픽 바 ── */
-    .topic-bar {
-      padding: 10px 24px;
-      border-bottom: 1px solid #d1fae5;
-      background: #fff;
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .topic-tag {
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      border: 1px solid #d1fae5;
-      background: #f0fdf8;
-      color: #4b7360;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
+    .topic-bar { padding: 10px 24px; border-bottom: 1px solid #d1fae5; background: #fff; display: flex; gap: 6px; flex-wrap: wrap; }
+    .topic-tag { padding: 4px 12px; border-radius: 20px; font-size: 12px; border: 1px solid #d1fae5; background: #f0fdf8; color: #4b7360; cursor: pointer; transition: all 0.15s; }
     .topic-tag:hover { border-color: #6ee7b7; color: #1f4d38; }
-
-    .topic-tag.active {
-      background: #ecfdf5;
-      border-color: #0d9e75;
-      color: #065f46;
-      font-weight: 500;
-    }
-
+    .topic-tag.active { background: #ecfdf5; border-color: #0d9e75; color: #065f46; font-weight: 500; }
     .topic-tag.custom { border-style: dashed; }
 
-    /* ── 피드 ── */
-    .feed-container {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 16px 24px;
-    }
-
-    .status-box {
-      text-align: center;
-      padding: 64px 24px;
-    }
-
+    .feed-container { max-width: 640px; margin: 0 auto; padding: 16px 24px; }
+    .status-box { text-align: center; padding: 64px 24px; }
     .status-box p { font-size: 15px; margin-bottom: 8px; color: #4b7360; }
     .status-box small { font-size: 13px; color: #6bab90; }
 
-    .post-card {
-      background: #fff;
-      border: 1px solid #d1fae5;
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
+    .post-card { background: #fff; border: 1px solid #d1fae5; border-radius: 10px; padding: 16px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
     .post-card:hover { border-color: #6ee7b7; }
     .post-card.read { opacity: 0.45; }
+    .post-card.highlighted { border-color: #0d9e75; background: #f0fdf8; }
 
-    .post-card.highlighted {
-      border-color: #0d9e75;
-      background: #f0fdf8;
-    }
-
-    .post-author {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: #ecfdf5;
-      border: 1px solid #d1fae5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: #0d9e75;
-      flex-shrink: 0;
-    }
-
+    .post-author { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .avatar { width: 34px; height: 34px; border-radius: 50%; background: #ecfdf5; border: 1px solid #d1fae5; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #0d9e75; flex-shrink: 0; }
     .author-info .name { font-size: 13px; font-weight: 600; color: #052e20; }
     .author-info .handle { font-size: 12px; color: #6bab90; }
-
-    .post-text {
-      font-size: 14px;
-      line-height: 1.65;
-      color: #1f4d38;
-      margin-bottom: 12px;
-      word-break: break-word;
-    }
-
-    .post-footer {
-      display: flex;
-      gap: 14px;
-      font-size: 12px;
-      color: #6bab90;
-      align-items: center;
-    }
-
-    .match-badge {
-      margin-left: auto;
-      padding: 2px 8px;
-      background: #ecfdf5;
-      border: 1px solid #6ee7b7;
-      border-radius: 10px;
-      font-size: 11px;
-      color: #065f46;
-    }
-
-    .filter-info {
-      font-size: 12px;
-      color: #6bab90;
-      padding: 6px 0 14px;
-      text-align: center;
-    }
-
+    .post-text { font-size: 14px; line-height: 1.65; color: #1f4d38; margin-bottom: 12px; word-break: break-word; }
+    .post-footer { display: flex; gap: 14px; font-size: 12px; color: #6bab90; align-items: center; }
+    .match-badge { margin-left: auto; padding: 2px 8px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 10px; font-size: 11px; color: #065f46; }
+    .filter-info { font-size: 12px; color: #6bab90; padding: 6px 0 14px; text-align: center; }
     .loading { text-align: center; padding: 48px; color: #6bab90; font-size: 13px; }
-
-    .error-box {
-      background: #fff5f5;
-      border: 1px solid #fecaca;
-      border-radius: 8px;
-      padding: 16px;
-      color: #991b1b;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
+    .error-box { background: #fff5f5; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; color: #991b1b; font-size: 13px; line-height: 1.7; }
     .error-box strong { display: block; margin-bottom: 6px; color: #dc2626; }
 
     /* ── 설정 패널 ── */
-    .panel-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(5,46,32,0.4);
-      z-index: 100;
-    }
-
+    .panel-overlay { display: none; position: fixed; inset: 0; background: rgba(5,46,32,0.4); z-index: 100; }
     .panel-overlay.open { display: block; }
-
-    .settings-panel {
-      position: fixed;
-      right: 0; top: 0; bottom: 0;
-      width: 300px;
-      background: #fff;
-      border-left: 1px solid #d1fae5;
-      z-index: 101;
-      transform: translateX(100%);
-      transition: transform 0.2s ease;
-      overflow-y: auto;
-    }
-
+    .settings-panel { position: fixed; right: 0; top: 0; bottom: 0; width: 300px; background: #fff; border-left: 1px solid #d1fae5; z-index: 101; transform: translateX(100%); transition: transform 0.2s ease; overflow-y: auto; }
     .settings-panel.open { transform: translateX(0); }
-
-    .panel-header {
-      padding: 20px;
-      border-bottom: 1px solid #d1fae5;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #f0fdf8;
-    }
-
-    .panel-header h2 {
-      font-size: 13px;
-      font-weight: 700;
-      color: #0d9e75;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      color: #6bab90;
-      font-size: 18px;
-      cursor: pointer;
-    }
-
+    .panel-header { padding: 20px; border-bottom: 1px solid #d1fae5; display: flex; align-items: center; justify-content: space-between; background: #f0fdf8; }
+    .panel-header h2 { font-size: 13px; font-weight: 700; color: #0d9e75; letter-spacing: 1px; text-transform: uppercase; }
+    .close-btn { background: none; border: none; color: #6bab90; font-size: 18px; cursor: pointer; }
     .close-btn:hover { color: #052e20; }
 
-    .setting-section {
-      padding: 20px;
-      border-bottom: 1px solid #f0fdf8;
-    }
-
-    .setting-section h3 {
-      font-size: 10px;
-      font-weight: 700;
-      color: #6bab90;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      margin-bottom: 16px;
-    }
-
-    .setting-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-
+    .setting-section { padding: 20px; border-bottom: 1px solid #f0fdf8; }
+    .setting-section h3 { font-size: 10px; font-weight: 700; color: #6bab90; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 16px; }
+    .setting-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
     .setting-row:last-child { margin-bottom: 0; }
     .setting-label { font-size: 13px; color: #1f4d38; }
     .setting-label small { display: block; font-size: 11px; color: #6bab90; margin-top: 2px; }
 
     .toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
     .toggle input { opacity: 0; width: 0; height: 0; }
-
-    .toggle-track {
-      position: absolute;
-      inset: 0;
-      background: #d1fae5;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
+    .toggle-track { position: absolute; inset: 0; background: #d1fae5; border-radius: 10px; cursor: pointer; transition: background 0.2s; }
     .toggle input:checked + .toggle-track { background: #0d9e75; }
-
-    .toggle-thumb {
-      position: absolute;
-      top: 3px; left: 3px;
-      width: 14px; height: 14px;
-      background: #fff;
-      border-radius: 50%;
-      transition: transform 0.2s;
-      pointer-events: none;
-    }
-
+    .toggle-thumb { position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; background: #fff; border-radius: 50%; transition: transform 0.2s; pointer-events: none; }
     .toggle input:checked ~ .toggle-thumb { transform: translateX(16px); }
 
-    .pod-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 12px;
-      background: #f0fdf8;
-      border-radius: 7px;
-      margin-bottom: 16px;
-      border: 1px solid #d1fae5;
-    }
-
+    .pod-status { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #f0fdf8; border-radius: 7px; margin-bottom: 16px; border: 1px solid #d1fae5; }
     .pod-dot { width: 7px; height: 7px; border-radius: 50%; background: #0d9e75; flex-shrink: 0; }
     .pod-dot.off { background: #d1fae5; }
     .pod-status-text { font-size: 12px; color: #6bab90; }
     .pod-status-text strong { display: block; font-size: 13px; }
 
     .log-list { max-height: 200px; overflow-y: auto; }
-
-    .log-item {
-      display: flex;
-      gap: 10px;
-      padding: 7px 0;
-      border-bottom: 1px solid #f0fdf8;
-      font-size: 11px;
-    }
-
+    .log-item { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f0fdf8; font-size: 11px; }
     .log-item:last-child { border-bottom: none; }
     .log-time { color: #a7c4b8; min-width: 52px; flex-shrink: 0; }
     .log-action { color: #4b7360; line-height: 1.4; }
     .log-type { color: #0d9e75; font-weight: 600; }
     .log-empty { font-size: 12px; color: #a7c4b8; text-align: center; padding: 20px 0; }
+    .access-count { font-size: 10px; background: #ecfdf5; color: #065f46; padding: 2px 7px; border-radius: 8px; margin-left: 6px; }
 
-    .access-count {
-      font-size: 10px;
-      background: #ecfdf5;
-      color: #065f46;
-      padding: 2px 7px;
-      border-radius: 8px;
-      margin-left: 6px;
-    }
-
-    .data-btn {
-      width: 100%;
-      padding: 9px 12px;
-      background: #f0fdf8;
-      border: 1px solid #d1fae5;
-      border-radius: 7px;
-      color: #4b7360;
-      font-size: 12px;
-      cursor: pointer;
-      text-align: left;
-      margin-bottom: 6px;
-      transition: all 0.15s;
-    }
-
+    .data-btn { width: 100%; padding: 9px 12px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 7px; color: #4b7360; font-size: 12px; cursor: pointer; text-align: left; margin-bottom: 6px; transition: all 0.15s; }
     .data-btn:hover { border-color: #0d9e75; color: #065f46; background: #ecfdf5; }
     .data-btn.danger { color: #991b1b; border-color: #fecaca; background: #fff5f5; }
     .data-btn.danger:hover { background: #fee2e2; border-color: #dc2626; color: #dc2626; }
 
-    /* ── 설정 패널 커스텀 키워드 ── */
-    .panel-keyword-row {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-
-    .panel-keyword-input {
-      flex: 1;
-      padding: 8px 10px;
-      background: #f0fdf8;
-      border: 1px solid #d1fae5;
-      border-radius: 6px;
-      color: #052e20;
-      font-size: 12px;
-      outline: none;
-    }
-
+    .panel-keyword-row { display: flex; gap: 6px; margin-bottom: 10px; }
+    .panel-keyword-input { flex: 1; padding: 8px 10px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 6px; color: #052e20; font-size: 12px; outline: none; }
     .panel-keyword-input:focus { border-color: #0d9e75; }
     .panel-keyword-input::placeholder { color: #a7c4b8; }
+    .panel-keyword-add { padding: 8px 12px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 6px; color: #065f46; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .panel-keyword-add:hover { background: #d1fae5; border-color: #0d9e75; }
+    .panel-keyword-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .panel-keyword-tag { display: flex; align-items: center; gap: 5px; padding: 4px 8px 4px 10px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 12px; font-size: 11px; color: #065f46; }
+    .panel-keyword-remove { background: none; border: none; color: #0d9e75; cursor: pointer; font-size: 13px; line-height: 1; opacity: 0.6; padding: 0; transition: opacity 0.15s; }
+    .panel-keyword-remove:hover { opacity: 1; }
 
-    .panel-keyword-add {
-      padding: 8px 12px;
-      background: #ecfdf5;
-      border: 1px solid #6ee7b7;
-      border-radius: 6px;
-      color: #065f46;
-      font-size: 12px;
+    /* ── 피드백 버튼 ── */
+    .feedback-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 12px 20px;
+      background: #0d9e75;
+      border: none;
+      border-radius: 50px;
+      color: #fff;
+      font-size: 13px;
       font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(13,158,117,0.4);
+      transition: all 0.2s;
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feedback-btn:hover {
+      background: #0b8a65;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(13,158,117,0.5);
+    }
+
+    /* ── 피드백 모달 ── */
+    .feedback-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5,46,32,0.5);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feedback-overlay.open { display: flex; }
+
+    .feedback-modal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      width: 90%;
+      max-width: 440px;
+      border: 1px solid #d1fae5;
+    }
+
+    .feedback-modal h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #052e20;
+      margin-bottom: 8px;
+    }
+
+    .feedback-modal p {
+      font-size: 13px;
+      color: #6bab90;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .feedback-type-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .feedback-type-btn {
+      padding: 10px;
+      background: #f0fdf8;
+      border: 1px solid #d1fae5;
+      border-radius: 8px;
+      color: #4b7360;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+
+    .feedback-type-btn:hover,
+    .feedback-type-btn.selected {
+      background: #ecfdf5;
+      border-color: #0d9e75;
+      color: #065f46;
+      font-weight: 500;
+    }
+
+    .feedback-textarea {
+      width: 100%;
+      padding: 12px;
+      background: #f0fdf8;
+      border: 1px solid #d1fae5;
+      border-radius: 8px;
+      color: #052e20;
+      font-size: 13px;
+      line-height: 1.6;
+      resize: vertical;
+      min-height: 100px;
+      outline: none;
+      font-family: inherit;
+      margin-bottom: 16px;
+    }
+
+    .feedback-textarea:focus { border-color: #0d9e75; }
+    .feedback-textarea::placeholder { color: #a7c4b8; }
+
+    .feedback-modal-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .feedback-cancel {
+      flex: 1;
+      padding: 11px;
+      background: #f0fdf8;
+      border: 1px solid #d1fae5;
+      border-radius: 8px;
+      color: #4b7360;
+      font-size: 13px;
       cursor: pointer;
       transition: all 0.15s;
     }
 
-    .panel-keyword-add:hover { background: #d1fae5; border-color: #0d9e75; }
+    .feedback-cancel:hover { border-color: #6ee7b7; }
 
-    .panel-keyword-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-
-    .panel-keyword-tag {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 8px 4px 10px;
-      background: #ecfdf5;
-      border: 1px solid #6ee7b7;
-      border-radius: 12px;
-      font-size: 11px;
-      color: #065f46;
-    }
-
-    .panel-keyword-remove {
-      background: none;
+    .feedback-submit {
+      flex: 2;
+      padding: 11px;
+      background: #0d9e75;
       border: none;
-      color: #0d9e75;
-      cursor: pointer;
+      border-radius: 8px;
+      color: #fff;
       font-size: 13px;
-      line-height: 1;
-      opacity: 0.6;
-      padding: 0;
-      transition: opacity 0.15s;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
     }
 
-    .panel-keyword-remove:hover { opacity: 1; }
+    .feedback-submit:hover { background: #0b8a65; }
+
+    .feedback-success {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .feedback-success .check { font-size: 40px; margin-bottom: 12px; }
+    .feedback-success h4 { font-size: 16px; font-weight: 600; color: #052e20; margin-bottom: 6px; }
+    .feedback-success p { font-size: 13px; color: #6bab90; }
   </style>
 </head>
 <body>
@@ -650,10 +390,7 @@
         <button class="keyword-add-btn" onclick="addCustomKeyword()">Add</button>
       </div>
       <div class="keyword-tags" id="keyword-tags"></div>
-      <p class="keyword-hint">
-        Custom keywords are matched directly against post text — just like the topics above.<br>
-        You can add up to 10 keywords.
-      </p>
+      <p class="keyword-hint">Custom keywords are matched directly against post text. You can add up to 10 keywords.</p>
     </div>
 
     <button class="start-btn" id="start-btn" disabled onclick="startApp()">
@@ -687,7 +424,46 @@
     </div>
   </div>
 
-  <!-- ── 오버레이 ── -->
+  <!-- ── 피드백 버튼 ── -->
+  <button class="feedback-btn" onclick="openFeedback()">
+    💬 Send Feedback
+  </button>
+
+  <!-- ── 피드백 모달 ── -->
+  <div class="feedback-overlay" id="feedback-overlay" onclick="handleOverlayClick(event)">
+    <div class="feedback-modal" id="feedback-modal">
+      <div id="feedback-form-view">
+        <h3>Send Feedback</h3>
+        <p>Your thoughts help make My AI Curator better. What's on your mind?</p>
+
+        <div class="feedback-type-grid">
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this, 'Bug report')">🐛 Bug report</button>
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this, 'Feature request')">✨ Feature request</button>
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this, 'General feedback')">💬 General feedback</button>
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this, 'I love it!')">❤️ I love it!</button>
+        </div>
+
+        <textarea
+          class="feedback-textarea"
+          id="feedback-text"
+          placeholder="Tell us more... (optional)"
+        ></textarea>
+
+        <div class="feedback-modal-btns">
+          <button class="feedback-cancel" onclick="closeFeedback()">Cancel</button>
+          <button class="feedback-submit" onclick="submitFeedback()">Send Feedback</button>
+        </div>
+      </div>
+
+      <div id="feedback-success-view" class="feedback-success" style="display:none">
+        <div class="check">✅</div>
+        <h4>Thank you!</h4>
+        <p>Your feedback has been received.<br>We read every single message.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 설정 패널 오버레이 ── -->
   <div class="panel-overlay" id="overlay" onclick="closeSettings()"></div>
 
   <!-- ── 설정 패널 ── -->
@@ -708,24 +484,15 @@
       </div>
       <div class="setting-row">
         <div class="setting-label">Full pod access<small>Turn off to disable preference reading</small></div>
-        <label class="toggle">
-          <input type="checkbox" id="toggle-pod" checked onchange="togglePod()">
-          <div class="toggle-track"></div><div class="toggle-thumb"></div>
-        </label>
+        <label class="toggle"><input type="checkbox" id="toggle-pod" checked onchange="togglePod()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
       </div>
       <div class="setting-row">
         <div class="setting-label">Read topic preferences<small>Which topics you selected</small></div>
-        <label class="toggle">
-          <input type="checkbox" id="toggle-topics" checked onchange="savePermissions()">
-          <div class="toggle-track"></div><div class="toggle-thumb"></div>
-        </label>
+        <label class="toggle"><input type="checkbox" id="toggle-topics" checked onchange="savePermissions()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
       </div>
       <div class="setting-row">
         <div class="setting-label">Read history<small>Posts you've already read</small></div>
-        <label class="toggle">
-          <input type="checkbox" id="toggle-read" checked onchange="savePermissions()">
-          <div class="toggle-track"></div><div class="toggle-thumb"></div>
-        </label>
+        <label class="toggle"><input type="checkbox" id="toggle-read" checked onchange="savePermissions()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
       </div>
     </div>
 
@@ -733,25 +500,18 @@
       <h3>Data Saving</h3>
       <div class="setting-row">
         <div class="setting-label">Auto-load images<small>Turn off to save mobile data</small></div>
-        <label class="toggle">
-          <input type="checkbox" id="toggle-image" checked onchange="savePermissions()">
-          <div class="toggle-track"></div><div class="toggle-thumb"></div>
-        </label>
+        <label class="toggle"><input type="checkbox" id="toggle-image" checked onchange="savePermissions()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
       </div>
       <div class="setting-row">
         <div class="setting-label">Wi-Fi only prefetch<small>Minimize mobile data usage</small></div>
-        <label class="toggle">
-          <input type="checkbox" id="toggle-wifi" onchange="savePermissions()">
-          <div class="toggle-track"></div><div class="toggle-thumb"></div>
-        </label>
+        <label class="toggle"><input type="checkbox" id="toggle-wifi" onchange="savePermissions()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
       </div>
     </div>
 
     <div class="setting-section">
       <h3>Custom Keywords</h3>
       <div class="panel-keyword-row">
-        <input type="text" class="panel-keyword-input" id="panel-keyword-input"
-          placeholder="Add keyword..." maxlength="30"/>
+        <input type="text" class="panel-keyword-input" id="panel-keyword-input" placeholder="Add keyword..." maxlength="30"/>
         <button class="panel-keyword-add" onclick="addCustomKeywordFromPanel()">Add</button>
       </div>
       <div class="panel-keyword-tags" id="panel-keyword-tags"></div>
@@ -759,9 +519,7 @@
 
     <div class="setting-section">
       <h3>Access Log <span class="access-count" id="log-count">0</span></h3>
-      <div class="log-list" id="log-list">
-        <div class="log-empty">No activity yet</div>
-      </div>
+      <div class="log-list" id="log-list"><div class="log-empty">No activity yet</div></div>
     </div>
 
     <div class="setting-section">
@@ -789,13 +547,10 @@
       { id: 'life',    label: 'Lifestyle',   keywords: ['life', 'food', 'travel', 'coffee', 'health', 'fitness', 'cooking'] },
     ]
 
-    let selectedTopics = []
-    let customKeywords = []
-    let activeFilter   = 'all'
-    let allPosts       = []
-    let readPosts      = new Set()
-    let accessLog      = []
-    let permissions    = { pod: true, topics: true, readHistory: true, images: true, wifiOnly: false }
+    let selectedTopics = [], customKeywords = [], activeFilter = 'all'
+    let allPosts = [], readPosts = new Set(), accessLog = []
+    let permissions = { pod: true, topics: true, readHistory: true, images: true, wifiOnly: false }
+    let selectedFeedbackType = ''
 
     function loadSaved() {
       const t = localStorage.getItem('curator-topics')
@@ -854,7 +609,7 @@
     }
 
     function renderLog() {
-      const list    = document.getElementById('log-list')
+      const list = document.getElementById('log-list')
       const countEl = document.getElementById('log-count')
       countEl.textContent = accessLog.length
       if (!accessLog.length) { list.innerHTML = '<div class="log-empty">No activity yet</div>'; return }
@@ -880,12 +635,13 @@
         b.classList.toggle('selected', selectedTopics.includes(b.dataset.id))
       })
       updateStartBtn()
+      trackEvent('topic_toggle', 'onboarding', id)
     }
 
     function updateStartBtn() {
       const total = selectedTopics.length + customKeywords.length
-      const btn   = document.getElementById('start-btn')
-      btn.disabled    = total === 0
+      const btn = document.getElementById('start-btn')
+      btn.disabled = total === 0
       btn.textContent = total > 0
         ? `Continue with ${total} interest${total > 1 ? 's' : ''}`
         : 'Select at least one topic to continue'
@@ -893,7 +649,7 @@
 
     function addCustomKeyword() {
       const input = document.getElementById('custom-keyword-input')
-      const val   = input.value.trim().toLowerCase()
+      const val = input.value.trim().toLowerCase()
       if (!val) return
       if (customKeywords.length >= 10) { alert('You can add up to 10 custom keywords.'); return }
       if (customKeywords.includes(val)) { input.value = ''; return }
@@ -901,15 +657,13 @@
       input.value = ''
       renderKeywordTags()
       updateStartBtn()
+      trackEvent('custom_keyword_add', 'onboarding', val)
     }
 
     function removeCustomKeyword(kw) {
       customKeywords = customKeywords.filter(k => k !== kw)
-      renderKeywordTags()
-      renderPanelKeywordTags()
-      updateStartBtn()
-      saveTopics()
-      renderTopicBar()
+      renderKeywordTags(); renderPanelKeywordTags()
+      updateStartBtn(); saveTopics(); renderTopicBar()
       if (allPosts.length > 0) renderFeed()
     }
 
@@ -924,25 +678,21 @@
 
     function addCustomKeywordFromPanel() {
       const input = document.getElementById('panel-keyword-input')
-      const val   = input.value.trim().toLowerCase()
+      const val = input.value.trim().toLowerCase()
       if (!val) return
       if (customKeywords.length >= 10) { alert('You can add up to 10 custom keywords.'); return }
       if (customKeywords.includes(val)) { input.value = ''; return }
       customKeywords.push(val)
       input.value = ''
-      renderPanelKeywordTags()
-      renderTopicBar()
-      saveTopics()
+      renderPanelKeywordTags(); renderTopicBar(); saveTopics()
       addLog(`Custom keyword added: "${val}"`, 'write')
+      trackEvent('custom_keyword_add', 'settings', val)
       if (allPosts.length > 0) renderFeed()
     }
 
     function removeCustomKeywordFromPanel(kw) {
       customKeywords = customKeywords.filter(k => k !== kw)
-      renderPanelKeywordTags()
-      renderKeywordTags()
-      renderTopicBar()
-      saveTopics()
+      renderPanelKeywordTags(); renderKeywordTags(); renderTopicBar(); saveTopics()
       addLog(`Custom keyword removed: "${kw}"`, 'write')
       if (allPosts.length > 0) renderFeed()
     }
@@ -962,21 +712,21 @@
       saveTopics()
       const all = [...selectedTopics.map(id => TOPICS.find(t=>t.id===id)?.label), ...customKeywords]
       addLog('Preferences saved: ' + all.join(', '), 'write')
+      trackEvent('onboarding_complete', 'onboarding', `${selectedTopics.length} topics`)
       showMainView()
     }
 
     function showMainView() {
       document.getElementById('onboarding').style.display = 'none'
       document.getElementById('main-view').style.display  = 'block'
-      renderTopicBar()
-      renderPanelKeywordTags()
+      renderTopicBar(); renderPanelKeywordTags()
     }
 
     function openSettings() {
       document.getElementById('settings-panel').classList.add('open')
       document.getElementById('overlay').classList.add('open')
-      renderLog()
-      renderPanelKeywordTags()
+      renderLog(); renderPanelKeywordTags()
+      trackEvent('settings_open', 'ui', 'settings_panel')
     }
 
     function closeSettings() {
@@ -1004,6 +754,7 @@
           : TOPICS.find(t=>t.id===filterId)?.label
         addLog(`Filter applied: ${label}`, 'read')
       }
+      trackEvent('filter_change', 'feed', filterId)
       renderFeed()
     }
 
@@ -1030,9 +781,9 @@
     }
 
     function renderFeed() {
-      const feedList   = document.getElementById('feed-list')
+      const feedList = document.getElementById('feed-list')
       const filterInfo = document.getElementById('filter-info')
-      const useFilter  = permissions.pod && permissions.topics
+      const useFilter = permissions.pod && permissions.topics
       let filterTopics = [], filterKws = []
 
       if (useFilter) {
@@ -1047,7 +798,7 @@
         return { ...item, score, matched }
       })
       scored.sort((a,b) => b.score - a.score)
-      const hits   = scored.filter(p => p.score > 0)
+      const hits = scored.filter(p => p.score > 0)
       const others = scored.filter(p => p.score === 0)
 
       if (!useFilter) filterInfo.textContent = 'Pod access is off — showing chronological feed'
@@ -1090,7 +841,6 @@
             </div>
           </div>`
       }
-
       feedList.innerHTML = [...hits,...others].map(card).join('')
     }
 
@@ -1101,6 +851,7 @@
         localStorage.setItem('curator-read', JSON.stringify([...readPosts]))
         addLog('Post marked as read', 'write')
       }
+      trackEvent('post_read', 'feed', 'mark_read')
     }
 
     async function loadFeed() {
@@ -1110,6 +861,7 @@
       document.getElementById('filter-info').textContent  = ''
       document.getElementById('feed-list').innerHTML = '<div class="loading">Fetching feed...</div>'
       if (permissions.pod) addLog(`Fetching feed: @${handle}`, 'network')
+      trackEvent('feed_load', 'feed', handle)
       try {
         const res = await fetch(`https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=30`)
         if (!res.ok) throw new Error(`Handle not found (error ${res.status})`)
@@ -1132,6 +884,53 @@
       }
     }
 
+    // ── 피드백 함수들 ──
+    function openFeedback() {
+      document.getElementById('feedback-overlay').classList.add('open')
+      document.getElementById('feedback-form-view').style.display = 'block'
+      document.getElementById('feedback-success-view').style.display = 'none'
+      document.getElementById('feedback-text').value = ''
+      selectedFeedbackType = ''
+      document.querySelectorAll('.feedback-type-btn').forEach(b => b.classList.remove('selected'))
+      trackEvent('feedback_open', 'feedback', 'open_modal')
+    }
+
+    function closeFeedback() {
+      document.getElementById('feedback-overlay').classList.remove('open')
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('feedback-overlay')) closeFeedback()
+    }
+
+    function selectFeedbackType(btn, type) {
+      selectedFeedbackType = type
+      document.querySelectorAll('.feedback-type-btn').forEach(b => b.classList.remove('selected'))
+      btn.classList.add('selected')
+    }
+
+    function submitFeedback() {
+      const text = document.getElementById('feedback-text').value.trim()
+      if (!selectedFeedbackType && !text) {
+        alert('Please select a feedback type or write something!')
+        return
+      }
+
+      // Google Analytics로 피드백 전송
+      trackEvent('feedback_submit', 'feedback', selectedFeedbackType || 'general')
+      gtag('event', 'feedback', {
+        feedback_type: selectedFeedbackType,
+        feedback_text: text.substring(0, 100), // 100자까지만
+        page_location: window.location.href
+      })
+
+      // 성공 화면 표시
+      document.getElementById('feedback-form-view').style.display = 'none'
+      document.getElementById('feedback-success-view').style.display = 'block'
+
+      setTimeout(() => { closeFeedback() }, 2500)
+    }
+
     function exportData() {
       const data = { exportedAt: new Date().toISOString(), selectedTopics, customKeywords, permissions, readCount: readPosts.size }
       const a = document.createElement('a')
@@ -1139,6 +938,7 @@
       a.download = 'my-curator-data.json'
       a.click()
       addLog('Data exported', 'export')
+      trackEvent('data_export', 'settings', 'json')
     }
 
     function importData() {
