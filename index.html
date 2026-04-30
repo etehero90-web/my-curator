@@ -9,8 +9,8 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0f1117;
-      color: #e8e8e8;
+      background: #f0fdf8;
+      color: #052e20;
       min-height: 100vh;
     }
 
@@ -23,9 +23,9 @@
 
     .onboarding .logo {
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 2px;
-      color: #4a9eff;
+      color: #0d9e75;
       text-transform: uppercase;
       margin-bottom: 32px;
     }
@@ -33,23 +33,23 @@
     .onboarding h2 {
       font-size: 26px;
       font-weight: 600;
-      color: #fff;
+      color: #052e20;
       margin-bottom: 10px;
       line-height: 1.3;
     }
 
     .onboarding p {
       font-size: 14px;
-      color: #666;
+      color: #4b7360;
       margin-bottom: 40px;
       line-height: 1.7;
     }
 
     .section-label {
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 1.2px;
-      color: #444;
+      color: #6bab90;
       text-transform: uppercase;
       margin-bottom: 14px;
     }
@@ -63,10 +63,10 @@
 
     .topic-btn {
       padding: 10px 14px;
-      background: transparent;
-      border: 1px solid #222230;
+      background: #fff;
+      border: 1px solid #d1fae5;
       border-radius: 8px;
-      color: #666;
+      color: #4b7360;
       font-size: 13px;
       cursor: pointer;
       text-align: left;
@@ -77,29 +77,32 @@
       gap: 8px;
     }
 
-    .topic-btn:hover { border-color: #333350; color: #aaa; }
+    .topic-btn:hover {
+      border-color: #6ee7b7;
+      color: #1f4d38;
+      background: #f0fdf8;
+    }
 
     .topic-btn.selected {
-      background: #0d1f3c;
-      border-color: #4a9eff;
-      color: #fff;
+      background: #ecfdf5;
+      border-color: #0d9e75;
+      color: #065f46;
+      font-weight: 500;
     }
 
     .topic-dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: #333;
+      background: #a7f3d0;
       flex-shrink: 0;
       transition: background 0.15s;
     }
 
-    .topic-btn.selected .topic-dot { background: #4a9eff; }
+    .topic-btn.selected .topic-dot { background: #0d9e75; }
 
     /* ── 커스텀 키워드 ── */
-    .custom-keyword-section {
-      margin-bottom: 32px;
-    }
+    .custom-keyword-section { margin-bottom: 32px; }
 
     .keyword-input-row {
       display: flex;
@@ -110,56 +113,50 @@
     .keyword-input {
       flex: 1;
       padding: 10px 14px;
-      background: #0d0d18;
-      border: 1px solid #222230;
+      background: #fff;
+      border: 1px solid #d1fae5;
       border-radius: 8px;
-      color: #e8e8e8;
+      color: #052e20;
       font-size: 13px;
       outline: none;
       transition: border-color 0.15s;
     }
 
-    .keyword-input:focus { border-color: #4a9eff; }
-    .keyword-input::placeholder { color: #333; }
+    .keyword-input:focus { border-color: #0d9e75; }
+    .keyword-input::placeholder { color: #a7c4b8; }
 
     .keyword-add-btn {
       padding: 10px 16px;
       background: transparent;
-      border: 1px solid #222230;
+      border: 1px solid #d1fae5;
       border-radius: 8px;
-      color: #4a9eff;
+      color: #0d9e75;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s;
-      white-space: nowrap;
     }
 
-    .keyword-add-btn:hover { border-color: #4a9eff; background: #0d1f3c; }
+    .keyword-add-btn:hover { border-color: #0d9e75; background: #ecfdf5; }
 
-    .keyword-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      min-height: 0;
-    }
+    .keyword-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 
     .keyword-tag {
       display: flex;
       align-items: center;
       gap: 6px;
       padding: 5px 10px 5px 12px;
-      background: #0d1f3c;
-      border: 1px solid #1a3a6a;
+      background: #ecfdf5;
+      border: 1px solid #6ee7b7;
       border-radius: 20px;
       font-size: 12px;
-      color: #4a9eff;
+      color: #065f46;
     }
 
     .keyword-remove {
       background: none;
       border: none;
-      color: #4a9eff;
+      color: #0d9e75;
       cursor: pointer;
       font-size: 14px;
       line-height: 1;
@@ -172,7 +169,7 @@
 
     .keyword-hint {
       font-size: 11px;
-      color: #333;
+      color: #6bab90;
       margin-top: 10px;
       line-height: 1.6;
     }
@@ -181,7 +178,7 @@
     .start-btn {
       width: 100%;
       padding: 13px;
-      background: #4a9eff;
+      background: #0d9e75;
       border: none;
       border-radius: 8px;
       color: #fff;
@@ -192,20 +189,21 @@
       letter-spacing: 0.3px;
     }
 
-    .start-btn:hover { background: #3a8eef; }
+    .start-btn:hover { background: #0b8a65; }
 
     .start-btn:disabled {
-      background: #161620;
-      color: #333;
+      background: #d1fae5;
+      color: #6bab90;
       cursor: not-allowed;
     }
 
-    /* ── 헤더 ── */
+    /* ── 메인 화면 ── */
     .main-view { display: none; }
 
     header {
       padding: 14px 24px;
-      border-bottom: 1px solid #1a1a28;
+      border-bottom: 1px solid #d1fae5;
+      background: #fff;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -213,9 +211,9 @@
 
     .header-logo {
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 1.5px;
-      color: #4a9eff;
+      color: #0d9e75;
       text-transform: uppercase;
     }
 
@@ -223,22 +221,22 @@
 
     .icon-btn {
       background: none;
-      border: 1px solid #1a1a28;
+      border: 1px solid #d1fae5;
       border-radius: 6px;
-      color: #555;
+      color: #4b7360;
       font-size: 12px;
       cursor: pointer;
       padding: 6px 12px;
-      letter-spacing: 0.3px;
       transition: all 0.15s;
     }
 
-    .icon-btn:hover { border-color: #333350; color: #aaa; }
+    .icon-btn:hover { border-color: #0d9e75; color: #065f46; background: #ecfdf5; }
 
     /* ── 검색바 ── */
     .search-bar {
       padding: 14px 24px;
-      border-bottom: 1px solid #1a1a28;
+      border-bottom: 1px solid #d1fae5;
+      background: #fff;
       display: flex;
       gap: 10px;
     }
@@ -246,20 +244,20 @@
     .search-bar input {
       flex: 1;
       padding: 10px 14px;
-      background: #0d0d18;
-      border: 1px solid #1a1a28;
+      background: #f0fdf8;
+      border: 1px solid #d1fae5;
       border-radius: 7px;
-      color: #e8e8e8;
+      color: #052e20;
       font-size: 14px;
       outline: none;
     }
 
-    .search-bar input:focus { border-color: #4a9eff; }
-    .search-bar input::placeholder { color: #333; }
+    .search-bar input:focus { border-color: #0d9e75; }
+    .search-bar input::placeholder { color: #a7c4b8; }
 
     .fetch-btn {
       padding: 10px 18px;
-      background: #4a9eff;
+      background: #0d9e75;
       border: none;
       border-radius: 7px;
       color: #fff;
@@ -268,12 +266,13 @@
       cursor: pointer;
     }
 
-    .fetch-btn:hover { background: #3a8eef; }
+    .fetch-btn:hover { background: #0b8a65; }
 
     /* ── 토픽 바 ── */
     .topic-bar {
       padding: 10px 24px;
-      border-bottom: 1px solid #1a1a28;
+      border-bottom: 1px solid #d1fae5;
+      background: #fff;
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
@@ -283,22 +282,23 @@
       padding: 4px 12px;
       border-radius: 20px;
       font-size: 12px;
-      border: 1px solid #1a1a28;
-      background: transparent;
-      color: #555;
+      border: 1px solid #d1fae5;
+      background: #f0fdf8;
+      color: #4b7360;
       cursor: pointer;
       transition: all 0.15s;
     }
 
+    .topic-tag:hover { border-color: #6ee7b7; color: #1f4d38; }
+
     .topic-tag.active {
-      background: #0d1f3c;
-      border-color: #4a9eff;
-      color: #4a9eff;
+      background: #ecfdf5;
+      border-color: #0d9e75;
+      color: #065f46;
+      font-weight: 500;
     }
 
-    .topic-tag.custom {
-      border-style: dashed;
-    }
+    .topic-tag.custom { border-style: dashed; }
 
     /* ── 피드 ── */
     .feed-container {
@@ -310,15 +310,14 @@
     .status-box {
       text-align: center;
       padding: 64px 24px;
-      color: #333;
     }
 
-    .status-box p { font-size: 15px; margin-bottom: 8px; color: #444; }
-    .status-box small { font-size: 13px; color: #333; }
+    .status-box p { font-size: 15px; margin-bottom: 8px; color: #4b7360; }
+    .status-box small { font-size: 13px; color: #6bab90; }
 
     .post-card {
-      background: #0d0d18;
-      border: 1px solid #1a1a28;
+      background: #fff;
+      border: 1px solid #d1fae5;
       border-radius: 10px;
       padding: 16px;
       margin-bottom: 10px;
@@ -326,9 +325,13 @@
       transition: all 0.2s;
     }
 
-    .post-card:hover { border-color: #2a2a40; }
-    .post-card.read { opacity: 0.4; }
-    .post-card.highlighted { border-color: #1a3a6a; background: #0a111f; }
+    .post-card:hover { border-color: #6ee7b7; }
+    .post-card.read { opacity: 0.45; }
+
+    .post-card.highlighted {
+      border-color: #0d9e75;
+      background: #f0fdf8;
+    }
 
     .post-author {
       display: flex;
@@ -341,24 +344,24 @@
       width: 34px;
       height: 34px;
       border-radius: 50%;
-      background: #131320;
-      border: 1px solid #1a1a28;
+      background: #ecfdf5;
+      border: 1px solid #d1fae5;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 13px;
       font-weight: 600;
-      color: #4a9eff;
+      color: #0d9e75;
       flex-shrink: 0;
     }
 
-    .author-info .name { font-size: 13px; font-weight: 600; color: #ccc; }
-    .author-info .handle { font-size: 12px; color: #444; }
+    .author-info .name { font-size: 13px; font-weight: 600; color: #052e20; }
+    .author-info .handle { font-size: 12px; color: #6bab90; }
 
     .post-text {
       font-size: 14px;
       line-height: 1.65;
-      color: #aaa;
+      color: #1f4d38;
       margin-bottom: 12px;
       word-break: break-word;
     }
@@ -367,47 +370,47 @@
       display: flex;
       gap: 14px;
       font-size: 12px;
-      color: #444;
+      color: #6bab90;
       align-items: center;
     }
 
     .match-badge {
       margin-left: auto;
       padding: 2px 8px;
-      background: #0d1f3c;
-      border: 1px solid #1a3a6a;
+      background: #ecfdf5;
+      border: 1px solid #6ee7b7;
       border-radius: 10px;
       font-size: 11px;
-      color: #4a9eff;
+      color: #065f46;
     }
 
     .filter-info {
       font-size: 12px;
-      color: #333;
+      color: #6bab90;
       padding: 6px 0 14px;
       text-align: center;
     }
 
-    .loading { text-align: center; padding: 48px; color: #333; font-size: 13px; }
+    .loading { text-align: center; padding: 48px; color: #6bab90; font-size: 13px; }
 
     .error-box {
-      background: #180d0d;
-      border: 1px solid #3a1a1a;
+      background: #fff5f5;
+      border: 1px solid #fecaca;
       border-radius: 8px;
       padding: 16px;
-      color: #cc5555;
+      color: #991b1b;
       font-size: 13px;
       line-height: 1.7;
     }
 
-    .error-box strong { display: block; margin-bottom: 6px; color: #ff6b6b; }
+    .error-box strong { display: block; margin-bottom: 6px; color: #dc2626; }
 
     /* ── 설정 패널 ── */
     .panel-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(5,46,32,0.4);
       z-index: 100;
     }
 
@@ -417,8 +420,8 @@
       position: fixed;
       right: 0; top: 0; bottom: 0;
       width: 300px;
-      background: #0a0a14;
-      border-left: 1px solid #1a1a28;
+      background: #fff;
+      border-left: 1px solid #d1fae5;
       z-index: 101;
       transform: translateX(100%);
       transition: transform 0.2s ease;
@@ -429,16 +432,17 @@
 
     .panel-header {
       padding: 20px;
-      border-bottom: 1px solid #1a1a28;
+      border-bottom: 1px solid #d1fae5;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      background: #f0fdf8;
     }
 
     .panel-header h2 {
       font-size: 13px;
-      font-weight: 600;
-      color: #aaa;
+      font-weight: 700;
+      color: #0d9e75;
       letter-spacing: 1px;
       text-transform: uppercase;
     }
@@ -446,22 +450,22 @@
     .close-btn {
       background: none;
       border: none;
-      color: #444;
+      color: #6bab90;
       font-size: 18px;
       cursor: pointer;
     }
 
-    .close-btn:hover { color: #888; }
+    .close-btn:hover { color: #052e20; }
 
     .setting-section {
       padding: 20px;
-      border-bottom: 1px solid #111120;
+      border-bottom: 1px solid #f0fdf8;
     }
 
     .setting-section h3 {
       font-size: 10px;
-      font-weight: 600;
-      color: #333;
+      font-weight: 700;
+      color: #6bab90;
       text-transform: uppercase;
       letter-spacing: 1.2px;
       margin-bottom: 16px;
@@ -475,8 +479,8 @@
     }
 
     .setting-row:last-child { margin-bottom: 0; }
-    .setting-label { font-size: 13px; color: #888; }
-    .setting-label small { display: block; font-size: 11px; color: #444; margin-top: 2px; }
+    .setting-label { font-size: 13px; color: #1f4d38; }
+    .setting-label small { display: block; font-size: 11px; color: #6bab90; margin-top: 2px; }
 
     .toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
     .toggle input { opacity: 0; width: 0; height: 0; }
@@ -484,13 +488,13 @@
     .toggle-track {
       position: absolute;
       inset: 0;
-      background: #1a1a28;
+      background: #d1fae5;
       border-radius: 10px;
       cursor: pointer;
       transition: background 0.2s;
     }
 
-    .toggle input:checked + .toggle-track { background: #4a9eff; }
+    .toggle input:checked + .toggle-track { background: #0d9e75; }
 
     .toggle-thumb {
       position: absolute;
@@ -509,16 +513,16 @@
       align-items: center;
       gap: 8px;
       padding: 10px 12px;
-      background: #0d0d18;
+      background: #f0fdf8;
       border-radius: 7px;
       margin-bottom: 16px;
-      border: 1px solid #1a1a28;
+      border: 1px solid #d1fae5;
     }
 
-    .pod-dot { width: 7px; height: 7px; border-radius: 50%; background: #2a9a5a; flex-shrink: 0; }
-    .pod-dot.off { background: #333; }
-    .pod-status-text { font-size: 12px; color: #555; }
-    .pod-status-text strong { display: block; font-size: 13px; color: #888; }
+    .pod-dot { width: 7px; height: 7px; border-radius: 50%; background: #0d9e75; flex-shrink: 0; }
+    .pod-dot.off { background: #d1fae5; }
+    .pod-status-text { font-size: 12px; color: #6bab90; }
+    .pod-status-text strong { display: block; font-size: 13px; }
 
     .log-list { max-height: 200px; overflow-y: auto; }
 
@@ -526,20 +530,20 @@
       display: flex;
       gap: 10px;
       padding: 7px 0;
-      border-bottom: 1px solid #111120;
+      border-bottom: 1px solid #f0fdf8;
       font-size: 11px;
     }
 
     .log-item:last-child { border-bottom: none; }
-    .log-time { color: #333; min-width: 52px; flex-shrink: 0; }
-    .log-action { color: #555; line-height: 1.4; }
-    .log-type { color: #4a9eff; }
-    .log-empty { font-size: 12px; color: #333; text-align: center; padding: 20px 0; }
+    .log-time { color: #a7c4b8; min-width: 52px; flex-shrink: 0; }
+    .log-action { color: #4b7360; line-height: 1.4; }
+    .log-type { color: #0d9e75; font-weight: 600; }
+    .log-empty { font-size: 12px; color: #a7c4b8; text-align: center; padding: 20px 0; }
 
     .access-count {
       font-size: 10px;
-      background: #0d1f3c;
-      color: #4a9eff;
+      background: #ecfdf5;
+      color: #065f46;
       padding: 2px 7px;
       border-radius: 8px;
       margin-left: 6px;
@@ -548,10 +552,10 @@
     .data-btn {
       width: 100%;
       padding: 9px 12px;
-      background: transparent;
-      border: 1px solid #1a1a28;
+      background: #f0fdf8;
+      border: 1px solid #d1fae5;
       border-radius: 7px;
-      color: #666;
+      color: #4b7360;
       font-size: 12px;
       cursor: pointer;
       text-align: left;
@@ -559,11 +563,11 @@
       transition: all 0.15s;
     }
 
-    .data-btn:hover { border-color: #2a2a40; color: #aaa; }
-    .data-btn.danger { color: #664444; border-color: #1f1010; }
-    .data-btn.danger:hover { background: #180d0d; border-color: #cc5555; color: #cc5555; }
+    .data-btn:hover { border-color: #0d9e75; color: #065f46; background: #ecfdf5; }
+    .data-btn.danger { color: #991b1b; border-color: #fecaca; background: #fff5f5; }
+    .data-btn.danger:hover { background: #fee2e2; border-color: #dc2626; color: #dc2626; }
 
-    /* ── 설정 패널 내 커스텀 키워드 ── */
+    /* ── 설정 패널 커스텀 키워드 ── */
     .panel-keyword-row {
       display: flex;
       gap: 6px;
@@ -573,53 +577,49 @@
     .panel-keyword-input {
       flex: 1;
       padding: 8px 10px;
-      background: #0d0d18;
-      border: 1px solid #1a1a28;
+      background: #f0fdf8;
+      border: 1px solid #d1fae5;
       border-radius: 6px;
-      color: #e8e8e8;
+      color: #052e20;
       font-size: 12px;
       outline: none;
     }
 
-    .panel-keyword-input:focus { border-color: #4a9eff; }
-    .panel-keyword-input::placeholder { color: #333; }
+    .panel-keyword-input:focus { border-color: #0d9e75; }
+    .panel-keyword-input::placeholder { color: #a7c4b8; }
 
     .panel-keyword-add {
       padding: 8px 12px;
-      background: transparent;
-      border: 1px solid #1a1a28;
+      background: #ecfdf5;
+      border: 1px solid #6ee7b7;
       border-radius: 6px;
-      color: #4a9eff;
+      color: #065f46;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s;
     }
 
-    .panel-keyword-add:hover { border-color: #4a9eff; background: #0d1f3c; }
+    .panel-keyword-add:hover { background: #d1fae5; border-color: #0d9e75; }
 
-    .panel-keyword-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
+    .panel-keyword-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 
     .panel-keyword-tag {
       display: flex;
       align-items: center;
       gap: 5px;
       padding: 4px 8px 4px 10px;
-      background: #0d1f3c;
-      border: 1px solid #1a3a6a;
+      background: #ecfdf5;
+      border: 1px solid #6ee7b7;
       border-radius: 12px;
       font-size: 11px;
-      color: #4a9eff;
+      color: #065f46;
     }
 
     .panel-keyword-remove {
       background: none;
       border: none;
-      color: #4a9eff;
+      color: #0d9e75;
       cursor: pointer;
       font-size: 13px;
       line-height: 1;
@@ -645,13 +645,8 @@
     <div class="custom-keyword-section">
       <div class="section-label">Add your own keywords</div>
       <div class="keyword-input-row">
-        <input
-          type="text"
-          class="keyword-input"
-          id="custom-keyword-input"
-          placeholder="e.g. k-drama, climate, yoga, hiking..."
-          maxlength="30"
-        />
+        <input type="text" class="keyword-input" id="custom-keyword-input"
+          placeholder="e.g. k-drama, climate, yoga, hiking..." maxlength="30"/>
         <button class="keyword-add-btn" onclick="addCustomKeyword()">Add</button>
       </div>
       <div class="keyword-tags" id="keyword-tags"></div>
@@ -711,7 +706,6 @@
           <span id="pod-access-count"></span>
         </div>
       </div>
-
       <div class="setting-row">
         <div class="setting-label">Full pod access<small>Turn off to disable preference reading</small></div>
         <label class="toggle">
@@ -719,7 +713,6 @@
           <div class="toggle-track"></div><div class="toggle-thumb"></div>
         </label>
       </div>
-
       <div class="setting-row">
         <div class="setting-label">Read topic preferences<small>Which topics you selected</small></div>
         <label class="toggle">
@@ -727,7 +720,6 @@
           <div class="toggle-track"></div><div class="toggle-thumb"></div>
         </label>
       </div>
-
       <div class="setting-row">
         <div class="setting-label">Read history<small>Posts you've already read</small></div>
         <label class="toggle">
@@ -755,17 +747,11 @@
       </div>
     </div>
 
-    <!-- 설정 패널 내 커스텀 키워드 관리 -->
     <div class="setting-section">
       <h3>Custom Keywords</h3>
       <div class="panel-keyword-row">
-        <input
-          type="text"
-          class="panel-keyword-input"
-          id="panel-keyword-input"
-          placeholder="Add keyword..."
-          maxlength="30"
-        />
+        <input type="text" class="panel-keyword-input" id="panel-keyword-input"
+          placeholder="Add keyword..." maxlength="30"/>
         <button class="panel-keyword-add" onclick="addCustomKeywordFromPanel()">Add</button>
       </div>
       <div class="panel-keyword-tags" id="panel-keyword-tags"></div>
@@ -788,7 +774,6 @@
   </div>
 
   <script>
-    // ── 기본 주제 목록 ─────────────────────────────────────
     const TOPICS = [
       { id: 'tech',    label: 'Technology',  keywords: ['ai', 'tech', 'dev', 'code', 'software', '개발', '기술', 'programming', 'python', 'javascript'] },
       { id: 'startup', label: 'Startups',    keywords: ['startup', 'founder', 'vc', '창업', 'saas', 'product', 'entrepreneur'] },
@@ -804,22 +789,20 @@
       { id: 'life',    label: 'Lifestyle',   keywords: ['life', 'food', 'travel', 'coffee', 'health', 'fitness', 'cooking'] },
     ]
 
-    // ── 상태 ───────────────────────────────────────────────
-    let selectedTopics  = []      // 선택된 기본 주제 id 목록
-    let customKeywords  = []      // 사용자 직접 입력 키워드 목록
-    let activeFilter    = 'all'
-    let allPosts        = []
-    let readPosts       = new Set()
-    let accessLog       = []
-    let permissions     = { pod: true, topics: true, readHistory: true, images: true, wifiOnly: false }
+    let selectedTopics = []
+    let customKeywords = []
+    let activeFilter   = 'all'
+    let allPosts       = []
+    let readPosts      = new Set()
+    let accessLog      = []
+    let permissions    = { pod: true, topics: true, readHistory: true, images: true, wifiOnly: false }
 
-    // ── 저장/불러오기 ──────────────────────────────────────
     function loadSaved() {
-      const savedTopics   = localStorage.getItem('curator-topics')
-      const savedKeywords = localStorage.getItem('curator-keywords')
-      if (savedTopics) selectedTopics = JSON.parse(savedTopics)
-      if (savedKeywords) customKeywords = JSON.parse(savedKeywords)
-      return !!savedTopics
+      const t = localStorage.getItem('curator-topics')
+      const k = localStorage.getItem('curator-keywords')
+      if (t) selectedTopics = JSON.parse(t)
+      if (k) customKeywords = JSON.parse(k)
+      return !!t
     }
 
     function saveTopics() {
@@ -828,8 +811,8 @@
     }
 
     function loadPermissions() {
-      const saved = localStorage.getItem('curator-permissions')
-      if (saved) permissions = { ...permissions, ...JSON.parse(saved) }
+      const s = localStorage.getItem('curator-permissions')
+      if (s) permissions = { ...permissions, ...JSON.parse(s) }
     }
 
     function savePermissions() {
@@ -842,20 +825,19 @@
       updatePodStatus()
     }
 
-    // ── Pod 상태 ───────────────────────────────────────────
     function updatePodStatus() {
       const dot   = document.getElementById('pod-dot')
       const text  = document.getElementById('pod-status-text')
       const count = document.getElementById('pod-access-count')
       dot.classList.toggle('off', !permissions.pod)
       text.textContent = permissions.pod ? 'Access allowed' : 'Access blocked'
-      text.style.color = permissions.pod ? '#2a9a5a' : '#cc5555'
+      text.style.color = permissions.pod ? '#0d9e75' : '#dc2626'
       count.textContent = accessLog.length > 0 ? `${accessLog.length} events this session` : ''
     }
 
     function togglePod() {
       permissions.pod = document.getElementById('toggle-pod').checked
-      ;['toggle-topics', 'toggle-read'].forEach(id => {
+      ;['toggle-topics','toggle-read'].forEach(id => {
         document.getElementById(id).checked  = permissions.pod
         document.getElementById(id).disabled = !permissions.pod
       })
@@ -863,9 +845,8 @@
       addLog(permissions.pod ? 'Full access enabled' : 'Full access blocked', 'setting')
     }
 
-    // ── 접근 로그 ──────────────────────────────────────────
     function addLog(action, type = 'read') {
-      const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
+      const time = new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false })
       accessLog.unshift({ time, action, type })
       if (accessLog.length > 50) accessLog.pop()
       renderLog()
@@ -876,34 +857,27 @@
       const list    = document.getElementById('log-list')
       const countEl = document.getElementById('log-count')
       countEl.textContent = accessLog.length
-      if (accessLog.length === 0) {
-        list.innerHTML = '<div class="log-empty">No activity yet</div>'
-        return
-      }
-      list.innerHTML = accessLog.map(item => `
+      if (!accessLog.length) { list.innerHTML = '<div class="log-empty">No activity yet</div>'; return }
+      list.innerHTML = accessLog.map(i => `
         <div class="log-item">
-          <span class="log-time">${item.time}</span>
-          <span class="log-action"><span class="log-type">[${item.type}]</span> ${item.action}</span>
-        </div>
-      `).join('')
+          <span class="log-time">${i.time}</span>
+          <span class="log-action"><span class="log-type">[${i.type}]</span> ${i.action}</span>
+        </div>`).join('')
     }
 
-    // ── 온보딩: 기본 주제 그리기 ──────────────────────────
     function renderTopicGrid() {
       document.getElementById('topic-grid').innerHTML = TOPICS.map(t => `
         <div class="topic-btn" data-id="${t.id}" onclick="toggleTopic('${t.id}')">
           <div class="topic-dot"></div>${t.label}
-        </div>
-      `).join('')
+        </div>`).join('')
     }
 
     function toggleTopic(id) {
       selectedTopics = selectedTopics.includes(id)
         ? selectedTopics.filter(t => t !== id)
         : [...selectedTopics, id]
-
-      document.querySelectorAll('.topic-btn').forEach(btn => {
-        btn.classList.toggle('selected', selectedTopics.includes(btn.dataset.id))
+      document.querySelectorAll('.topic-btn').forEach(b => {
+        b.classList.toggle('selected', selectedTopics.includes(b.dataset.id))
       })
       updateStartBtn()
     }
@@ -917,7 +891,6 @@
         : 'Select at least one topic to continue'
     }
 
-    // ── 커스텀 키워드: 온보딩 ─────────────────────────────
     function addCustomKeyword() {
       const input = document.getElementById('custom-keyword-input')
       const val   = input.value.trim().toLowerCase()
@@ -941,17 +914,14 @@
     }
 
     function renderKeywordTags() {
-      const container = document.getElementById('keyword-tags')
-      if (!container) return
-      container.innerHTML = customKeywords.map(kw => `
-        <div class="keyword-tag">
-          ${kw}
+      const c = document.getElementById('keyword-tags')
+      if (!c) return
+      c.innerHTML = customKeywords.map(kw => `
+        <div class="keyword-tag">${kw}
           <button class="keyword-remove" onclick="removeCustomKeyword('${kw}')">✕</button>
-        </div>
-      `).join('')
+        </div>`).join('')
     }
 
-    // ── 커스텀 키워드: 설정 패널 ──────────────────────────
     function addCustomKeywordFromPanel() {
       const input = document.getElementById('panel-keyword-input')
       const val   = input.value.trim().toLowerCase()
@@ -978,39 +948,30 @@
     }
 
     function renderPanelKeywordTags() {
-      const container = document.getElementById('panel-keyword-tags')
-      if (!container) return
-      if (customKeywords.length === 0) {
-        container.innerHTML = '<span style="font-size:11px;color:#333">No custom keywords yet</span>'
-        return
-      }
-      container.innerHTML = customKeywords.map(kw => `
-        <div class="panel-keyword-tag">
-          ${kw}
-          <button class="panel-keyword-remove" onclick="removeCustomKeywordFromPanel('${kw}')">✕</button>
-        </div>
-      `).join('')
+      const c = document.getElementById('panel-keyword-tags')
+      if (!c) return
+      c.innerHTML = customKeywords.length === 0
+        ? '<span style="font-size:11px;color:#a7c4b8">No custom keywords yet</span>'
+        : customKeywords.map(kw => `
+            <div class="panel-keyword-tag">${kw}
+              <button class="panel-keyword-remove" onclick="removeCustomKeywordFromPanel('${kw}')">✕</button>
+            </div>`).join('')
     }
 
-    // ── 앱 시작 ────────────────────────────────────────────
     function startApp() {
       saveTopics()
-      const allSelected = [
-        ...selectedTopics.map(id => TOPICS.find(t => t.id === id)?.label),
-        ...customKeywords
-      ]
-      addLog('Preferences saved: ' + allSelected.join(', '), 'write')
+      const all = [...selectedTopics.map(id => TOPICS.find(t=>t.id===id)?.label), ...customKeywords]
+      addLog('Preferences saved: ' + all.join(', '), 'write')
       showMainView()
     }
 
     function showMainView() {
-      document.getElementById('onboarding').style.display  = 'none'
-      document.getElementById('main-view').style.display   = 'block'
+      document.getElementById('onboarding').style.display = 'none'
+      document.getElementById('main-view').style.display  = 'block'
       renderTopicBar()
       renderPanelKeywordTags()
     }
 
-    // ── 설정 패널 ──────────────────────────────────────────
     function openSettings() {
       document.getElementById('settings-panel').classList.add('open')
       document.getElementById('overlay').classList.add('open')
@@ -1023,19 +984,12 @@
       document.getElementById('overlay').classList.remove('open')
     }
 
-    // ── 토픽 바 ───────────────────────────────────────────
     function renderTopicBar() {
-      const myTopics   = TOPICS.filter(t => selectedTopics.includes(t.id))
-      const customTags = customKeywords.map(kw =>
-        `<span class="topic-tag custom" data-filter="custom:${kw}" onclick="setFilter('custom:${kw}')">${kw}</span>`
-      )
-
+      const myTopics = TOPICS.filter(t => selectedTopics.includes(t.id))
       document.getElementById('topic-bar').innerHTML = [
         `<span class="topic-tag active" data-filter="all" onclick="setFilter('all')">All</span>`,
-        ...myTopics.map(t =>
-          `<span class="topic-tag" data-filter="${t.id}" onclick="setFilter('${t.id}')">${t.label}</span>`
-        ),
-        ...customTags
+        ...myTopics.map(t => `<span class="topic-tag" data-filter="${t.id}" onclick="setFilter('${t.id}')">${t.label}</span>`),
+        ...customKeywords.map(kw => `<span class="topic-tag custom" data-filter="custom:${kw}" onclick="setFilter('custom:${kw}')">${kw}</span>`)
       ].join('')
     }
 
@@ -1046,89 +1000,68 @@
       })
       if (permissions.pod && permissions.topics) {
         const label = filterId === 'all' ? 'All'
-          : filterId.startsWith('custom:') ? filterId.replace('custom:', '')
-          : TOPICS.find(t => t.id === filterId)?.label
+          : filterId.startsWith('custom:') ? filterId.replace('custom:','')
+          : TOPICS.find(t=>t.id===filterId)?.label
         addLog(`Filter applied: ${label}`, 'read')
       }
       renderFeed()
     }
 
-    // ── 매칭 점수 ─────────────────────────────────────────
-    function matchScore(text, filterTopicIds, filterCustomKws) {
+    function matchScore(text, topicIds, customKws) {
       const lower = text.toLowerCase()
-      let score = 0
-      let matchedLabels = []
-
-      // 기본 주제 매칭
-      filterTopicIds.forEach(id => {
-        const topic = TOPICS.find(t => t.id === id)
+      let score = 0, matched = []
+      topicIds.forEach(id => {
+        const topic = TOPICS.find(t=>t.id===id)
         if (!topic) return
         topic.keywords.forEach(kw => {
           if (lower.includes(kw.toLowerCase())) {
             score++
-            if (!matchedLabels.includes(topic.label)) matchedLabels.push(topic.label)
+            if (!matched.includes(topic.label)) matched.push(topic.label)
           }
         })
       })
-
-      // 커스텀 키워드 매칭
-      filterCustomKws.forEach(kw => {
+      customKws.forEach(kw => {
         if (lower.includes(kw.toLowerCase())) {
           score++
-          if (!matchedLabels.includes(kw)) matchedLabels.push(kw)
+          if (!matched.includes(kw)) matched.push(kw)
         }
       })
-
-      return { score, matchedLabels }
+      return { score, matched }
     }
 
-    // ── 피드 렌더링 ───────────────────────────────────────
     function renderFeed() {
       const feedList   = document.getElementById('feed-list')
       const filterInfo = document.getElementById('filter-info')
       const useFilter  = permissions.pod && permissions.topics
+      let filterTopics = [], filterKws = []
 
-      // 필터 대상 결정
-      let filterTopicIds = []
-      let filterCustomKws = []
-
-      if (!useFilter) {
-        // Pod 꺼져있으면 필터 없음
-      } else if (activeFilter === 'all') {
-        filterTopicIds  = selectedTopics
-        filterCustomKws = customKeywords
-      } else if (activeFilter.startsWith('custom:')) {
-        filterCustomKws = [activeFilter.replace('custom:', '')]
-      } else {
-        filterTopicIds = [activeFilter]
+      if (useFilter) {
+        if (activeFilter === 'all') { filterTopics = selectedTopics; filterKws = customKeywords }
+        else if (activeFilter.startsWith('custom:')) filterKws = [activeFilter.replace('custom:','')]
+        else filterTopics = [activeFilter]
       }
 
       const scored = allPosts.map(item => {
         const text = item.post.record?.text || ''
-        const { score, matchedLabels } = useFilter
-          ? matchScore(text, filterTopicIds, filterCustomKws)
-          : { score: 0, matchedLabels: [] }
-        return { ...item, score, matchedLabels }
+        const { score, matched } = useFilter ? matchScore(text, filterTopics, filterKws) : { score:0, matched:[] }
+        return { ...item, score, matched }
       })
+      scored.sort((a,b) => b.score - a.score)
+      const hits   = scored.filter(p => p.score > 0)
+      const others = scored.filter(p => p.score === 0)
 
-      scored.sort((a, b) => b.score - a.score)
-      const matched = scored.filter(p => p.score > 0)
-      const others  = scored.filter(p => p.score === 0)
-
-      if (!useFilter) {
-        filterInfo.textContent = 'Pod access is off — showing chronological feed'
-      } else if (activeFilter === 'all') {
-        filterInfo.textContent = matched.length > 0
-          ? `${matched.length} posts match your interests — shown first`
-          : 'No matches found — showing all posts chronologically'
-      } else {
+      if (!useFilter) filterInfo.textContent = 'Pod access is off — showing chronological feed'
+      else if (activeFilter === 'all') filterInfo.textContent = hits.length > 0
+        ? `${hits.length} posts match your interests — shown first`
+        : 'No matches found — showing all posts chronologically'
+      else {
         const label = activeFilter.startsWith('custom:')
-          ? `"${activeFilter.replace('custom:', '')}"`
-          : `"${TOPICS.find(t => t.id === activeFilter)?.label}"`
-        filterInfo.textContent = `${matched.length} posts matching ${label}`
+          ? `"${activeFilter.replace('custom:','')}"`
+          : `"${TOPICS.find(t=>t.id===activeFilter)?.label}"`
+        filterInfo.textContent = `${hits.length} posts matching ${label}`
       }
 
-      const timeAgo = (d) => {
+      const ago = d => {
         const s = (Date.now() - new Date(d)) / 1000
         if (s < 60) return 'just now'
         if (s < 3600) return Math.floor(s/60) + 'm ago'
@@ -1136,14 +1069,11 @@
         return Math.floor(s/86400) + 'd ago'
       }
 
-      const renderCard = (item) => {
-        const post   = item.post
-        const author = post.author
-        const text   = post.record?.text || ''
-        const isRead = readPosts.has(post.uri)
+      const card = item => {
+        const post = item.post, author = post.author, text = post.record?.text || ''
         return `
-          <div class="post-card ${isRead?'read':''} ${item.score>0?'highlighted':''}"
-               onclick="markRead('${post.uri}', this)">
+          <div class="post-card ${readPosts.has(post.uri)?'read':''} ${item.score>0?'highlighted':''}"
+               onclick="markRead('${post.uri}',this)">
             <div class="post-author">
               <div class="avatar">${(author.displayName||author.handle||'?')[0].toUpperCase()}</div>
               <div class="author-info">
@@ -1155,19 +1085,15 @@
             <div class="post-footer">
               <span>♥ ${post.likeCount||0}</span>
               <span>↻ ${post.repostCount||0}</span>
-              <span>${timeAgo(post.record?.createdAt)}</span>
-              ${item.matchedLabels.length>0
-                ? `<span class="match-badge">${item.matchedLabels.join(', ')}</span>`
-                : ''}
+              <span>${ago(post.record?.createdAt)}</span>
+              ${item.matched.length ? `<span class="match-badge">${item.matched.join(', ')}</span>` : ''}
             </div>
-          </div>
-        `
+          </div>`
       }
 
-      feedList.innerHTML = [...matched, ...others].map(renderCard).join('')
+      feedList.innerHTML = [...hits,...others].map(card).join('')
     }
 
-    // ── 읽음 처리 ─────────────────────────────────────────
     function markRead(uri, el) {
       readPosts.add(uri)
       el.classList.add('read')
@@ -1177,7 +1103,6 @@
       }
     }
 
-    // ── API 호출 ───────────────────────────────────────────
     async function loadFeed() {
       const handle = document.getElementById('handle-input').value.trim()
       if (!handle) return
@@ -1191,34 +1116,26 @@
         const data = await res.json()
         allPosts = data.feed || []
         if (permissions.pod) addLog(`Received ${allPosts.length} posts`, 'read')
-        if (allPosts.length === 0) {
+        if (!allPosts.length) {
           document.getElementById('feed-list').innerHTML = '<div class="status-box"><p>No posts found</p></div>'
           return
         }
         renderFeed()
-      } catch (err) {
+      } catch(err) {
         document.getElementById('feed-list').innerHTML = `
           <div class="error-box">
             <strong>Something went wrong</strong>
             ${err.message}<br><br>
             · Check the handle spelling (e.g. username.bsky.social)<br>
             · Check your internet connection
-          </div>
-        `
+          </div>`
       }
     }
 
-    // ── 데이터 내보내기/가져오기 ──────────────────────────
     function exportData() {
-      const data = {
-        exportedAt: new Date().toISOString(),
-        selectedTopics,
-        customKeywords,
-        permissions,
-        readCount: readPosts.size
-      }
+      const data = { exportedAt: new Date().toISOString(), selectedTopics, customKeywords, permissions, readCount: readPosts.size }
       const a = document.createElement('a')
-      a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }))
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}))
       a.download = 'my-curator-data.json'
       a.click()
       addLog('Data exported', 'export')
@@ -1226,19 +1143,16 @@
 
     function importData() {
       const input = document.createElement('input')
-      input.type = 'file'
-      input.accept = '.json'
-      input.onchange = (e) => {
+      input.type = 'file'; input.accept = '.json'
+      input.onchange = e => {
         const reader = new FileReader()
-        reader.onload = (ev) => {
+        reader.onload = ev => {
           try {
             const data = JSON.parse(ev.target.result)
             if (data.selectedTopics) {
-              selectedTopics  = data.selectedTopics
-              customKeywords  = data.customKeywords || []
-              saveTopics()
-              renderTopicBar()
-              renderPanelKeywordTags()
+              selectedTopics = data.selectedTopics
+              customKeywords = data.customKeywords || []
+              saveTopics(); renderTopicBar(); renderPanelKeywordTags()
               addLog('Data imported', 'import')
               alert('Preferences imported successfully!')
             }
@@ -1251,16 +1165,13 @@
 
     function clearReadHistory() {
       if (!confirm('Clear all read history?')) return
-      readPosts.clear()
-      localStorage.removeItem('curator-read')
-      addLog('Read history cleared', 'delete')
-      renderFeed()
+      readPosts.clear(); localStorage.removeItem('curator-read')
+      addLog('Read history cleared', 'delete'); renderFeed()
     }
 
     function resetApp() {
       if (!confirm('Reset all data and start over?')) return
-      localStorage.clear()
-      location.reload()
+      localStorage.clear(); location.reload()
     }
 
     function applyPermissionsToUI() {
@@ -1269,38 +1180,27 @@
       document.getElementById('toggle-read').checked   = permissions.readHistory
       document.getElementById('toggle-image').checked  = permissions.images
       document.getElementById('toggle-wifi').checked   = permissions.wifiOnly
-      ;['toggle-topics', 'toggle-read'].forEach(id => {
+      ;['toggle-topics','toggle-read'].forEach(id => {
         document.getElementById(id).disabled = !permissions.pod
       })
       updatePodStatus()
     }
 
-    // ── Enter 키 지원 ──────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('handle-input')?.addEventListener('keydown', e => {
-        if (e.key === 'Enter') loadFeed()
-      })
-      document.getElementById('custom-keyword-input')?.addEventListener('keydown', e => {
-        if (e.key === 'Enter') addCustomKeyword()
-      })
-      document.getElementById('panel-keyword-input')?.addEventListener('keydown', e => {
-        if (e.key === 'Enter') addCustomKeywordFromPanel()
-      })
-      const savedRead = localStorage.getItem('curator-read')
-      if (savedRead) readPosts = new Set(JSON.parse(savedRead))
+      document.getElementById('handle-input')?.addEventListener('keydown', e => { if(e.key==='Enter') loadFeed() })
+      document.getElementById('custom-keyword-input')?.addEventListener('keydown', e => { if(e.key==='Enter') addCustomKeyword() })
+      document.getElementById('panel-keyword-input')?.addEventListener('keydown', e => { if(e.key==='Enter') addCustomKeywordFromPanel() })
+      const r = localStorage.getItem('curator-read')
+      if (r) readPosts = new Set(JSON.parse(r))
     })
 
-    // ── 앱 초기화 ─────────────────────────────────────────
     renderTopicGrid()
     loadPermissions()
     applyPermissionsToUI()
-
     if (loadSaved()) {
-      // 저장된 데이터 있으면 온보딩 건너뜀
       showMainView()
       addLog('Saved preferences loaded', 'read')
     } else {
-      // 처음 방문이면 온보딩에 키워드 태그 렌더링
       renderKeywordTags()
     }
   </script>
