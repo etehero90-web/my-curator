@@ -416,6 +416,7 @@
     let selectedFeedbackType = ''
     let currentPlatform = 'bluesky'
     let autoFeedActive = false
+    let autoFeedTopicIndex = 0
 
     // ── 자동 피드 ──────────────────────────────────────────
     function toggleAutoFeed() {
@@ -469,7 +470,8 @@
         customKeywords.forEach(kw => searchTerms.push(kw))
         if (searchTerms.length === 0) return false
 
-        const query = encodeURIComponent(searchTerms[0])
+        const idx = autoFeedTopicIndex % searchTerms.length
+        const query = encodeURIComponent(searchTerms[idx])
         const url = `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${query}&limit=30&sort=latest`
         const res = await fetch(url)
         if (!res.ok) return false
@@ -555,15 +557,26 @@
     function showAutoFeedBanner(source, count) {
       const existing = document.getElementById('auto-feed-banner')
       if (existing) existing.remove()
+      const allTopics = [...selectedTopics, ...customKeywords.map(kw => 'custom:' + kw)]
+      const currentLabel = allTopics.length > 0
+        ? (autoFeedTopicIndex % allTopics.length) + 1 + '/' + allTopics.length
+        : ''
       const banner = document.createElement('div')
       banner.id = 'auto-feed-banner'
       banner.style.cssText = 'background:#f0fdf8;border-bottom:1px solid #d1fae5;padding:8px 24px;font-size:12px;color:#4b7360;display:flex;align-items:center;justify-content:space-between;'
       banner.innerHTML = `
-        <span>✨ ${count} posts | ${source}</span>
-        <button onclick="loadAutoFeed()" style="background:none;border:1px solid #d1fae5;border-radius:6px;padding:3px 10px;font-size:11px;color:#0d9e75;cursor:pointer;">↻ Refresh</button>
+        <span>✨ ${count} posts | ${source} <span style="color:#a7c4b8;margin-left:4px">${currentLabel}</span></span>
+        <button onclick="nextTopicFeed()" style="background:none;border:1px solid #d1fae5;border-radius:6px;padding:3px 10px;font-size:11px;color:#0d9e75;cursor:pointer;">↻ Next topic</button>
       `
       const topicBar = document.getElementById('topic-bar')
       if (topicBar) topicBar.after(banner)
+    }
+
+    async function nextTopicFeed() {
+      const allTopics = [...selectedTopics, ...customKeywords]
+      if (allTopics.length === 0) return
+      autoFeedTopicIndex = (autoFeedTopicIndex + 1) % allTopics.length
+      await loadAutoFeed()
     }
 
     // ── 플랫폼 전환 ──────────────────────────────────────
