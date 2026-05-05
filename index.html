@@ -390,6 +390,14 @@
       <div class="log-list" id="log-list"><div class="log-empty">No activity yet</div></div>
     </div>
 
+<div class="setting-section">
+      <h3>Extension Data</h3>
+      <button class="data-btn" onclick="loadExtensionData();alert('Extension data refreshed!')">Refresh from extension</button>
+      <p style="font-size:11px;color:#6bab90;margin-top:6px;line-height:1.6">
+        Install the My AI Curator browser extension to auto-collect your Google searches and YouTube history.
+      </p>
+    </div>
+
     <div class="setting-section">
       <h3>My Data</h3>
       <button class="data-btn" onclick="exportData()">Export preferences (JSON)</button>
@@ -957,9 +965,120 @@
       if (r) readPosts = new Set(JSON.parse(r))
     })
 
-    renderTopicGrid()
+// ── 확장 프로그램 데이터 연동 ──────────────────────────
+    async function loadExtensionData() {
+      try {
+        // 크롬 확장 프로그램 스토리지에서 데이터 읽기
+        if (typeof chrome !== 'undefined' && chrome.storage) {
+          chrome.storage.local.get([
+            'curator_searches',
+            'curator_videos',
+            'curator_topics_count'
+          ], function(result) {
+            if (chrome.runtime.lastError) return;
+            applyExtensionData(result);
+          });
+        }
+      } catch(e) {
+        // 확장 프로그램 없으면 그냥 무시
+      }
+    }
+
+    function applyExtensionData(result) {
+      const topicsCount = result.curator_topics_count || {};
+      const searches = result.curator_searches || [];
+      const videos = result.curator_videos || [];
+
+      if (Object.keys(topicsCount).length === 0) return;
+
+      // 상위 토픽 자동 선택
+      const topTopics = Object.entries(topicsCount)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4)
+        .map(([topic]) => topic);
+
+      // 기존에 선택된 토픽이 없으면 자동 적용
+      if (selectedTopics.length === 0) {
+        selectedTopics = topTopics.filter(t => TOPICS.find(tp => tp.id === t));
+        saveTopics();
+
+        // UI 업데이트
+        document.querySelectorAll('.topic-btn').forEach(b => {
+          b.classList.toggle('selected', selectedTopics.includes(b.dataset.id));
+        });
+        updateStartBtn();
+      }
+
+      // 자주 검색한 키워드를 커스텀 키워드로 추가
+      if (customKeywords.length === 0 && searches.length > 0) {
+        const freqMap = {};
+        searches.forEach(s => {
+          const kw = s.keyword.toLowerCase().trim();
+          if (kw.length >= 2 && kw.length <= 20) {
+            freqMap[kw] = (freqMap[kw] || 0) + (s.count || 1);
+          }
+        });
+        const topKeywords = Object.entries(freqMap)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5)
+          .map(([kw]) => kw);
+
+        topKeywords.forEach(kw => {
+          if (!customKeywords.includes(kw) && customKeywords.length < 10) {
+            customKeywords.push(kw);
+          }
+        });
+
+        if (customKeywords.length > 0) {
+          saveTopics();
+          renderKeywordTags();
+          renderPanelKeywordTags();
+          updateStartBtn();
+        }
+      }
+
+      // 접근 로그 기록
+      if (searches.length > 0 || videos.length > 0) {
+        addLog(`Extension data loaded: ${searches.length} searches, ${videos.length} videos`, 'extension');
+      }
+
+      // 확장 프로그램 데이터 배너 표시
+      showExtensionBanner(searches.length, videos.length, topTopics);
+    }
+
+    function showExtensionBanner(searchCount, videoCount, topics) {
+      if (searchCount === 0 && videoCount === 0) return;
+      const existing = document.getElementById('ext-banner');
+      if (existing) return;
+
+      const banner = document.createElement('div');
+      banner.id = 'ext-banner';
+      banner.style.cssText = `
+        background: #ecfdf5;
+        border: 1px solid #6ee7b7;
+        border-radius: 8px;
+        padding: 10px 16px;
+        margin: 10px 24px 0;
+        font-size: 12px;
+        color: #065f46;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      `;
+      banner.innerHTML = `
+        <span>🔌 Extension: <strong>${searchCount}</strong> searches & <strong>${videoCount}</strong> videos detected → interests auto-updated</span>
+        <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#6bab90;cursor:pointer;font-size:14px">✕</button>
+      `;
+
+      const topicBar = document.getElementById('topic-bar');
+      if (topicBar) topicBar.parentElement.insertBefore(banner, topicBar);
+    }
+
+   renderTopicGrid()
     loadPermissions()
     applyPermissionsToUI()
+    loadExtensionData()
     if (loadSaved()) {
       showMainView()
       addLog('Saved preferences loaded', 'read')
