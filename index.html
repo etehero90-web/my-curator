@@ -64,6 +64,7 @@
     .header-btns { display: flex; gap: 8px; }
     .icon-btn { background: none; border: 1px solid #d1fae5; border-radius: 6px; color: #4b7360; font-size: 12px; cursor: pointer; padding: 6px 12px; transition: all 0.15s; }
     .icon-btn:hover { border-color: #0d9e75; color: #065f46; background: #ecfdf5; }
+    .icon-btn.active { background: #0d9e75; border-color: #0d9e75; color: #fff; }
 
     /* ── 검색바 + 플랫폼 선택 ── */
     .search-bar { padding: 14px 24px; border-bottom: 1px solid #d1fae5; background: #fff; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
@@ -180,39 +181,12 @@
     .panel-keyword-remove:hover { opacity: 1; }
 
     /* ── Ko-fi 버튼 ── */
-.kofi-btn {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  padding: 10px 18px;
-  background: #fff;
-  border: 1.5px solid #d1fae5;
-  border-radius: 50px;
-  color: #4b7360;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  transition: all 0.2s;
-  z-index: 99;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  text-decoration: none;
-}
-.kofi-btn:hover {
-  border-color: #0d9e75;
-  color: #065f46;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(13,158,117,0.2);
-}
-.kofi-btn img {
-  width: 18px;
-  height: 18px;
-}
+    .kofi-btn { position: fixed; bottom: 24px; left: 24px; padding: 10px 18px; background: #fff; border: 1.5px solid #d1fae5; border-radius: 50px; color: #4b7360; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: all 0.2s; z-index: 99; display: flex; align-items: center; gap: 7px; text-decoration: none; }
+    .kofi-btn:hover { border-color: #0d9e75; color: #065f46; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(13,158,117,0.2); }
+    .kofi-btn img { width: 18px; height: 18px; }
 
-  /* ── 피드백 버튼 ── */
-.feedback-btn { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; background: #0d9e75; border: none; border-radius: 50px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 20px rgba(13,158,117,0.4); transition: all 0.2s; z-index: 99; display: flex; align-items: center; gap: 8px; }
+    /* ── 피드백 버튼 ── */
+    .feedback-btn { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; background: #0d9e75; border: none; border-radius: 50px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 20px rgba(13,158,117,0.4); transition: all 0.2s; z-index: 99; display: flex; align-items: center; gap: 8px; }
     .feedback-btn:hover { background: #0b8a65; transform: translateY(-2px); }
 
     .feedback-overlay { display: none; position: fixed; inset: 0; background: rgba(5,46,32,0.5); z-index: 200; align-items: center; justify-content: center; }
@@ -263,18 +237,15 @@
     <header>
       <div class="header-logo">My AI Curator</div>
       <div class="header-btns">
+        <button class="icon-btn" id="auto-feed-btn" onclick="toggleAutoFeed()">✨ Auto Feed</button>
         <button class="icon-btn" onclick="openSettings()">Settings & Log</button>
       </div>
     </header>
 
     <div class="search-bar">
       <div class="platform-tabs">
-        <button class="platform-tab active-bsky" id="tab-bsky" onclick="switchPlatform('bluesky')">
-          🦋 Bluesky
-        </button>
-        <button class="platform-tab" id="tab-masto" onclick="switchPlatform('mastodon')">
-          🐘 Mastodon
-        </button>
+        <button class="platform-tab active-bsky" id="tab-bsky" onclick="switchPlatform('bluesky')">🦋 Bluesky</button>
+        <button class="platform-tab" id="tab-masto" onclick="switchPlatform('mastodon')">🐘 Mastodon</button>
       </div>
       <input type="text" id="handle-input" placeholder="Enter Bluesky handle (e.g. bsky.app)"/>
       <button class="fetch-btn" id="fetch-btn" onclick="loadFeed()">Load</button>
@@ -289,7 +260,7 @@
     <div class="feed-container">
       <div class="status-box" id="status-box">
         <p>Enter a handle above</p>
-        <small>and press Load to fetch their feed</small>
+        <small>or click ✨ Auto Feed to see posts based on your interests</small>
       </div>
       <div class="filter-info" id="filter-info"></div>
       <div id="feed-list"></div>
@@ -297,10 +268,10 @@
   </div>
 
   <!-- ── Ko-fi 버튼 ── -->
-<a href="https://ko-fi.com/mycurator" target="_blank" class="kofi-btn" onclick="trackEvent('kofi_click','monetization','kofi_button')">
-  <img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="Ko-fi"/>
-  Support this project
-</a>
+  <a href="https://ko-fi.com/mycurator" target="_blank" class="kofi-btn" onclick="trackEvent('kofi_click','monetization','kofi_button')">
+    <img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="Ko-fi"/>
+    Support this project
+  </a>
 
   <!-- ── 피드백 버튼 ── -->
   <button class="feedback-btn" onclick="openFeedback()">💬 Send Feedback</button>
@@ -390,7 +361,7 @@
       <div class="log-list" id="log-list"><div class="log-empty">No activity yet</div></div>
     </div>
 
-<div class="setting-section">
+    <div class="setting-section">
       <h3>Extension Data</h3>
       <button class="data-btn" onclick="loadExtensionData();alert('Extension data refreshed!')">Refresh from extension</button>
       <p style="font-size:11px;color:#6bab90;margin-top:6px;line-height:1.6">
@@ -423,20 +394,186 @@
       { id: 'life',    label: 'Lifestyle',   keywords: ['life', 'food', 'travel', 'coffee', 'health', 'fitness', 'cooking'] },
     ]
 
+    // 토픽별 큐레이션 Bluesky 계정
+    const TOPIC_ACCOUNTS = {
+      tech:    ['theverge.com', 'wired.com', 'arstechnica.com'],
+      startup: ['ycombinator.bsky.social', 'techcrunch.com'],
+      design:  ['uxdesign.bsky.social', 'smashingmag.com'],
+      science: ['sciencealert.com', 'newscientist.com'],
+      privacy: ['eff.org', 'privacyguides.org'],
+      news:    ['bbc.com', 'reuters.com'],
+      life:    ['bonappetit.com'],
+      music:   ['pitchfork.com'],
+      game:    ['ign.com', 'kotaku.com'],
+      sports:  ['theathletic.com'],
+      crypto:  ['coindesk.com'],
+      art:     ['artstation.bsky.social'],
+    }
+
     let selectedTopics = [], customKeywords = [], activeFilter = 'all'
     let allPosts = [], readPosts = new Set(), accessLog = []
     let permissions = { pod: true, topics: true, readHistory: true, images: true, wifiOnly: false }
     let selectedFeedbackType = ''
-    let currentPlatform = 'bluesky' // 'bluesky' or 'mastodon'
+    let currentPlatform = 'bluesky'
+    let autoFeedActive = false
+
+    // ── 자동 피드 ──────────────────────────────────────────
+    function toggleAutoFeed() {
+      const btn = document.getElementById('auto-feed-btn')
+      if (autoFeedActive) {
+        autoFeedActive = false
+        btn.classList.remove('active')
+        btn.textContent = '✨ Auto Feed'
+        allPosts = []
+        document.getElementById('feed-list').innerHTML = ''
+        document.getElementById('status-box').style.display = 'block'
+        document.getElementById('filter-info').textContent = ''
+        const banner = document.getElementById('auto-feed-banner')
+        if (banner) banner.remove()
+      } else {
+        autoFeedActive = true
+        btn.classList.add('active')
+        btn.textContent = '✨ Auto Feed ON'
+        loadAutoFeed()
+      }
+      trackEvent('auto_feed_toggle', 'feed', autoFeedActive ? 'on' : 'off')
+    }
+
+    async function loadAutoFeed() {
+      if (selectedTopics.length === 0 && customKeywords.length === 0) {
+        document.getElementById('status-box').style.display = 'none'
+        document.getElementById('feed-list').innerHTML = `
+          <div class="status-box">
+            <p>No interests selected yet</p>
+            <small>Select topics or add keywords to see your auto feed</small>
+          </div>`
+        return
+      }
+      document.getElementById('status-box').style.display = 'none'
+      document.getElementById('filter-info').textContent = ''
+      document.getElementById('feed-list').innerHTML = '<div class="loading">✨ Loading your personalized feed...</div>'
+
+      const searchSuccess = await tryBlueskySearch()
+      if (!searchSuccess) {
+        await loadCuratedAccountFeeds()
+      }
+    }
+
+    async function tryBlueskySearch() {
+      try {
+        const searchTerms = []
+        selectedTopics.forEach(id => {
+          const topic = TOPICS.find(t => t.id === id)
+          if (topic) searchTerms.push(topic.keywords[0])
+        })
+        customKeywords.forEach(kw => searchTerms.push(kw))
+        if (searchTerms.length === 0) return false
+
+        const query = encodeURIComponent(searchTerms[0])
+        const url = `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${query}&limit=30&sort=latest`
+        const res = await fetch(url)
+        if (!res.ok) return false
+
+        const data = await res.json()
+        const posts = data.posts || []
+        if (posts.length === 0) return false
+
+        allPosts = posts.map(p => ({
+          platform: 'bluesky',
+          post: {
+            uri: p.uri,
+            author: {
+              displayName: p.author?.displayName || p.author?.handle,
+              handle: p.author?.handle,
+              avatar: p.author?.avatar
+            },
+            record: {
+              text: p.record?.text || '',
+              createdAt: p.record?.createdAt || p.indexedAt
+            },
+            likeCount: p.likeCount || 0,
+            repostCount: p.repostCount || 0,
+          }
+        }))
+
+        renderFeed()
+        showAutoFeedBanner(`🔍 "${searchTerms[0]}" and more`, allPosts.length)
+        addLog(`Auto feed: search "${searchTerms[0]}" → ${allPosts.length} posts`, 'auto')
+        return true
+      } catch(e) { return false }
+    }
+
+    async function loadCuratedAccountFeeds() {
+      const accounts = []
+      selectedTopics.forEach(id => {
+        const accs = TOPIC_ACCOUNTS[id] || []
+        if (accs[0]) accounts.push(accs[0])
+      })
+      if (accounts.length === 0) accounts.push('bsky.app')
+
+      const results = await Promise.allSettled(
+        accounts.slice(0, 5).map(async handle => {
+          try {
+            const res = await fetch(
+              `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=15`
+            )
+            if (!res.ok) return []
+            const data = await res.json()
+            return (data.feed || []).map(item => ({ platform: 'bluesky', ...item }))
+          } catch { return [] }
+        })
+      )
+
+      const seen = new Set()
+      const combined = results
+        .filter(r => r.status === 'fulfilled')
+        .flatMap(r => r.value)
+        .filter(item => {
+          const uri = item.post?.uri
+          if (!uri || seen.has(uri)) return false
+          seen.add(uri); return true
+        })
+        .sort((a, b) => new Date(b.post?.record?.createdAt || 0) - new Date(a.post?.record?.createdAt || 0))
+        .slice(0, 50)
+
+      if (combined.length === 0) {
+        document.getElementById('feed-list').innerHTML = `
+          <div class="status-box">
+            <p>Couldn't load auto feed</p>
+            <small>Try entering a Bluesky handle manually</small>
+          </div>`
+        return
+      }
+
+      allPosts = combined
+      renderFeed()
+      const labels = selectedTopics.map(id => TOPICS.find(t=>t.id===id)?.label).filter(Boolean).join(', ')
+      showAutoFeedBanner(`Curated: ${labels || 'your interests'}`, allPosts.length)
+      addLog(`Auto feed: ${allPosts.length} posts from ${accounts.length} accounts`, 'auto')
+    }
+
+    function showAutoFeedBanner(source, count) {
+      const existing = document.getElementById('auto-feed-banner')
+      if (existing) existing.remove()
+      const banner = document.createElement('div')
+      banner.id = 'auto-feed-banner'
+      banner.style.cssText = 'background:#f0fdf8;border-bottom:1px solid #d1fae5;padding:8px 24px;font-size:12px;color:#4b7360;display:flex;align-items:center;justify-content:space-between;'
+      banner.innerHTML = `
+        <span>✨ ${count} posts | ${source}</span>
+        <button onclick="loadAutoFeed()" style="background:none;border:1px solid #d1fae5;border-radius:6px;padding:3px 10px;font-size:11px;color:#0d9e75;cursor:pointer;">↻ Refresh</button>
+      `
+      const topicBar = document.getElementById('topic-bar')
+      if (topicBar) topicBar.after(banner)
+    }
 
     // ── 플랫폼 전환 ──────────────────────────────────────
     function switchPlatform(platform) {
       currentPlatform = platform
-      const input     = document.getElementById('handle-input')
-      const fetchBtn  = document.getElementById('fetch-btn')
-      const hint      = document.getElementById('platform-hint')
-      const tabBsky   = document.getElementById('tab-bsky')
-      const tabMasto  = document.getElementById('tab-masto')
+      const input   = document.getElementById('handle-input')
+      const fetchBtn = document.getElementById('fetch-btn')
+      const hint    = document.getElementById('platform-hint')
+      const tabBsky = document.getElementById('tab-bsky')
+      const tabMasto = document.getElementById('tab-masto')
 
       if (platform === 'bluesky') {
         tabBsky.className  = 'platform-tab active-bsky'
@@ -461,47 +598,27 @@
 
     // ── Mastodon API ──────────────────────────────────────
     async function loadMastodonFeed(handle) {
-      // handle 파싱: user@instance.social 또는 user (기본: mastodon.social)
       let username, instance
       if (handle.includes('@')) {
         const parts = handle.replace(/^@/, '').split('@')
-        username = parts[0]
-        instance = parts[1] || 'mastodon.social'
+        username = parts[0]; instance = parts[1] || 'mastodon.social'
       } else {
-        username = handle
-        instance = 'mastodon.social'
+        username = handle; instance = 'mastodon.social'
       }
-
       if (permissions.pod) addLog(`Fetching Mastodon: @${username}@${instance}`, 'network')
-
-      // 1. 계정 ID 조회
-      const lookupUrl = `https://${instance}/api/v1/accounts/lookup?acct=${username}`
-      const lookupRes = await fetch(lookupUrl)
+      const lookupRes = await fetch(`https://${instance}/api/v1/accounts/lookup?acct=${username}`)
       if (!lookupRes.ok) throw new Error(`Account not found on ${instance} (error ${lookupRes.status})`)
       const account = await lookupRes.json()
-
-      // 2. 게시글 조회
-      const statusUrl = `https://${instance}/api/v1/accounts/${account.id}/statuses?limit=30&exclude_replies=true`
-      const statusRes = await fetch(statusUrl)
+      const statusRes = await fetch(`https://${instance}/api/v1/accounts/${account.id}/statuses?limit=30&exclude_replies=true`)
       if (!statusRes.ok) throw new Error(`Could not fetch statuses (error ${statusRes.status})`)
       const statuses = await statusRes.json()
-
-      // 3. 통일된 형식으로 변환
       return statuses.map(s => ({
         platform: 'mastodon',
         post: {
-          uri:         s.id,
-          author: {
-            displayName: account.display_name || account.username,
-            handle:      `${account.username}@${instance}`,
-            avatar:      account.avatar
-          },
-          record: {
-            text:      stripHtml(s.content),
-            createdAt: s.created_at
-          },
-          likeCount:   s.favourites_count || 0,
-          repostCount: s.reblogs_count    || 0,
+          uri: s.id,
+          author: { displayName: account.display_name || account.username, handle: `${account.username}@${instance}`, avatar: account.avatar },
+          record: { text: stripHtml(s.content), createdAt: s.created_at },
+          likeCount: s.favourites_count || 0, repostCount: s.reblogs_count || 0,
         }
       }))
     }
@@ -521,10 +638,19 @@
       return (data.feed || []).map(item => ({ platform: 'bluesky', ...item }))
     }
 
-    // ── 피드 로드 (통합) ─────────────────────────────────
+    // ── 피드 로드 ─────────────────────────────────────────
     async function loadFeed() {
       const handle = document.getElementById('handle-input').value.trim()
       if (!handle) return
+
+      // Auto Feed 모드 끄기
+      if (autoFeedActive) {
+        autoFeedActive = false
+        document.getElementById('auto-feed-btn').classList.remove('active')
+        document.getElementById('auto-feed-btn').textContent = '✨ Auto Feed'
+        const banner = document.getElementById('auto-feed-banner')
+        if (banner) banner.remove()
+      }
 
       document.getElementById('status-box').style.display = 'none'
       document.getElementById('filter-info').textContent  = ''
@@ -537,15 +663,12 @@
         } else {
           allPosts = await loadBlueskyFeed(handle)
         }
-
         if (permissions.pod) addLog(`Received ${allPosts.length} posts`, 'read')
-
         if (!allPosts.length) {
           document.getElementById('feed-list').innerHTML = '<div class="status-box"><p>No posts found</p></div>'
           return
         }
         renderFeed()
-
       } catch(err) {
         document.getElementById('feed-list').innerHTML = `
           <div class="error-box">
@@ -612,8 +735,7 @@
       const time = new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false })
       accessLog.unshift({ time, action, type })
       if (accessLog.length > 50) accessLog.pop()
-      renderLog()
-      updatePodStatus()
+      renderLog(); updatePodStatus()
     }
 
     function renderLog() {
@@ -660,10 +782,8 @@
       if (!val) return
       if (customKeywords.length >= 10) { alert('Up to 10 custom keywords.'); return }
       if (customKeywords.includes(val)) { input.value = ''; return }
-      customKeywords.push(val)
-      input.value = ''
-      renderKeywordTags()
-      updateStartBtn()
+      customKeywords.push(val); input.value = ''
+      renderKeywordTags(); updateStartBtn()
     }
 
     function removeCustomKeyword(kw) {
@@ -688,8 +808,7 @@
       if (!val) return
       if (customKeywords.length >= 10) { alert('Up to 10 custom keywords.'); return }
       if (customKeywords.includes(val)) { input.value = ''; return }
-      customKeywords.push(val)
-      input.value = ''
+      customKeywords.push(val); input.value = ''
       renderPanelKeywordTags(); renderTopicBar(); saveTopics()
       addLog(`Custom keyword added: "${val}"`, 'write')
       if (allPosts.length > 0) renderFeed()
@@ -825,11 +944,11 @@
       }
 
       const card = item => {
-        const post     = item.post
-        const author   = post.author
-        const text     = post.record?.text || ''
-        const isRead   = readPosts.has(post.uri)
-        const isMasto  = item.platform === 'mastodon'
+        const post    = item.post
+        const author  = post.author
+        const text    = post.record?.text || ''
+        const isRead  = readPosts.has(post.uri)
+        const isMasto = item.platform === 'mastodon'
         const avatarEl = author.avatar
           ? `<img src="${author.avatar}" alt="" onerror="this.style.display='none'">`
           : (author.displayName || author.handle || '?')[0].toUpperCase()
@@ -861,8 +980,7 @@
     }
 
     function markRead(uri, el) {
-      readPosts.add(uri)
-      el.classList.add('read')
+      readPosts.add(uri); el.classList.add('read')
       if (permissions.pod && permissions.readHistory) {
         localStorage.setItem('curator-read', JSON.stringify([...readPosts]))
         addLog('Post marked as read', 'write')
@@ -957,6 +1075,76 @@
       updatePodStatus()
     }
 
+    // ── 확장 프로그램 데이터 연동 ──────────────────────────
+    async function loadExtensionData() {
+      try {
+        if (typeof chrome !== 'undefined' && chrome.storage) {
+          chrome.storage.local.get([
+            'curator_searches', 'curator_videos', 'curator_topics_count'
+          ], function(result) {
+            if (chrome.runtime.lastError) return
+            applyExtensionData(result)
+          })
+        }
+      } catch(e) {}
+    }
+
+    function applyExtensionData(result) {
+      const topicsCount = result.curator_topics_count || {}
+      const searches    = result.curator_searches || []
+      const videos      = result.curator_videos || []
+      if (Object.keys(topicsCount).length === 0) return
+
+      const topTopics = Object.entries(topicsCount)
+        .sort((a, b) => b[1] - a[1]).slice(0, 4).map(([topic]) => topic)
+
+      if (selectedTopics.length === 0) {
+        selectedTopics = topTopics.filter(t => TOPICS.find(tp => tp.id === t))
+        saveTopics()
+        document.querySelectorAll('.topic-btn').forEach(b => {
+          b.classList.toggle('selected', selectedTopics.includes(b.dataset.id))
+        })
+        updateStartBtn()
+      }
+
+      if (customKeywords.length === 0 && searches.length > 0) {
+        const freqMap = {}
+        searches.forEach(s => {
+          const kw = s.keyword.toLowerCase().trim()
+          if (kw.length >= 2 && kw.length <= 20) freqMap[kw] = (freqMap[kw] || 0) + (s.count || 1)
+        })
+        const topKeywords = Object.entries(freqMap)
+          .sort((a, b) => b[1] - a[1]).slice(0, 5).map(([kw]) => kw)
+        topKeywords.forEach(kw => {
+          if (!customKeywords.includes(kw) && customKeywords.length < 10) customKeywords.push(kw)
+        })
+        if (customKeywords.length > 0) {
+          saveTopics(); renderKeywordTags(); renderPanelKeywordTags(); updateStartBtn()
+        }
+      }
+
+      if (searches.length > 0 || videos.length > 0) {
+        addLog(`Extension data loaded: ${searches.length} searches, ${videos.length} videos`, 'extension')
+      }
+
+      showExtensionBanner(searches.length, videos.length, topTopics)
+    }
+
+    function showExtensionBanner(searchCount, videoCount, topics) {
+      if (searchCount === 0 && videoCount === 0) return
+      const existing = document.getElementById('ext-banner')
+      if (existing) return
+      const banner = document.createElement('div')
+      banner.id = 'ext-banner'
+      banner.style.cssText = 'background:#ecfdf5;border:1px solid #6ee7b7;border-radius:8px;padding:10px 16px;margin:10px 24px 0;font-size:12px;color:#065f46;display:flex;align-items:center;justify-content:space-between;gap:10px;'
+      banner.innerHTML = `
+        <span>🔌 Extension: <strong>${searchCount}</strong> searches & <strong>${videoCount}</strong> videos detected → interests auto-updated</span>
+        <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#6bab90;cursor:pointer;font-size:14px">✕</button>
+      `
+      const topicBar = document.getElementById('topic-bar')
+      if (topicBar) topicBar.parentElement.insertBefore(banner, topicBar)
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('handle-input')?.addEventListener('keydown', e => { if(e.key==='Enter') loadFeed() })
       document.getElementById('custom-keyword-input')?.addEventListener('keydown', e => { if(e.key==='Enter') addCustomKeyword() })
@@ -965,117 +1153,7 @@
       if (r) readPosts = new Set(JSON.parse(r))
     })
 
-// ── 확장 프로그램 데이터 연동 ──────────────────────────
-    async function loadExtensionData() {
-      try {
-        // 크롬 확장 프로그램 스토리지에서 데이터 읽기
-        if (typeof chrome !== 'undefined' && chrome.storage) {
-          chrome.storage.local.get([
-            'curator_searches',
-            'curator_videos',
-            'curator_topics_count'
-          ], function(result) {
-            if (chrome.runtime.lastError) return;
-            applyExtensionData(result);
-          });
-        }
-      } catch(e) {
-        // 확장 프로그램 없으면 그냥 무시
-      }
-    }
-
-    function applyExtensionData(result) {
-      const topicsCount = result.curator_topics_count || {};
-      const searches = result.curator_searches || [];
-      const videos = result.curator_videos || [];
-
-      if (Object.keys(topicsCount).length === 0) return;
-
-      // 상위 토픽 자동 선택
-      const topTopics = Object.entries(topicsCount)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 4)
-        .map(([topic]) => topic);
-
-      // 기존에 선택된 토픽이 없으면 자동 적용
-      if (selectedTopics.length === 0) {
-        selectedTopics = topTopics.filter(t => TOPICS.find(tp => tp.id === t));
-        saveTopics();
-
-        // UI 업데이트
-        document.querySelectorAll('.topic-btn').forEach(b => {
-          b.classList.toggle('selected', selectedTopics.includes(b.dataset.id));
-        });
-        updateStartBtn();
-      }
-
-      // 자주 검색한 키워드를 커스텀 키워드로 추가
-      if (customKeywords.length === 0 && searches.length > 0) {
-        const freqMap = {};
-        searches.forEach(s => {
-          const kw = s.keyword.toLowerCase().trim();
-          if (kw.length >= 2 && kw.length <= 20) {
-            freqMap[kw] = (freqMap[kw] || 0) + (s.count || 1);
-          }
-        });
-        const topKeywords = Object.entries(freqMap)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 5)
-          .map(([kw]) => kw);
-
-        topKeywords.forEach(kw => {
-          if (!customKeywords.includes(kw) && customKeywords.length < 10) {
-            customKeywords.push(kw);
-          }
-        });
-
-        if (customKeywords.length > 0) {
-          saveTopics();
-          renderKeywordTags();
-          renderPanelKeywordTags();
-          updateStartBtn();
-        }
-      }
-
-      // 접근 로그 기록
-      if (searches.length > 0 || videos.length > 0) {
-        addLog(`Extension data loaded: ${searches.length} searches, ${videos.length} videos`, 'extension');
-      }
-
-      // 확장 프로그램 데이터 배너 표시
-      showExtensionBanner(searches.length, videos.length, topTopics);
-    }
-
-    function showExtensionBanner(searchCount, videoCount, topics) {
-      if (searchCount === 0 && videoCount === 0) return;
-      const existing = document.getElementById('ext-banner');
-      if (existing) return;
-
-      const banner = document.createElement('div');
-      banner.id = 'ext-banner';
-      banner.style.cssText = `
-        background: #ecfdf5;
-        border: 1px solid #6ee7b7;
-        border-radius: 8px;
-        padding: 10px 16px;
-        margin: 10px 24px 0;
-        font-size: 12px;
-        color: #065f46;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-      `;
-      banner.innerHTML = `
-        <span>🔌 Extension: <strong>${searchCount}</strong> searches & <strong>${videoCount}</strong> videos detected → interests auto-updated</span>
-        <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#6bab90;cursor:pointer;font-size:14px">✕</button>
-      `;
-
-      const topicBar = document.getElementById('topic-bar');
-      if (topicBar) topicBar.parentElement.insertBefore(banner, topicBar);
-    }
-
-   renderTopicGrid()
+    renderTopicGrid()
     loadPermissions()
     applyPermissionsToUI()
     loadExtensionData()
