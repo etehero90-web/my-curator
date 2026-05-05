@@ -441,7 +441,8 @@
     }
 
     async function loadAutoFeed() {
-      if (selectedTopics.length === 0 && customKeywords.length === 0) {
+      const allTopics = [...selectedTopics, ...customKeywords]
+      if (allTopics.length === 0) {
         document.getElementById('status-box').style.display = 'none'
         document.getElementById('feed-list').innerHTML = `
           <div class="status-box">
@@ -450,28 +451,34 @@
           </div>`
         return
       }
+
+      // 현재 인덱스의 토픽 하나만 로드
+      const idx = autoFeedTopicIndex % allTopics.length
+      const currentTopic = allTopics[idx]
+      const isCustom = customKeywords.includes(currentTopic)
+
       document.getElementById('status-box').style.display = 'none'
       document.getElementById('filter-info').textContent = ''
       document.getElementById('feed-list').innerHTML = '<div class="loading">✨ Loading your personalized feed...</div>'
 
-      const searchSuccess = await tryBlueskySearch()
+      const searchSuccess = await tryBlueskySearch(currentTopic)
       if (!searchSuccess) {
-        await loadCuratedAccountFeeds()
+        await loadCuratedAccountFeeds(isCustom ? null : currentTopic)
       }
     }
 
-    async function tryBlueskySearch() {
+    async function tryBlueskySearch(topicId) {
       try {
-        const searchTerms = []
-        selectedTopics.forEach(id => {
-          const topic = TOPICS.find(t => t.id === id)
-          if (topic) searchTerms.push(topic.keywords[0])
-        })
-        customKeywords.forEach(kw => searchTerms.push(kw))
-        if (searchTerms.length === 0) return false
+        let searchTerm = ''
+        if (customKeywords.includes(topicId)) {
+          searchTerm = topicId
+        } else {
+          const topic = TOPICS.find(t => t.id === topicId)
+          searchTerm = topic ? topic.keywords[0] : topicId
+        }
+        if (!searchTerm) return false
 
-        const idx = autoFeedTopicIndex % searchTerms.length
-        const query = encodeURIComponent(searchTerms[idx])
+        const query = encodeURIComponent(searchTerm)
         const url = `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${query}&limit=30&sort=latest`
         const res = await fetch(url)
         if (!res.ok) return false
@@ -499,18 +506,24 @@
         }))
 
         renderFeed()
-        showAutoFeedBanner(`🔍 "${searchTerms[0]}" and more`, allPosts.length)
-        addLog(`Auto feed: search "${searchTerms[0]}" → ${allPosts.length} posts`, 'auto')
+        showAutoFeedBanner(`🔍 "${searchTerm}"`, allPosts.length)
+        addLog(`Auto feed: search "${searchTerm}" → ${allPosts.length} posts`, 'auto')
         return true
       } catch(e) { return false }
     }
 
-    async function loadCuratedAccountFeeds() {
+    async function loadCuratedAccountFeeds(topicId) {
       const accounts = []
-      selectedTopics.forEach(id => {
-        const accs = TOPIC_ACCOUNTS[id] || []
+      if (topicId) {
+        const accs = TOPIC_ACCOUNTS[topicId] || []
         if (accs[0]) accounts.push(accs[0])
-      })
+      }
+      if (accounts.length === 0) {
+        selectedTopics.forEach(id => {
+          const accs = TOPIC_ACCOUNTS[id] || []
+          if (accs[0]) accounts.push(accs[0])
+        })
+      }
       if (accounts.length === 0) accounts.push('bsky.app')
 
       const results = await Promise.allSettled(
@@ -549,8 +562,10 @@
 
       allPosts = combined
       renderFeed()
-      const labels = selectedTopics.map(id => TOPICS.find(t=>t.id===id)?.label).filter(Boolean).join(', ')
-      showAutoFeedBanner(`Curated: ${labels || 'your interests'}`, allPosts.length)
+      const currentLabel = topicId
+        ? (TOPICS.find(t=>t.id===topicId)?.label || topicId)
+        : (selectedTopics.map(id => TOPICS.find(t=>t.id===id)?.label).filter(Boolean).join(', ') || 'your interests')
+      showAutoFeedBanner(`Curated: ${currentLabel}`, allPosts.length)
       addLog(`Auto feed: ${allPosts.length} posts from ${accounts.length} accounts`, 'auto')
     }
 
