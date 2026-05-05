@@ -179,8 +179,40 @@
     .panel-keyword-remove { background: none; border: none; color: #0d9e75; cursor: pointer; font-size: 13px; line-height: 1; opacity: 0.6; padding: 0; }
     .panel-keyword-remove:hover { opacity: 1; }
 
-    /* ── 피드백 버튼 ── */
-    .feedback-btn { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; background: #0d9e75; border: none; border-radius: 50px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 20px rgba(13,158,117,0.4); transition: all 0.2s; z-index: 99; display: flex; align-items: center; gap: 8px; }
+    /* ── Ko-fi 버튼 ── */
+.kofi-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  padding: 10px 18px;
+  background: #fff;
+  border: 1.5px solid #d1fae5;
+  border-radius: 50px;
+  color: #4b7360;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: all 0.2s;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  text-decoration: none;
+}
+.kofi-btn:hover {
+  border-color: #0d9e75;
+  color: #065f46;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(13,158,117,0.2);
+}
+.kofi-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+  /* ── 피드백 버튼 ── */
+.feedback-btn { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; background: #0d9e75; border: none; border-radius: 50px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 20px rgba(13,158,117,0.4); transition: all 0.2s; z-index: 99; display: flex; align-items: center; gap: 8px; }
     .feedback-btn:hover { background: #0b8a65; transform: translateY(-2px); }
 
     .feedback-overlay { display: none; position: fixed; inset: 0; background: rgba(5,46,32,0.5); z-index: 200; align-items: center; justify-content: center; }
@@ -263,6 +295,12 @@
       <div id="feed-list"></div>
     </div>
   </div>
+
+  <!-- ── Ko-fi 버튼 ── -->
+<a href="https://ko-fi.com/mycurator" target="_blank" class="kofi-btn" onclick="trackEvent('kofi_click','monetization','kofi_button')">
+  <img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="Ko-fi"/>
+  Support this project
+</a>
 
   <!-- ── 피드백 버튼 ── -->
   <button class="feedback-btn" onclick="openFeedback()">💬 Send Feedback</button>
