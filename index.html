@@ -12,13 +12,8 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-52P74C59KQ');
-
-    // 커스텀 이벤트 추적 함수
     function trackEvent(action, category, label) {
-      gtag('event', action, {
-        event_category: category,
-        event_label: label
-      });
+      gtag('event', action, { event_category: category, event_label: label });
     }
   </script>
 
@@ -33,114 +28,71 @@
     }
 
     /* ── 온보딩 ── */
-    .onboarding {
-      max-width: 520px;
-      margin: 0 auto;
-      padding: 64px 24px 48px;
-    }
-
-    .onboarding .logo {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: #0d9e75;
-      text-transform: uppercase;
-      margin-bottom: 32px;
-    }
-
-    .onboarding h2 {
-      font-size: 26px;
-      font-weight: 600;
-      color: #052e20;
-      margin-bottom: 10px;
-      line-height: 1.3;
-    }
-
-    .onboarding p {
-      font-size: 14px;
-      color: #4b7360;
-      margin-bottom: 40px;
-      line-height: 1.7;
-    }
-
-    .section-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      color: #6bab90;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    .topic-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 8px;
-      margin-bottom: 36px;
-    }
-
-    .topic-btn {
-      padding: 10px 14px;
-      background: #fff;
-      border: 1px solid #d1fae5;
-      border-radius: 8px;
-      color: #4b7360;
-      font-size: 13px;
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.15s;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .onboarding { max-width: 520px; margin: 0 auto; padding: 64px 24px 48px; }
+    .onboarding .logo { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #0d9e75; text-transform: uppercase; margin-bottom: 32px; }
+    .onboarding h2 { font-size: 26px; font-weight: 600; color: #052e20; margin-bottom: 10px; line-height: 1.3; }
+    .onboarding p { font-size: 14px; color: #4b7360; margin-bottom: 40px; line-height: 1.7; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; color: #6bab90; text-transform: uppercase; margin-bottom: 14px; }
+    .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-bottom: 36px; }
+    .topic-btn { padding: 10px 14px; background: #fff; border: 1px solid #d1fae5; border-radius: 8px; color: #4b7360; font-size: 13px; cursor: pointer; text-align: left; transition: all 0.15s; user-select: none; display: flex; align-items: center; gap: 8px; }
     .topic-btn:hover { border-color: #6ee7b7; color: #1f4d38; background: #f0fdf8; }
     .topic-btn.selected { background: #ecfdf5; border-color: #0d9e75; color: #065f46; font-weight: 500; }
     .topic-dot { width: 6px; height: 6px; border-radius: 50%; background: #a7f3d0; flex-shrink: 0; transition: background 0.15s; }
     .topic-btn.selected .topic-dot { background: #0d9e75; }
 
-    /* ── 커스텀 키워드 ── */
     .custom-keyword-section { margin-bottom: 32px; }
     .keyword-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
-    .keyword-input { flex: 1; padding: 10px 14px; background: #fff; border: 1px solid #d1fae5; border-radius: 8px; color: #052e20; font-size: 13px; outline: none; transition: border-color 0.15s; }
+    .keyword-input { flex: 1; padding: 10px 14px; background: #fff; border: 1px solid #d1fae5; border-radius: 8px; color: #052e20; font-size: 13px; outline: none; }
     .keyword-input:focus { border-color: #0d9e75; }
     .keyword-input::placeholder { color: #a7c4b8; }
     .keyword-add-btn { padding: 10px 16px; background: transparent; border: 1px solid #d1fae5; border-radius: 8px; color: #0d9e75; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
     .keyword-add-btn:hover { border-color: #0d9e75; background: #ecfdf5; }
     .keyword-tags { display: flex; flex-wrap: wrap; gap: 8px; }
     .keyword-tag { display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 12px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 20px; font-size: 12px; color: #065f46; }
-    .keyword-remove { background: none; border: none; color: #0d9e75; cursor: pointer; font-size: 14px; line-height: 1; opacity: 0.6; padding: 0; transition: opacity 0.15s; }
+    .keyword-remove { background: none; border: none; color: #0d9e75; cursor: pointer; font-size: 14px; line-height: 1; opacity: 0.6; padding: 0; }
     .keyword-remove:hover { opacity: 1; }
     .keyword-hint { font-size: 11px; color: #6bab90; margin-top: 10px; line-height: 1.6; }
 
-    /* ── 시작 버튼 ── */
-    .start-btn { width: 100%; padding: 13px; background: #0d9e75; border: none; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; letter-spacing: 0.3px; }
+    .start-btn { width: 100%; padding: 13px; background: #0d9e75; border: none; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .start-btn:hover { background: #0b8a65; }
     .start-btn:disabled { background: #d1fae5; color: #6bab90; cursor: not-allowed; }
 
     /* ── 메인 화면 ── */
     .main-view { display: none; }
-
     header { padding: 14px 24px; border-bottom: 1px solid #d1fae5; background: #fff; display: flex; align-items: center; justify-content: space-between; }
     .header-logo { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; color: #0d9e75; text-transform: uppercase; }
     .header-btns { display: flex; gap: 8px; }
     .icon-btn { background: none; border: 1px solid #d1fae5; border-radius: 6px; color: #4b7360; font-size: 12px; cursor: pointer; padding: 6px 12px; transition: all 0.15s; }
     .icon-btn:hover { border-color: #0d9e75; color: #065f46; background: #ecfdf5; }
 
-    .search-bar { padding: 14px 24px; border-bottom: 1px solid #d1fae5; background: #fff; display: flex; gap: 10px; }
-    .search-bar input { flex: 1; padding: 10px 14px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 7px; color: #052e20; font-size: 14px; outline: none; }
+    /* ── 검색바 + 플랫폼 선택 ── */
+    .search-bar { padding: 14px 24px; border-bottom: 1px solid #d1fae5; background: #fff; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .platform-tabs { display: flex; gap: 6px; flex-shrink: 0; }
+    .platform-tab { padding: 8px 14px; border: 1px solid #d1fae5; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; background: #f0fdf8; color: #4b7360; display: flex; align-items: center; gap: 6px; }
+    .platform-tab:hover { border-color: #6ee7b7; }
+    .platform-tab.active-bsky { background: #0d9e75; border-color: #0d9e75; color: #fff; }
+    .platform-tab.active-masto { background: #6364ff; border-color: #6364ff; color: #fff; }
+    .search-bar input { flex: 1; min-width: 160px; padding: 10px 14px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 7px; color: #052e20; font-size: 14px; outline: none; }
     .search-bar input:focus { border-color: #0d9e75; }
     .search-bar input::placeholder { color: #a7c4b8; }
-    .fetch-btn { padding: 10px 18px; background: #0d9e75; border: none; border-radius: 7px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .fetch-btn { padding: 10px 18px; background: #0d9e75; border: none; border-radius: 7px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
     .fetch-btn:hover { background: #0b8a65; }
+    .fetch-btn.masto { background: #6364ff; }
+    .fetch-btn.masto:hover { background: #4f50e0; }
 
+    /* ── 플랫폼 안내 ── */
+    .platform-hint { padding: 8px 24px; background: #f0fdf8; border-bottom: 1px solid #d1fae5; font-size: 12px; color: #6bab90; }
+    .platform-hint span { font-weight: 600; color: #0d9e75; }
+    .platform-hint span.masto { color: #6364ff; }
+
+    /* ── 토픽 바 ── */
     .topic-bar { padding: 10px 24px; border-bottom: 1px solid #d1fae5; background: #fff; display: flex; gap: 6px; flex-wrap: wrap; }
     .topic-tag { padding: 4px 12px; border-radius: 20px; font-size: 12px; border: 1px solid #d1fae5; background: #f0fdf8; color: #4b7360; cursor: pointer; transition: all 0.15s; }
     .topic-tag:hover { border-color: #6ee7b7; color: #1f4d38; }
     .topic-tag.active { background: #ecfdf5; border-color: #0d9e75; color: #065f46; font-weight: 500; }
     .topic-tag.custom { border-style: dashed; }
 
+    /* ── 피드 ── */
     .feed-container { max-width: 640px; margin: 0 auto; padding: 16px 24px; }
     .status-box { text-align: center; padding: 64px 24px; }
     .status-box p { font-size: 15px; margin-bottom: 8px; color: #4b7360; }
@@ -150,11 +102,20 @@
     .post-card:hover { border-color: #6ee7b7; }
     .post-card.read { opacity: 0.45; }
     .post-card.highlighted { border-color: #0d9e75; background: #f0fdf8; }
+    .post-card.masto-card { border-left: 3px solid #6364ff; }
+    .post-card.masto-card.highlighted { border-color: #6364ff; background: #f5f5ff; }
 
     .post-author { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .avatar { width: 34px; height: 34px; border-radius: 50%; background: #ecfdf5; border: 1px solid #d1fae5; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #0d9e75; flex-shrink: 0; }
+    .avatar { width: 34px; height: 34px; border-radius: 50%; background: #ecfdf5; border: 1px solid #d1fae5; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #0d9e75; flex-shrink: 0; overflow: hidden; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar.masto-avatar { background: #f0f0ff; border-color: #c5c5ff; color: #6364ff; }
     .author-info .name { font-size: 13px; font-weight: 600; color: #052e20; }
     .author-info .handle { font-size: 12px; color: #6bab90; }
+
+    .platform-badge { display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 8px; margin-left: 6px; vertical-align: middle; font-weight: 600; }
+    .badge-bsky { background: #ecfdf5; color: #0d9e75; }
+    .badge-masto { background: #f0f0ff; color: #6364ff; }
+
     .post-text { font-size: 14px; line-height: 1.65; color: #1f4d38; margin-bottom: 12px; word-break: break-word; }
     .post-footer { display: flex; gap: 14px; font-size: 12px; color: #6bab90; align-items: center; }
     .match-badge { margin-left: auto; padding: 2px 8px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 10px; font-size: 11px; color: #065f46; }
@@ -215,157 +176,28 @@
     .panel-keyword-add:hover { background: #d1fae5; border-color: #0d9e75; }
     .panel-keyword-tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .panel-keyword-tag { display: flex; align-items: center; gap: 5px; padding: 4px 8px 4px 10px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 12px; font-size: 11px; color: #065f46; }
-    .panel-keyword-remove { background: none; border: none; color: #0d9e75; cursor: pointer; font-size: 13px; line-height: 1; opacity: 0.6; padding: 0; transition: opacity 0.15s; }
+    .panel-keyword-remove { background: none; border: none; color: #0d9e75; cursor: pointer; font-size: 13px; line-height: 1; opacity: 0.6; padding: 0; }
     .panel-keyword-remove:hover { opacity: 1; }
 
     /* ── 피드백 버튼 ── */
-    .feedback-btn {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      padding: 12px 20px;
-      background: #0d9e75;
-      border: none;
-      border-radius: 50px;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(13,158,117,0.4);
-      transition: all 0.2s;
-      z-index: 99;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .feedback-btn { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; background: #0d9e75; border: none; border-radius: 50px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 20px rgba(13,158,117,0.4); transition: all 0.2s; z-index: 99; display: flex; align-items: center; gap: 8px; }
+    .feedback-btn:hover { background: #0b8a65; transform: translateY(-2px); }
 
-    .feedback-btn:hover {
-      background: #0b8a65;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(13,158,117,0.5);
-    }
-
-    /* ── 피드백 모달 ── */
-    .feedback-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(5,46,32,0.5);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-    }
-
+    .feedback-overlay { display: none; position: fixed; inset: 0; background: rgba(5,46,32,0.5); z-index: 200; align-items: center; justify-content: center; }
     .feedback-overlay.open { display: flex; }
-
-    .feedback-modal {
-      background: #fff;
-      border-radius: 16px;
-      padding: 32px;
-      width: 90%;
-      max-width: 440px;
-      border: 1px solid #d1fae5;
-    }
-
-    .feedback-modal h3 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #052e20;
-      margin-bottom: 8px;
-    }
-
-    .feedback-modal p {
-      font-size: 13px;
-      color: #6bab90;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
-
-    .feedback-type-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .feedback-type-btn {
-      padding: 10px;
-      background: #f0fdf8;
-      border: 1px solid #d1fae5;
-      border-radius: 8px;
-      color: #4b7360;
-      font-size: 12px;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.15s;
-    }
-
-    .feedback-type-btn:hover,
-    .feedback-type-btn.selected {
-      background: #ecfdf5;
-      border-color: #0d9e75;
-      color: #065f46;
-      font-weight: 500;
-    }
-
-    .feedback-textarea {
-      width: 100%;
-      padding: 12px;
-      background: #f0fdf8;
-      border: 1px solid #d1fae5;
-      border-radius: 8px;
-      color: #052e20;
-      font-size: 13px;
-      line-height: 1.6;
-      resize: vertical;
-      min-height: 100px;
-      outline: none;
-      font-family: inherit;
-      margin-bottom: 16px;
-    }
-
+    .feedback-modal { background: #fff; border-radius: 16px; padding: 32px; width: 90%; max-width: 440px; border: 1px solid #d1fae5; }
+    .feedback-modal h3 { font-size: 18px; font-weight: 600; color: #052e20; margin-bottom: 8px; }
+    .feedback-modal p { font-size: 13px; color: #6bab90; margin-bottom: 20px; line-height: 1.6; }
+    .feedback-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .feedback-type-btn { padding: 10px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 8px; color: #4b7360; font-size: 12px; cursor: pointer; text-align: center; transition: all 0.15s; }
+    .feedback-type-btn:hover, .feedback-type-btn.selected { background: #ecfdf5; border-color: #0d9e75; color: #065f46; font-weight: 500; }
+    .feedback-textarea { width: 100%; padding: 12px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 8px; color: #052e20; font-size: 13px; line-height: 1.6; resize: vertical; min-height: 100px; outline: none; font-family: inherit; margin-bottom: 16px; }
     .feedback-textarea:focus { border-color: #0d9e75; }
     .feedback-textarea::placeholder { color: #a7c4b8; }
-
-    .feedback-modal-btns {
-      display: flex;
-      gap: 8px;
-    }
-
-    .feedback-cancel {
-      flex: 1;
-      padding: 11px;
-      background: #f0fdf8;
-      border: 1px solid #d1fae5;
-      border-radius: 8px;
-      color: #4b7360;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .feedback-cancel:hover { border-color: #6ee7b7; }
-
-    .feedback-submit {
-      flex: 2;
-      padding: 11px;
-      background: #0d9e75;
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .feedback-submit:hover { background: #0b8a65; }
-
-    .feedback-success {
-      text-align: center;
-      padding: 20px 0;
-    }
-
+    .feedback-modal-btns { display: flex; gap: 8px; }
+    .feedback-cancel { flex: 1; padding: 11px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 8px; color: #4b7360; font-size: 13px; cursor: pointer; }
+    .feedback-submit { flex: 2; padding: 11px; background: #0d9e75; border: none; border-radius: 8px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .feedback-success { text-align: center; padding: 20px 0; }
     .feedback-success .check { font-size: 40px; margin-bottom: 12px; }
     .feedback-success h4 { font-size: 16px; font-weight: 600; color: #052e20; margin-bottom: 6px; }
     .feedback-success p { font-size: 13px; color: #6bab90; }
@@ -377,22 +209,18 @@
   <div class="onboarding" id="onboarding">
     <div class="logo">My AI Curator</div>
     <h2>What are you interested in?</h2>
-    <p>Select topics you care about. We'll surface relevant posts from Bluesky and keep your preferences on your device — nothing leaves your browser.</p>
-
+    <p>Select topics you care about. We'll surface relevant posts from Bluesky and Mastodon — and keep your preferences on your device. Nothing leaves your browser.</p>
     <div class="section-label">Choose topics</div>
     <div class="topic-grid" id="topic-grid"></div>
-
     <div class="custom-keyword-section">
       <div class="section-label">Add your own keywords</div>
       <div class="keyword-input-row">
-        <input type="text" class="keyword-input" id="custom-keyword-input"
-          placeholder="e.g. k-drama, climate, yoga, hiking..." maxlength="30"/>
+        <input type="text" class="keyword-input" id="custom-keyword-input" placeholder="e.g. k-drama, climate, yoga..." maxlength="30"/>
         <button class="keyword-add-btn" onclick="addCustomKeyword()">Add</button>
       </div>
       <div class="keyword-tags" id="keyword-tags"></div>
-      <p class="keyword-hint">Custom keywords are matched directly against post text. You can add up to 10 keywords.</p>
+      <p class="keyword-hint">Custom keywords matched directly against post text. Up to 10 keywords.</p>
     </div>
-
     <button class="start-btn" id="start-btn" disabled onclick="startApp()">
       Select at least one topic to continue
     </button>
@@ -408,15 +236,27 @@
     </header>
 
     <div class="search-bar">
+      <div class="platform-tabs">
+        <button class="platform-tab active-bsky" id="tab-bsky" onclick="switchPlatform('bluesky')">
+          🦋 Bluesky
+        </button>
+        <button class="platform-tab" id="tab-masto" onclick="switchPlatform('mastodon')">
+          🐘 Mastodon
+        </button>
+      </div>
       <input type="text" id="handle-input" placeholder="Enter Bluesky handle (e.g. bsky.app)"/>
-      <button class="fetch-btn" onclick="loadFeed()">Load</button>
+      <button class="fetch-btn" id="fetch-btn" onclick="loadFeed()">Load</button>
+    </div>
+
+    <div class="platform-hint" id="platform-hint">
+      <span>Bluesky</span>: Enter handle like <b>username.bsky.social</b>
     </div>
 
     <div class="topic-bar" id="topic-bar"></div>
 
     <div class="feed-container">
       <div class="status-box" id="status-box">
-        <p>Enter a Bluesky handle above</p>
+        <p>Enter a handle above</p>
         <small>and press Load to fetch their feed</small>
       </div>
       <div class="filter-info" id="filter-info"></div>
@@ -425,36 +265,26 @@
   </div>
 
   <!-- ── 피드백 버튼 ── -->
-  <button class="feedback-btn" onclick="openFeedback()">
-    💬 Send Feedback
-  </button>
+  <button class="feedback-btn" onclick="openFeedback()">💬 Send Feedback</button>
 
   <!-- ── 피드백 모달 ── -->
   <div class="feedback-overlay" id="feedback-overlay" onclick="handleOverlayClick(event)">
     <div class="feedback-modal" id="feedback-modal">
       <div id="feedback-form-view">
         <h3>Send Feedback</h3>
-        <p>Your thoughts help make My AI Curator better. What's on your mind?</p>
-
+        <p>Your thoughts help make My AI Curator better.</p>
         <div class="feedback-type-grid">
-          <button class="feedback-type-btn" onclick="selectFeedbackType(this, 'Bug report')">🐛 Bug report</button>
-          <button class="feedback-type-btn" onclick="selectFeedbackType(this, 'Feature request')">✨ Feature request</button>
-          <button class="feedback-type-btn" onclick="selectFeedbackType(this, 'General feedback')">💬 General feedback</button>
-          <button class="feedback-type-btn" onclick="selectFeedbackType(this, 'I love it!')">❤️ I love it!</button>
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this,'Bug report')">🐛 Bug report</button>
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this,'Feature request')">✨ Feature request</button>
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this,'General feedback')">💬 General feedback</button>
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this,'I love it!')">❤️ I love it!</button>
         </div>
-
-        <textarea
-          class="feedback-textarea"
-          id="feedback-text"
-          placeholder="Tell us more... (optional)"
-        ></textarea>
-
+        <textarea class="feedback-textarea" id="feedback-text" placeholder="Tell us more... (optional)"></textarea>
         <div class="feedback-modal-btns">
           <button class="feedback-cancel" onclick="closeFeedback()">Cancel</button>
           <button class="feedback-submit" onclick="submitFeedback()">Send Feedback</button>
         </div>
       </div>
-
       <div id="feedback-success-view" class="feedback-success" style="display:none">
         <div class="check">✅</div>
         <h4>Thank you!</h4>
@@ -551,7 +381,139 @@
     let allPosts = [], readPosts = new Set(), accessLog = []
     let permissions = { pod: true, topics: true, readHistory: true, images: true, wifiOnly: false }
     let selectedFeedbackType = ''
+    let currentPlatform = 'bluesky' // 'bluesky' or 'mastodon'
 
+    // ── 플랫폼 전환 ──────────────────────────────────────
+    function switchPlatform(platform) {
+      currentPlatform = platform
+      const input     = document.getElementById('handle-input')
+      const fetchBtn  = document.getElementById('fetch-btn')
+      const hint      = document.getElementById('platform-hint')
+      const tabBsky   = document.getElementById('tab-bsky')
+      const tabMasto  = document.getElementById('tab-masto')
+
+      if (platform === 'bluesky') {
+        tabBsky.className  = 'platform-tab active-bsky'
+        tabMasto.className = 'platform-tab'
+        input.placeholder  = 'Enter Bluesky handle (e.g. bsky.app)'
+        fetchBtn.className = 'fetch-btn'
+        hint.innerHTML     = '<span>Bluesky</span>: Enter handle like <b>username.bsky.social</b>'
+      } else {
+        tabBsky.className  = 'platform-tab'
+        tabMasto.className = 'platform-tab active-masto'
+        input.placeholder  = 'Enter Mastodon handle (e.g. user@mastodon.social)'
+        fetchBtn.className = 'fetch-btn masto'
+        hint.innerHTML     = '<span class="masto">Mastodon</span>: Enter handle like <b>username@mastodon.social</b> or just <b>username</b> for mastodon.social'
+      }
+
+      allPosts = []
+      document.getElementById('feed-list').innerHTML = ''
+      document.getElementById('filter-info').textContent = ''
+      document.getElementById('status-box').style.display = 'block'
+      trackEvent('platform_switch', 'feed', platform)
+    }
+
+    // ── Mastodon API ──────────────────────────────────────
+    async function loadMastodonFeed(handle) {
+      // handle 파싱: user@instance.social 또는 user (기본: mastodon.social)
+      let username, instance
+      if (handle.includes('@')) {
+        const parts = handle.replace(/^@/, '').split('@')
+        username = parts[0]
+        instance = parts[1] || 'mastodon.social'
+      } else {
+        username = handle
+        instance = 'mastodon.social'
+      }
+
+      if (permissions.pod) addLog(`Fetching Mastodon: @${username}@${instance}`, 'network')
+
+      // 1. 계정 ID 조회
+      const lookupUrl = `https://${instance}/api/v1/accounts/lookup?acct=${username}`
+      const lookupRes = await fetch(lookupUrl)
+      if (!lookupRes.ok) throw new Error(`Account not found on ${instance} (error ${lookupRes.status})`)
+      const account = await lookupRes.json()
+
+      // 2. 게시글 조회
+      const statusUrl = `https://${instance}/api/v1/accounts/${account.id}/statuses?limit=30&exclude_replies=true`
+      const statusRes = await fetch(statusUrl)
+      if (!statusRes.ok) throw new Error(`Could not fetch statuses (error ${statusRes.status})`)
+      const statuses = await statusRes.json()
+
+      // 3. 통일된 형식으로 변환
+      return statuses.map(s => ({
+        platform: 'mastodon',
+        post: {
+          uri:         s.id,
+          author: {
+            displayName: account.display_name || account.username,
+            handle:      `${account.username}@${instance}`,
+            avatar:      account.avatar
+          },
+          record: {
+            text:      stripHtml(s.content),
+            createdAt: s.created_at
+          },
+          likeCount:   s.favourites_count || 0,
+          repostCount: s.reblogs_count    || 0,
+        }
+      }))
+    }
+
+    function stripHtml(html) {
+      const tmp = document.createElement('div')
+      tmp.innerHTML = html
+      return tmp.textContent || tmp.innerText || ''
+    }
+
+    // ── Bluesky API ───────────────────────────────────────
+    async function loadBlueskyFeed(handle) {
+      if (permissions.pod) addLog(`Fetching Bluesky: @${handle}`, 'network')
+      const res = await fetch(`https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=30`)
+      if (!res.ok) throw new Error(`Handle not found (error ${res.status})`)
+      const data = await res.json()
+      return (data.feed || []).map(item => ({ platform: 'bluesky', ...item }))
+    }
+
+    // ── 피드 로드 (통합) ─────────────────────────────────
+    async function loadFeed() {
+      const handle = document.getElementById('handle-input').value.trim()
+      if (!handle) return
+
+      document.getElementById('status-box').style.display = 'none'
+      document.getElementById('filter-info').textContent  = ''
+      document.getElementById('feed-list').innerHTML = '<div class="loading">Fetching feed...</div>'
+      trackEvent('feed_load', 'feed', `${currentPlatform}:${handle}`)
+
+      try {
+        if (currentPlatform === 'mastodon') {
+          allPosts = await loadMastodonFeed(handle)
+        } else {
+          allPosts = await loadBlueskyFeed(handle)
+        }
+
+        if (permissions.pod) addLog(`Received ${allPosts.length} posts`, 'read')
+
+        if (!allPosts.length) {
+          document.getElementById('feed-list').innerHTML = '<div class="status-box"><p>No posts found</p></div>'
+          return
+        }
+        renderFeed()
+
+      } catch(err) {
+        document.getElementById('feed-list').innerHTML = `
+          <div class="error-box">
+            <strong>Something went wrong</strong>
+            ${err.message}<br><br>
+            ${currentPlatform === 'mastodon'
+              ? '· Try format: <b>username@mastodon.social</b><br>· Check the instance is accessible'
+              : '· Check the handle spelling (e.g. username.bsky.social)<br>· Check your internet connection'
+            }
+          </div>`
+      }
+    }
+
+    // ── 저장/불러오기 ─────────────────────────────────────
     function loadSaved() {
       const t = localStorage.getItem('curator-topics')
       const k = localStorage.getItem('curator-keywords')
@@ -609,7 +571,7 @@
     }
 
     function renderLog() {
-      const list = document.getElementById('log-list')
+      const list    = document.getElementById('log-list')
       const countEl = document.getElementById('log-count')
       countEl.textContent = accessLog.length
       if (!accessLog.length) { list.innerHTML = '<div class="log-empty">No activity yet</div>'; return }
@@ -635,13 +597,12 @@
         b.classList.toggle('selected', selectedTopics.includes(b.dataset.id))
       })
       updateStartBtn()
-      trackEvent('topic_toggle', 'onboarding', id)
     }
 
     function updateStartBtn() {
       const total = selectedTopics.length + customKeywords.length
-      const btn = document.getElementById('start-btn')
-      btn.disabled = total === 0
+      const btn   = document.getElementById('start-btn')
+      btn.disabled    = total === 0
       btn.textContent = total > 0
         ? `Continue with ${total} interest${total > 1 ? 's' : ''}`
         : 'Select at least one topic to continue'
@@ -649,15 +610,14 @@
 
     function addCustomKeyword() {
       const input = document.getElementById('custom-keyword-input')
-      const val = input.value.trim().toLowerCase()
+      const val   = input.value.trim().toLowerCase()
       if (!val) return
-      if (customKeywords.length >= 10) { alert('You can add up to 10 custom keywords.'); return }
+      if (customKeywords.length >= 10) { alert('Up to 10 custom keywords.'); return }
       if (customKeywords.includes(val)) { input.value = ''; return }
       customKeywords.push(val)
       input.value = ''
       renderKeywordTags()
       updateStartBtn()
-      trackEvent('custom_keyword_add', 'onboarding', val)
     }
 
     function removeCustomKeyword(kw) {
@@ -678,15 +638,14 @@
 
     function addCustomKeywordFromPanel() {
       const input = document.getElementById('panel-keyword-input')
-      const val = input.value.trim().toLowerCase()
+      const val   = input.value.trim().toLowerCase()
       if (!val) return
-      if (customKeywords.length >= 10) { alert('You can add up to 10 custom keywords.'); return }
+      if (customKeywords.length >= 10) { alert('Up to 10 custom keywords.'); return }
       if (customKeywords.includes(val)) { input.value = ''; return }
       customKeywords.push(val)
       input.value = ''
       renderPanelKeywordTags(); renderTopicBar(); saveTopics()
       addLog(`Custom keyword added: "${val}"`, 'write')
-      trackEvent('custom_keyword_add', 'settings', val)
       if (allPosts.length > 0) renderFeed()
     }
 
@@ -726,7 +685,6 @@
       document.getElementById('settings-panel').classList.add('open')
       document.getElementById('overlay').classList.add('open')
       renderLog(); renderPanelKeywordTags()
-      trackEvent('settings_open', 'ui', 'settings_panel')
     }
 
     function closeSettings() {
@@ -781,9 +739,9 @@
     }
 
     function renderFeed() {
-      const feedList = document.getElementById('feed-list')
+      const feedList   = document.getElementById('feed-list')
       const filterInfo = document.getElementById('filter-info')
-      const useFilter = permissions.pod && permissions.topics
+      const useFilter  = permissions.pod && permissions.topics
       let filterTopics = [], filterKws = []
 
       if (useFilter) {
@@ -798,7 +756,7 @@
         return { ...item, score, matched }
       })
       scored.sort((a,b) => b.score - a.score)
-      const hits = scored.filter(p => p.score > 0)
+      const hits   = scored.filter(p => p.score > 0)
       const others = scored.filter(p => p.score === 0)
 
       if (!useFilter) filterInfo.textContent = 'Pod access is off — showing chronological feed'
@@ -821,26 +779,38 @@
       }
 
       const card = item => {
-        const post = item.post, author = post.author, text = post.record?.text || ''
+        const post     = item.post
+        const author   = post.author
+        const text     = post.record?.text || ''
+        const isRead   = readPosts.has(post.uri)
+        const isMasto  = item.platform === 'mastodon'
+        const avatarEl = author.avatar
+          ? `<img src="${author.avatar}" alt="" onerror="this.style.display='none'">`
+          : (author.displayName || author.handle || '?')[0].toUpperCase()
+
         return `
-          <div class="post-card ${readPosts.has(post.uri)?'read':''} ${item.score>0?'highlighted':''}"
+          <div class="post-card ${isRead?'read':''} ${item.score>0?'highlighted':''} ${isMasto?'masto-card':''}"
                onclick="markRead('${post.uri}',this)">
             <div class="post-author">
-              <div class="avatar">${(author.displayName||author.handle||'?')[0].toUpperCase()}</div>
+              <div class="avatar ${isMasto?'masto-avatar':''}">${avatarEl}</div>
               <div class="author-info">
-                <div class="name">${author.displayName||author.handle}</div>
+                <div class="name">
+                  ${author.displayName || author.handle}
+                  <span class="platform-badge ${isMasto?'badge-masto':'badge-bsky'}">${isMasto?'Mastodon':'Bluesky'}</span>
+                </div>
                 <div class="handle">@${author.handle}</div>
               </div>
             </div>
             <div class="post-text">${text.replace(/\n/g,'<br>')}</div>
             <div class="post-footer">
-              <span>♥ ${post.likeCount||0}</span>
+              <span>${isMasto?'⭐':'♥'} ${post.likeCount||0}</span>
               <span>↻ ${post.repostCount||0}</span>
               <span>${ago(post.record?.createdAt)}</span>
               ${item.matched.length ? `<span class="match-badge">${item.matched.join(', ')}</span>` : ''}
             </div>
           </div>`
       }
+
       feedList.innerHTML = [...hits,...others].map(card).join('')
     }
 
@@ -854,37 +824,7 @@
       trackEvent('post_read', 'feed', 'mark_read')
     }
 
-    async function loadFeed() {
-      const handle = document.getElementById('handle-input').value.trim()
-      if (!handle) return
-      document.getElementById('status-box').style.display = 'none'
-      document.getElementById('filter-info').textContent  = ''
-      document.getElementById('feed-list').innerHTML = '<div class="loading">Fetching feed...</div>'
-      if (permissions.pod) addLog(`Fetching feed: @${handle}`, 'network')
-      trackEvent('feed_load', 'feed', handle)
-      try {
-        const res = await fetch(`https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=30`)
-        if (!res.ok) throw new Error(`Handle not found (error ${res.status})`)
-        const data = await res.json()
-        allPosts = data.feed || []
-        if (permissions.pod) addLog(`Received ${allPosts.length} posts`, 'read')
-        if (!allPosts.length) {
-          document.getElementById('feed-list').innerHTML = '<div class="status-box"><p>No posts found</p></div>'
-          return
-        }
-        renderFeed()
-      } catch(err) {
-        document.getElementById('feed-list').innerHTML = `
-          <div class="error-box">
-            <strong>Something went wrong</strong>
-            ${err.message}<br><br>
-            · Check the handle spelling (e.g. username.bsky.social)<br>
-            · Check your internet connection
-          </div>`
-      }
-    }
-
-    // ── 피드백 함수들 ──
+    // ── 피드백 ────────────────────────────────────────────
     function openFeedback() {
       document.getElementById('feedback-overlay').classList.add('open')
       document.getElementById('feedback-form-view').style.display = 'block'
@@ -895,9 +835,7 @@
       trackEvent('feedback_open', 'feedback', 'open_modal')
     }
 
-    function closeFeedback() {
-      document.getElementById('feedback-overlay').classList.remove('open')
-    }
+    function closeFeedback() { document.getElementById('feedback-overlay').classList.remove('open') }
 
     function handleOverlayClick(e) {
       if (e.target === document.getElementById('feedback-overlay')) closeFeedback()
@@ -911,23 +849,11 @@
 
     function submitFeedback() {
       const text = document.getElementById('feedback-text').value.trim()
-      if (!selectedFeedbackType && !text) {
-        alert('Please select a feedback type or write something!')
-        return
-      }
-
-      // Google Analytics로 피드백 전송
+      if (!selectedFeedbackType && !text) { alert('Please select a feedback type or write something!'); return }
       trackEvent('feedback_submit', 'feedback', selectedFeedbackType || 'general')
-      gtag('event', 'feedback', {
-        feedback_type: selectedFeedbackType,
-        feedback_text: text.substring(0, 100), // 100자까지만
-        page_location: window.location.href
-      })
-
-      // 성공 화면 표시
+      gtag('event', 'feedback', { feedback_type: selectedFeedbackType, feedback_text: text.substring(0,100) })
       document.getElementById('feedback-form-view').style.display = 'none'
       document.getElementById('feedback-success-view').style.display = 'block'
-
       setTimeout(() => { closeFeedback() }, 2500)
     }
 
@@ -938,7 +864,6 @@
       a.download = 'my-curator-data.json'
       a.click()
       addLog('Data exported', 'export')
-      trackEvent('data_export', 'settings', 'json')
     }
 
     function importData() {
