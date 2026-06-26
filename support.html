@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My AI Curator — Support</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f0fdf8; color: #052e20; line-height: 1.7; }
+.header { background: #0d9e75; padding: 32px 20px; text-align: center; }
+.header-logo { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: #a7f3d0; text-transform: uppercase; margin-bottom: 8px; }
+.header-title { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.header-sub { font-size: 14px; color: #a7f3d0; }
+.container { max-width: 720px; margin: 0 auto; padding: 40px 20px 60px; }
+.section { background: #fff; border: 1px solid #d1fae5; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+.section-title { font-size: 16px; font-weight: 700; color: #052e20; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #d1fae5; }
+.section p { font-size: 14px; color: #4b7360; margin-bottom: 10px; }
+.section ul { padding-left: 20px; }
+.section ul li { font-size: 14px; color: #4b7360; margin-bottom: 8px; }
+.contact-card { background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 10px; padding: 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; }
+.contact-icon { font-size: 32px; flex-shrink: 0; }
+.contact-title { font-size: 14px; font-weight: 700; color: #052e20; margin-bottom: 4px; }
+.contact-desc { font-size: 13px; color: #4b7360; }
+.contact-link { font-size: 13px; color: #0d9e75; font-weight: 600; text-decoration: none; }
+.faq-item { border-bottom: 1px solid #f0fdf8; padding: 12px 0; }
+.faq-item:last-child { border-bottom: none; }
+.faq-q { font-size: 14px; font-weight: 600; color: #052e20; margin-bottom: 6px; }
+.faq-a { font-size: 13px; color: #4b7360; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-logo">My AI Curator</div>
+  <div class="header-title">Support</div>
+  <div class="header-sub">We're here to help</div>
+</div>
+<div class="container">
+
+  <div class="section">
+    <div class="section-title">📬 Contact Us</div>
+    <div class="contact-card">
+      <div class="contact-icon">🦋</div>
+      <div>
+        <div class="contact-title">Bluesky (Fastest response)</div>
+        <div class="contact-desc">Send us a message or mention us</div>
+        <a href="https://bsky.app/profile/eno86.bsky.social" class="contact-link" target="_blank">@eno86.bsky.social</a>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">🐦</div>
+      <div>
+        <div class="contact-title">X (Twitter)</div>
+        <div class="contact-desc">Follow us for updates and support</div>
+        <a href="https://x.com/mycurator86" class="contact-link" target="_blank">@mycurator86</a>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">📖</div>
+      <div>
+        <div class="contact-title">Help & User Guide</div>
+        <div class="contact-desc">Full documentation and FAQ</div>
+        <a href="/help.html" class="contact-link">my-curator.vercel.app/help.html</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">❓ Frequently Asked Questions</div>
+
+    <div class="faq-item">
+      <div class="faq-q">The extension isn't blocking trackers. What should I do?</div>
+      <div class="faq-a">Go to Settings tab → make sure "Ad Tracker Blocking" is turned ON. Try reloading the page after enabling it.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">A website broke after installing the extension.</div>
+      <div class="faq-a">Go to Settings → Custom Block Domains and check if you accidentally blocked a necessary domain. You can also temporarily disable blocking in Settings.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">My data disappeared after updating the extension.</div>
+      <div class="faq-a">Data is stored in your browser's local storage and should persist across updates. If data was lost, it may have been cleared by your browser. Always export a backup using the Export tab.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">The export button doesn't work.</div>
+      <div class="faq-a">Make sure you have some data collected first (browse Google, YouTube, or shopping sites). Then try selecting at least one category and one data type before exporting.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How do I reset everything?</div>
+      <div class="faq-a">Go to Settings tab → scroll down → click "Clear All Data". This permanently removes all collected data. Consider exporting first.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is there an Android app?</div>
+      <div class="faq-a">Yes! An Android app is currently in beta testing. Follow us on Bluesky for updates on the public release.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">🐛 Report a Bug</div>
+    <p>Found a bug or have a feature request? Please reach out on Bluesky or X with:</p>
+    <ul>
+      <li>Extension version (shown in the popup header)</li>
+      <li>Chrome version</li>
+      <li>Description of the issue</li>
+      <li>Steps to reproduce</li>
+    </ul>
+    <p style="margin-top:10px;">We typically respond within 24–48 hours.</p>
+  </div>
+
+</div>
+</body>
+</html>
