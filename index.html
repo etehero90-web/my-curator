@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My AI Curator</title>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-52P74C59KQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-52P74C59KQ');
+    function trackEvent(action, category, label) {
+      gtag('event', action, { event_category: category, event_label: label });
+    }
+  </script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #ecfdf5; color: #052e20; min-height: 100vh; }
+
+    /* ── 온보딩 ── */
+    .onboarding { max-width: 520px; margin: 0 auto; padding: 64px 24px 48px; }
+    .onboarding .logo { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #0d9e75; text-transform: uppercase; margin-bottom: 32px; }
+    .onboarding h2 { font-size: 26px; font-weight: 600; color: #052e20; margin-bottom: 10px; line-height: 1.3; }
+    .onboarding p { font-size: 14px; color: #4b7360; margin-bottom: 40px; line-height: 1.7; }
+    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; color: #6bab90; text-transform: uppercase; margin-bottom: 14px; }
+    .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-bottom: 36px; }
+    .topic-btn { padding: 10px 14px; background: #fff; border: 1px solid #d1fae5; border-radius: 8px; color: #4b7360; font-size: 13px; cursor: pointer; text-align: left; transition: all 0.15s; user-select: none; display: flex; align-items: center; gap: 8px; }
+    .topic-btn:hover { border-color: #6ee7b7; color: #1f4d38; background: #f0fdf8; }
+    .topic-btn.selected { background: #ecfdf5; border-color: #0d9e75; color: #065f46; font-weight: 500; }
+    .topic-dot { width: 6px; height: 6px; border-radius: 50%; background: #a7f3d0; flex-shrink: 0; transition: background 0.15s; }
+    .topic-btn.selected .topic-dot { background: #0d9e75; }
+    .custom-keyword-section { margin-bottom: 32px; }
+    .keyword-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+    .keyword-input { flex: 1; padding: 10px 14px; background: #fff; border: 1px solid #d1fae5; border-radius: 8px; color: #052e20; font-size: 13px; outline: none; }
+    .keyword-input:focus { border-color: #0d9e75; }
+    .keyword-input::placeholder { color: #a7c4b8; }
+    .keyword-add-btn { padding: 10px 16px; background: transparent; border: 1px solid #d1fae5; border-radius: 8px; color: #0d9e75; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .keyword-add-btn:hover { border-color: #0d9e75; background: #ecfdf5; }
+    .keyword-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .keyword-tag { display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 12px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 20px; font-size: 12px; color: #065f46; }
+    .keyword-remove { background: none; border: none; color: #0d9e75; cursor: pointer; font-size: 14px; line-height: 1; opacity: 0.6; padding: 0; }
+    .keyword-remove:hover { opacity: 1; }
+    .keyword-hint { font-size: 11px; color: #6bab90; margin-top: 10px; line-height: 1.6; }
+    .start-btn { width: 100%; padding: 13px; background: #0d9e75; border: none; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .start-btn:hover { background: #0b8a65; }
+    .start-btn:disabled { background: #d1fae5; color: #6bab90; cursor: not-allowed; }
+
+    /* ── 메인 화면 ── */
+    .main-view { display: none; }
+    header { padding: 14px 24px; border-bottom: 1px solid #d1fae5; background: #fff; display: flex; align-items: center; justify-content: space-between; }
+    .header-logo { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; color: #0d9e75; text-transform: uppercase; }
+    .header-btns { display: flex; gap: 8px; }
+    .icon-btn { background: none; border: 1px solid #d1fae5; border-radius: 6px; color: #4b7360; font-size: 12px; cursor: pointer; padding: 6px 12px; transition: all 0.15s; }
+    .icon-btn:hover { border-color: #0d9e75; color: #065f46; background: #ecfdf5; }
+    .icon-btn.active { background: #0d9e75; border-color: #0d9e75; color: #fff; }
+
+    /* ── 검색바 + 플랫폼 선택 ── */
+    .search-bar { padding: 14px 24px; border-bottom: 1px solid #d1fae5; background: #fff; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .platform-tabs { display: flex; gap: 6px; flex-shrink: 0; }
+    .platform-tab { padding: 8px 14px; border: 1px solid #d1fae5; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; background: #f0fdf8; color: #4b7360; display: flex; align-items: center; gap: 6px; }
+    .platform-tab:hover { border-color: #6ee7b7; }
+    .platform-tab.active-bsky { background: #0d9e75; border-color: #0d9e75; color: #fff; }
+    .platform-tab.active-masto { background: #6364ff; border-color: #6364ff; color: #fff; }
+    .search-bar input { flex: 1; min-width: 160px; padding: 10px 14px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 7px; color: #052e20; font-size: 14px; outline: none; }
+    .search-bar input:focus { border-color: #0d9e75; }
+    .search-bar input::placeholder { color: #a7c4b8; }
+    .fetch-btn { padding: 10px 18px; background: #0d9e75; border: none; border-radius: 7px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+    .fetch-btn:hover { background: #0b8a65; }
+    .fetch-btn.masto { background: #6364ff; }
+    .fetch-btn.masto:hover { background: #4f50e0; }
+
+    /* ── 플랫폼 안내 ── */
+    .platform-hint { padding: 8px 24px; background: #f0fdf8; border-bottom: 1px solid #d1fae5; font-size: 12px; color: #6bab90; }
+    .platform-hint span { font-weight: 600; color: #0d9e75; }
+    .platform-hint span.masto { color: #6364ff; }
+
+    /* ── 토픽 바 ── */
+    .topic-bar { padding: 10px 24px; border-bottom: 1px solid #d1fae5; background: #fff; display: flex; gap: 6px; flex-wrap: wrap; }
+    .topic-tag { padding: 4px 12px; border-radius: 20px; font-size: 12px; border: 1px solid #d1fae5; background: #f0fdf8; color: #4b7360; cursor: pointer; transition: all 0.15s; }
+    .topic-tag:hover { border-color: #6ee7b7; color: #1f4d38; }
+    .topic-tag.active { background: #ecfdf5; border-color: #0d9e75; color: #065f46; font-weight: 500; }
+    .topic-tag.custom { border-style: dashed; }
+
+    /* ── 피드 ── */
+    .feed-container { max-width: 640px; margin: 0 auto; padding: 16px 24px; }
+    .status-box { text-align: center; padding: 64px 24px; }
+    .status-box p { font-size: 15px; margin-bottom: 8px; color: #4b7360; }
+    .status-box small { font-size: 13px; color: #6bab90; }
+    .post-card { background: #fff; border: 1px solid #d1fae5; border-radius: 10px; padding: 16px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
+    .post-card:hover { border-color: #6ee7b7; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(13,158,117,0.08); }
+    .post-card.read { opacity: 0.45; }
+    .post-card.highlighted { border-color: #0d9e75; background: #f0fdf8; }
+    .post-card.masto-card { border-left: 3px solid #6364ff; }
+    .post-card.masto-card.highlighted { border-color: #6364ff; background: #f5f5ff; }
+    .post-author { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .avatar { width: 34px; height: 34px; border-radius: 50%; background: #ecfdf5; border: 1px solid #d1fae5; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #0d9e75; flex-shrink: 0; overflow: hidden; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar.masto-avatar { background: #f0f0ff; border-color: #c5c5ff; color: #6364ff; }
+    .author-info .name { font-size: 13px; font-weight: 600; color: #052e20; }
+    .author-info .handle { font-size: 12px; color: #6bab90; }
+    .platform-badge { display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 8px; margin-left: 6px; vertical-align: middle; font-weight: 600; }
+    .badge-bsky { background: #ecfdf5; color: #0d9e75; }
+    .badge-masto { background: #f0f0ff; color: #6364ff; }
+    .post-text { font-size: 14px; line-height: 1.65; color: #1f4d38; margin-bottom: 12px; word-break: break-word; }
+    .post-images { display: grid; gap: 4px; margin-bottom: 12px; border-radius: 8px; overflow: hidden; }
+    .post-images.one img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; }
+    .post-images.two { grid-template-columns: 1fr 1fr; }
+    .post-images.two img { width: 100%; height: 180px; object-fit: cover; }
+    .post-images.three { grid-template-columns: 1fr 1fr; }
+    .post-images.three img:first-child { grid-column: span 2; height: 180px; object-fit: cover; width: 100%; }
+    .post-images.three img:not(:first-child) { height: 120px; object-fit: cover; width: 100%; }
+    .post-images.four { grid-template-columns: 1fr 1fr; }
+    .post-images.four img { height: 140px; object-fit: cover; width: 100%; }
+    .post-video { width: 100%; border-radius: 8px; margin-bottom: 12px; max-height: 300px; background: #000; }
+    .post-external { display: flex; gap: 10px; border: 1px solid #d1fae5; border-radius: 8px; overflow: hidden; margin-bottom: 12px; text-decoration: none; }
+    .post-external-thumb { width: 80px; height: 80px; object-fit: cover; flex-shrink: 0; }
+    .post-external-info { padding: 10px; flex: 1; min-width: 0; }
+    .post-external-title { font-size: 13px; font-weight: 600; color: #052e20; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .post-external-desc { font-size: 11px; color: #6bab90; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .post-footer { display: flex; gap: 14px; font-size: 12px; color: #6bab90; align-items: center; }
+    .match-badge { margin-left: auto; padding: 2px 8px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 10px; font-size: 11px; color: #065f46; }
+    .filter-info { font-size: 12px; color: #6bab90; padding: 6px 0 14px; text-align: center; }
+    .loading { text-align: center; padding: 48px; color: #6bab90; font-size: 13px; }
+    .error-box { background: #fff5f5; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; color: #991b1b; font-size: 13px; line-height: 1.7; }
+    .error-box strong { display: block; margin-bottom: 6px; color: #dc2626; }
+
+    /* ── 포스트 상세 모달 ── */
+    .post-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,46,32,0.5); z-index: 500; align-items: center; justify-content: center; }
+    .post-modal-overlay.open { display: flex; }
+    .post-modal { background: #fff; border-radius: 16px; padding: 28px; width: 90%; max-width: 560px; max-height: 80vh; overflow-y: auto; border: 1px solid #d1fae5; position: relative; }
+    .post-modal-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .post-modal-avatar { width: 44px; height: 44px; border-radius: 50%; background: #ecfdf5; border: 1px solid #d1fae5; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; color: #0d9e75; overflow: hidden; flex-shrink: 0; cursor: pointer; transition: opacity 0.15s; }
+    .post-modal-avatar:hover { opacity: 0.8; }
+    .post-modal-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .post-modal-author { flex: 1; cursor: pointer; }
+    .post-modal-author:hover .post-modal-name { color: #0d9e75; }
+    .post-modal-name { font-size: 15px; font-weight: 600; color: #052e20; transition: color 0.15s; }
+    .post-modal-handle { font-size: 12px; color: #6bab90; margin-top: 2px; }
+    .post-modal-close { background: none; border: none; font-size: 20px; color: #6bab90; cursor: pointer; padding: 4px; flex-shrink: 0; }
+    .post-modal-close:hover { color: #052e20; }
+    .post-modal-text { font-size: 15px; line-height: 1.7; color: #1f4d38; margin-bottom: 20px; word-break: break-word; white-space: pre-wrap; }
+    .post-modal-stats { display: flex; gap: 20px; font-size: 13px; color: #6bab90; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #d1fae5; }
+    .post-modal-actions { display: flex; gap: 10px; }
+    .post-modal-open-btn { flex: 1; padding: 10px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 8px; color: #065f46; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; display: block; transition: all 0.15s; }
+    .post-modal-open-btn:hover { border-color: #0d9e75; background: #ecfdf5; }
+    .post-modal-save-btn { padding: 10px 16px; background: #fff; border: 1px solid #d1fae5; border-radius: 8px; color: #6bab90; font-size: 13px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .post-modal-save-btn:hover { border-color: #f59e0b; color: #f59e0b; }
+    .post-modal-save-btn.saved { background: #fef3c7; border-color: #f59e0b; color: #d97706; }
+
+    /* ── 프로필 뷰 ── */
+    .profile-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,46,32,0.5); z-index: 400; align-items: center; justify-content: center; }
+    .profile-modal-overlay.open { display: flex; }
+    .profile-modal { background: #fff; border-radius: 16px; width: 90%; max-width: 520px; max-height: 85vh; overflow-y: auto; border: 1px solid #d1fae5; }
+    .profile-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #d1fae5; background: #f0fdf8; border-radius: 16px 16px 0 0; }
+    .profile-modal-header h3 { font-size: 13px; font-weight: 700; color: #0d9e75; letter-spacing: 1px; text-transform: uppercase; }
+    .profile-modal-close { background: none; border: none; font-size: 18px; color: #6bab90; cursor: pointer; }
+    .profile-modal-close:hover { color: #052e20; }
+    .profile-hero { display: flex; flex-direction: column; align-items: center; padding: 28px 20px 20px; border-bottom: 1px solid #d1fae5; }
+    .profile-hero-avatar { width: 72px; height: 72px; border-radius: 50%; background: #ecfdf5; border: 2px solid #d1fae5; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 700; color: #0d9e75; overflow: hidden; margin-bottom: 12px; }
+    .profile-hero-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-hero-name { font-size: 18px; font-weight: 700; color: #052e20; margin-bottom: 4px; }
+    .profile-hero-handle { font-size: 13px; color: #6bab90; margin-bottom: 12px; }
+    .profile-hero-bio { font-size: 13px; color: #4b7360; line-height: 1.6; text-align: center; margin-bottom: 16px; }
+    .profile-hero-stats { display: flex; gap: 0; border: 1px solid #d1fae5; border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+    .profile-stat { text-align: center; padding: 10px 20px; border-right: 1px solid #d1fae5; }
+    .profile-stat:last-child { border-right: none; }
+    .profile-stat-num { font-size: 16px; font-weight: 700; color: #052e20; }
+    .profile-stat-label { font-size: 11px; color: #6bab90; margin-top: 2px; }
+    .profile-hero-btns { display: flex; gap: 8px; width: 100%; }
+    .profile-fav-btn { flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid #0d9e75; background: #0d9e75; color: #fff; transition: all 0.15s; }
+    .profile-fav-btn.favorited { background: #fef3c7; border-color: #f59e0b; color: #d97706; }
+    .profile-ext-btn { padding: 10px 14px; border-radius: 8px; font-size: 13px; border: 1.5px solid #d1fae5; background: #f0fdf8; color: #4b7360; cursor: pointer; transition: all 0.15s; }
+    .profile-ext-btn:hover { border-color: #0d9e75; color: #065f46; }
+    .profile-posts-title { padding: 14px 20px 8px; font-size: 11px; font-weight: 700; color: #6bab90; text-transform: uppercase; letter-spacing: 1px; }
+    .profile-post-item { padding: 14px 20px; border-bottom: 1px solid #f0fdf8; cursor: pointer; transition: background 0.15s; }
+    .profile-post-item:hover { background: #f0fdf8; }
+    .profile-post-text { font-size: 13px; color: #1f4d38; line-height: 1.6; margin-bottom: 6px; }
+    .profile-post-meta { font-size: 11px; color: #6bab90; display: flex; gap: 12px; }
+    .profile-loading { text-align: center; padding: 40px; color: #6bab90; font-size: 13px; }
+
+    /* ── 설정 패널 ── */
+    .panel-overlay { display: none; position: fixed; inset: 0; background: rgba(5,46,32,0.4); z-index: 100; }
+    .panel-overlay.open { display: block; }
+    .settings-panel { position: fixed; right: 0; top: 0; bottom: 0; width: 300px; background: #fff; border-left: 1px solid #d1fae5; z-index: 101; transform: translateX(100%); transition: transform 0.2s ease; overflow-y: auto; }
+    .settings-panel.open { transform: translateX(0); }
+
+    /* ── Favorites 패널 ── */
+    .fav-panel { position: fixed; left: 0; top: 0; bottom: 0; width: 320px; background: #fff; border-right: 1px solid #d1fae5; z-index: 101; transform: translateX(-100%); transition: transform 0.2s ease; overflow-y: auto; }
+    .fav-panel.open { transform: translateX(0); }
+    .fav-panel-header { padding: 20px; border-bottom: 1px solid #d1fae5; display: flex; align-items: center; justify-content: space-between; background: #f0fdf8; position: sticky; top: 0; z-index: 1; }
+    .fav-panel-header h2 { font-size: 13px; font-weight: 700; color: #0d9e75; letter-spacing: 1px; text-transform: uppercase; }
+    .fav-panel-tabs { display: flex; border-bottom: 1px solid #d1fae5; }
+    .fav-panel-tab { flex: 1; padding: 10px; font-size: 12px; font-weight: 600; color: #6bab90; background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
+    .fav-panel-tab.active { color: #0d9e75; border-bottom-color: #0d9e75; }
+    .fav-section { padding: 12px; }
+    .fav-empty { text-align: center; padding: 40px 20px; color: #a7c4b8; font-size: 13px; }
+    .fav-empty .fav-empty-icon { font-size: 32px; margin-bottom: 10px; }
+    .fav-post-item { background: #fff; border: 1px solid #d1fae5; border-radius: 10px; padding: 12px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
+    .fav-post-item:hover { border-color: #6ee7b7; background: #f0fdf8; }
+    .fav-post-author { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .fav-post-avatar { width: 28px; height: 28px; border-radius: 50%; background: #ecfdf5; border: 1px solid #d1fae5; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #0d9e75; overflow: hidden; flex-shrink: 0; }
+    .fav-post-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .fav-post-name { font-size: 12px; font-weight: 600; color: #052e20; }
+    .fav-post-handle { font-size: 11px; color: #6bab90; }
+    .fav-post-text { font-size: 12px; color: #1f4d38; line-height: 1.5; margin-bottom: 8px; }
+    .fav-post-meta { display: flex; gap: 10px; font-size: 11px; color: #6bab90; align-items: center; }
+    .fav-post-remove { margin-left: auto; background: none; border: none; color: #fca5a5; cursor: pointer; font-size: 14px; padding: 0; }
+    .fav-post-remove:hover { color: #dc2626; }
+    .fav-user-item { display: flex; align-items: center; gap: 10px; padding: 10px; background: #fff; border: 1px solid #d1fae5; border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
+    .fav-user-item:hover { border-color: #6ee7b7; background: #f0fdf8; }
+    .fav-user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #ecfdf5; border: 1px solid #d1fae5; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; color: #0d9e75; overflow: hidden; flex-shrink: 0; }
+    .fav-user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .fav-user-info { flex: 1; min-width: 0; }
+    .fav-user-name { font-size: 13px; font-weight: 600; color: #052e20; }
+    .fav-user-handle { font-size: 11px; color: #6bab90; margin-top: 2px; }
+    .fav-user-remove { background: none; border: none; color: #fca5a5; cursor: pointer; font-size: 16px; padding: 4px; flex-shrink: 0; }
+    .fav-user-remove:hover { color: #dc2626; }
+    .fav-count-badge { display: inline-block; background: #0d9e75; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+    .panel-header { padding: 20px; border-bottom: 1px solid #d1fae5; display: flex; align-items: center; justify-content: space-between; background: #f0fdf8; }
+    .panel-header h2 { font-size: 13px; font-weight: 700; color: #0d9e75; letter-spacing: 1px; text-transform: uppercase; }
+    .close-btn { background: none; border: none; color: #6bab90; font-size: 18px; cursor: pointer; }
+    .close-btn:hover { color: #052e20; }
+    .setting-section { padding: 20px; border-bottom: 1px solid #f0fdf8; }
+    .setting-section h3 { font-size: 10px; font-weight: 700; color: #6bab90; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 16px; }
+    .setting-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .setting-row:last-child { margin-bottom: 0; }
+    .setting-label { font-size: 13px; color: #1f4d38; }
+    .setting-label small { display: block; font-size: 11px; color: #6bab90; margin-top: 2px; }
+    .toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-track { position: absolute; inset: 0; background: #d1fae5; border-radius: 10px; cursor: pointer; transition: background 0.2s; }
+    .toggle input:checked + .toggle-track { background: #0d9e75; }
+    .toggle-thumb { position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; background: #fff; border-radius: 50%; transition: transform 0.2s; pointer-events: none; }
+    .toggle input:checked ~ .toggle-thumb { transform: translateX(16px); }
+    .pod-status { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #f0fdf8; border-radius: 7px; margin-bottom: 16px; border: 1px solid #d1fae5; }
+    .pod-dot { width: 7px; height: 7px; border-radius: 50%; background: #0d9e75; flex-shrink: 0; }
+    .pod-dot.off { background: #d1fae5; }
+    .pod-status-text { font-size: 12px; color: #6bab90; }
+    .pod-status-text strong { display: block; font-size: 13px; }
+    .log-list { max-height: 200px; overflow-y: auto; }
+    .log-item { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f0fdf8; font-size: 11px; }
+    .log-item:last-child { border-bottom: none; }
+    .log-time { color: #a7c4b8; min-width: 52px; flex-shrink: 0; }
+    .log-action { color: #4b7360; line-height: 1.4; }
+    .log-type { color: #0d9e75; font-weight: 600; }
+    .log-empty { font-size: 12px; color: #a7c4b8; text-align: center; padding: 20px 0; }
+    .access-count { font-size: 10px; background: #ecfdf5; color: #065f46; padding: 2px 7px; border-radius: 8px; margin-left: 6px; }
+    .data-btn { width: 100%; padding: 9px 12px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 7px; color: #4b7360; font-size: 12px; cursor: pointer; text-align: left; margin-bottom: 6px; transition: all 0.15s; }
+    .data-btn:hover { border-color: #0d9e75; color: #065f46; background: #ecfdf5; }
+    .data-btn.danger { color: #991b1b; border-color: #fecaca; background: #fff5f5; }
+    .data-btn.danger:hover { background: #fee2e2; border-color: #dc2626; color: #dc2626; }
+    .panel-keyword-row { display: flex; gap: 6px; margin-bottom: 10px; }
+    .panel-keyword-input { flex: 1; padding: 8px 10px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 6px; color: #052e20; font-size: 12px; outline: none; }
+    .panel-keyword-input:focus { border-color: #0d9e75; }
+    .panel-keyword-input::placeholder { color: #a7c4b8; }
+    .panel-keyword-add { padding: 8px 12px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 6px; color: #065f46; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .panel-keyword-add:hover { background: #d1fae5; border-color: #0d9e75; }
+    .panel-keyword-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .panel-keyword-tag { display: flex; align-items: center; gap: 5px; padding: 4px 8px 4px 10px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 12px; font-size: 11px; color: #065f46; }
+    .panel-keyword-remove { background: none; border: none; color: #0d9e75; cursor: pointer; font-size: 13px; line-height: 1; opacity: 0.6; padding: 0; }
+    .panel-keyword-remove:hover { opacity: 1; }
+
+    /* ── Ko-fi 버튼 ── */
+    .kofi-btn { position: fixed; bottom: 24px; left: 24px; padding: 10px 18px; background: #fff; border: 1.5px solid #d1fae5; border-radius: 50px; color: #4b7360; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: all 0.2s; z-index: 99; display: flex; align-items: center; gap: 7px; text-decoration: none; }
+    .kofi-btn:hover { border-color: #0d9e75; color: #065f46; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(13,158,117,0.2); }
+    .kofi-btn img { width: 18px; height: 18px; }
+    .manual-btn { position: fixed; bottom: 76px; left: 24px; padding: 10px 18px; background: #fff; border: 1.5px solid #d1fae5; border-radius: 50px; color: #4b7360; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: all 0.2s; z-index: 99; display: flex; align-items: center; gap: 7px; text-decoration: none; }
+    .manual-btn:hover { border-color: #0d9e75; color: #065f46; transform: translateY(-2px); }
+    .feedback-btn { position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; background: #0d9e75; border: none; border-radius: 50px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 20px rgba(13,158,117,0.4); transition: all 0.2s; z-index: 99; display: flex; align-items: center; gap: 8px; }
+    .feedback-btn:hover { background: #0b8a65; transform: translateY(-2px); }
+    .survey-btn { position: fixed; bottom: 76px; right: 24px; padding: 10px 18px; background: #fff; border: 1.5px solid #d1fae5; border-radius: 50px; color: #4b7360; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: all 0.2s; z-index: 99; display: flex; align-items: center; gap: 7px; text-decoration: none; }
+    .survey-btn:hover { border-color: #0d9e75; color: #065f46; transform: translateY(-2px); }
+
+    /* ── QR 모달 ── */
+    .qr-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(5,46,32,0.5); z-index: 300; align-items: center; justify-content: center; }
+    .qr-modal-overlay.open { display: flex; }
+    .qr-modal { background: #fff; border-radius: 16px; padding: 28px; width: 90%; max-width: 360px; border: 1px solid #d1fae5; text-align: center; }
+    .qr-modal h3 { font-size: 16px; font-weight: 600; color: #052e20; margin-bottom: 8px; }
+    .qr-modal p { font-size: 13px; color: #6bab90; margin-bottom: 20px; line-height: 1.6; }
+    .qr-modal-close { background: none; border: none; font-size: 18px; color: #6bab90; cursor: pointer; float: right; margin-top: -8px; }
+    .qr-modal-close:hover { color: #052e20; }
+    #qr-canvas { margin: 0 auto 16px; display: block; }
+    .qr-info { font-size: 12px; color: #6bab90; background: #f0fdf8; border-radius: 8px; padding: 10px; margin-top: 12px; line-height: 1.6; }
+    .qr-btn { position: fixed; bottom: 128px; left: 24px; padding: 10px 18px; background: #fff; border: 1.5px solid #d1fae5; border-radius: 50px; color: #4b7360; font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.08); transition: all 0.2s; z-index: 99; display: flex; align-items: center; gap: 7px; }
+    .qr-btn:hover { border-color: #0d9e75; color: #065f46; transform: translateY(-2px); }
+
+    /* ── 피드백 모달 ── */
+    .feedback-overlay { display: none; position: fixed; inset: 0; background: rgba(5,46,32,0.5); z-index: 200; align-items: center; justify-content: center; }
+    .feedback-overlay.open { display: flex; }
+    .feedback-modal { background: #fff; border-radius: 16px; padding: 32px; width: 90%; max-width: 440px; border: 1px solid #d1fae5; }
+    .feedback-modal h3 { font-size: 18px; font-weight: 600; color: #052e20; margin-bottom: 8px; }
+    .feedback-modal p { font-size: 13px; color: #6bab90; margin-bottom: 20px; line-height: 1.6; }
+    .feedback-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .feedback-type-btn { padding: 10px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 8px; color: #4b7360; font-size: 12px; cursor: pointer; text-align: center; transition: all 0.15s; }
+    .feedback-type-btn:hover, .feedback-type-btn.selected { background: #ecfdf5; border-color: #0d9e75; color: #065f46; font-weight: 500; }
+    .feedback-textarea { width: 100%; padding: 12px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 8px; color: #052e20; font-size: 13px; line-height: 1.6; resize: vertical; min-height: 100px; outline: none; font-family: inherit; margin-bottom: 16px; }
+    .feedback-textarea:focus { border-color: #0d9e75; }
+    .feedback-textarea::placeholder { color: #a7c4b8; }
+    .feedback-modal-btns { display: flex; gap: 8px; }
+    .feedback-cancel { flex: 1; padding: 11px; background: #f0fdf8; border: 1px solid #d1fae5; border-radius: 8px; color: #4b7360; font-size: 13px; cursor: pointer; }
+    .feedback-submit { flex: 2; padding: 11px; background: #0d9e75; border: none; border-radius: 8px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .feedback-success { text-align: center; padding: 20px 0; }
+    .feedback-success .check { font-size: 40px; margin-bottom: 12px; }
+    .feedback-success h4 { font-size: 16px; font-weight: 600; color: #052e20; margin-bottom: 6px; }
+    .feedback-success p { font-size: 13px; color: #6bab90; }
+  </style>
+</head>
+<body>
+
+  <!-- ── 온보딩 ── -->
+  <div class="onboarding" id="onboarding">
+    <div class="logo">My AI Curator</div>
+    <h2>What are you interested in?</h2>
+    <p>Select topics you care about. We'll surface relevant posts from Bluesky and Mastodon — and keep your preferences on your device. Nothing leaves your browser.</p>
+    <div class="section-label">Choose topics</div>
+    <div class="topic-grid" id="topic-grid"></div>
+    <div class="custom-keyword-section">
+      <div class="section-label">Add your own keywords</div>
+      <div class="keyword-input-row">
+        <input type="text" class="keyword-input" id="custom-keyword-input" placeholder="e.g. k-drama, climate, yoga..." maxlength="30"/>
+        <button class="keyword-add-btn" onclick="addCustomKeyword()">Add</button>
+      </div>
+      <div class="keyword-tags" id="keyword-tags"></div>
+      <p class="keyword-hint">Custom keywords matched directly against post text. Up to 10 keywords.</p>
+    </div>
+    <button class="start-btn" id="start-btn" disabled onclick="startApp()">Select at least one topic to continue</button>
+  </div>
+
+  <!-- ── 메인 화면 ── -->
+  <div class="main-view" id="main-view">
+    <header>
+      <div class="header-logo">My AI Curator</div>
+      <div class="header-btns">
+        <button class="icon-btn" id="fav-btn" onclick="openFavPanel()">⭐ Favorites</button>
+        <button class="icon-btn" id="auto-feed-btn" onclick="toggleAutoFeed()">✨ Auto Feed</button>
+        <button class="icon-btn" onclick="openSettings()">Settings & Log</button>
+      </div>
+    </header>
+    <div class="search-bar">
+      <div class="platform-tabs">
+        <button class="platform-tab active-bsky" id="tab-bsky" onclick="switchPlatform('bluesky')">🦋 Bluesky</button>
+        <button class="platform-tab" id="tab-masto" onclick="switchPlatform('mastodon')">🐘 Mastodon</button>
+      </div>
+      <input type="text" id="handle-input" placeholder="Enter Bluesky handle (e.g. bsky.app)"/>
+      <button class="fetch-btn" id="fetch-btn" onclick="loadFeed()">Load</button>
+    </div>
+    <div class="platform-hint" id="platform-hint">
+      <span>Bluesky</span>: Enter handle like <b>username.bsky.social</b>
+    </div>
+    <div class="topic-bar" id="topic-bar"></div>
+    <div class="feed-container">
+      <div class="status-box" id="status-box">
+        <p>Enter a handle above</p>
+        <small>or click ✨ Auto Feed to see posts based on your interests</small>
+      </div>
+      <div class="filter-info" id="filter-info"></div>
+      <div id="feed-list"></div>
+    </div>
+  </div>
+
+  <!-- ── 포스트 상세 모달 ── -->
+  <div class="post-modal-overlay" id="post-modal-overlay" onclick="handlePostModalOverlay(event)">
+    <div class="post-modal">
+      <div class="post-modal-header">
+        <div class="post-modal-avatar" id="modal-avatar" onclick="openAuthorProfile()"></div>
+        <div class="post-modal-author" onclick="openAuthorProfile()">
+          <div class="post-modal-name" id="modal-name"></div>
+          <div class="post-modal-handle" id="modal-handle"></div>
+        </div>
+        <button class="post-modal-close" onclick="closePostModal()">✕</button>
+      </div>
+      <div class="post-modal-text" id="modal-text"></div>
+      <div id="modal-media" style="margin-bottom:16px;"></div>
+      <div class="post-modal-stats">
+        <span>♥ <span id="modal-likes">0</span> likes</span>
+        <span>↻ <span id="modal-reposts">0</span> reposts</span>
+        <span>🕐 <span id="modal-time"></span></span>
+      </div>
+      <div class="post-modal-actions">
+        <a class="post-modal-open-btn" id="modal-open-btn" href="#" target="_blank">🦋 Open in Bluesky</a>
+        <button class="post-modal-save-btn" id="modal-save-btn" onclick="toggleSavePost()">☆ Favorite</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── QR 코드 버튼 ── -->
+  <button class="qr-btn" onclick="openQRModal()">📱 Sync to Mobile</button>
+
+  <!-- ── QR 모달 ── -->
+  <div class="qr-modal-overlay" id="qr-modal-overlay" onclick="handleQROverlay(event)">
+    <div class="qr-modal">
+      <button class="qr-modal-close" onclick="closeQRModal()">✕</button>
+      <h3>📱 Sync to Mobile</h3>
+      <p>Scan this QR code with My AI Curator mobile app to sync your topics and keywords instantly.</p>
+      <div id="qr-canvas" style="display:flex;justify-content:center;margin-bottom:16px;"></div>
+      <div class="qr-info" id="qr-info"></div>
+    </div>
+  </div>
+
+  <!-- ── Ko-fi 버튼 ── -->
+  <a href="https://ko-fi.com/mycurator" target="_blank" class="kofi-btn" onclick="trackEvent('kofi_click','monetization','kofi_button')">
+    <img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="Ko-fi"/>
+    Support this project
+  </a>
+
+  <!-- ── 사용 설명서 버튼 ── -->
+  <a href="manual.html" target="_blank" class="manual-btn">📖 User Manual</a>
+
+  <!-- ── 설문 버튼 ── -->
+  <a href="https://bit.ly/4woOLV7" target="_blank" class="survey-btn" onclick="trackEvent('survey_click','feedback','survey_button')">📝 Quick Survey</a>
+
+  <!-- ── 피드백 버튼 ── -->
+  <button class="feedback-btn" onclick="openFeedback()">💬 Send Feedback</button>
+
+  <!-- ── 프로필 모달 ── -->
+  <div class="profile-modal-overlay" id="profile-modal-overlay" onclick="handleProfileModalOverlay(event)">
+    <div class="profile-modal">
+      <div class="profile-modal-header">
+        <h3>Profile</h3>
+        <button class="profile-modal-close" onclick="closeProfileModal()">✕</button>
+      </div>
+      <div id="profile-modal-content">
+        <div class="profile-loading">Loading profile...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 피드백 모달 ── -->
+  <div class="feedback-overlay" id="feedback-overlay" onclick="handleOverlayClick(event)">
+    <div class="feedback-modal" id="feedback-modal">
+      <div id="feedback-form-view">
+        <h3>Send Feedback</h3>
+        <p>Your thoughts help make My AI Curator better.</p>
+        <div class="feedback-type-grid">
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this,'Bug report')">🐛 Bug report</button>
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this,'Feature request')">✨ Feature request</button>
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this,'General feedback')">💬 General feedback</button>
+          <button class="feedback-type-btn" onclick="selectFeedbackType(this,'I love it!')">❤️ I love it!</button>
+        </div>
+        <textarea class="feedback-textarea" id="feedback-text" placeholder="Tell us more... (optional)"></textarea>
+        <div class="feedback-modal-btns">
+          <button class="feedback-cancel" onclick="closeFeedback()">Cancel</button>
+          <button class="feedback-submit" onclick="submitFeedback()">Send Feedback</button>
+        </div>
+      </div>
+      <div id="feedback-success-view" class="feedback-success" style="display:none">
+        <div class="check">✅</div>
+        <h4>Thank you!</h4>
+        <p>Your feedback has been received.<br>We read every single message.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Favorites 패널 오버레이 ── -->
+  <div class="panel-overlay" id="fav-overlay" onclick="closeFavPanel()"></div>
+
+  <!-- ── Favorites 패널 ── -->
+  <div class="fav-panel" id="fav-panel">
+    <div class="fav-panel-header">
+      <h2>⭐ Favorites</h2>
+      <button class="close-btn" onclick="closeFavPanel()">✕</button>
+    </div>
+    <div class="fav-panel-tabs">
+      <button class="fav-panel-tab active" id="fav-tab-posts" onclick="switchFavTab('posts')">📄 Posts <span id="fav-posts-count"></span></button>
+      <button class="fav-panel-tab" id="fav-tab-users" onclick="switchFavTab('users')">👤 Users <span id="fav-users-count"></span></button>
+    </div>
+    <div class="fav-section" id="fav-posts-section"></div>
+    <div class="fav-section" id="fav-users-section" style="display:none"></div>
+  </div>
+
+  <!-- ── 설정 패널 오버레이 ── -->
+  <div class="panel-overlay" id="overlay" onclick="closeSettings()"></div>
+
+  <!-- ── 설정 패널 ── -->
+  <div class="settings-panel" id="settings-panel">
+    <div class="panel-header">
+      <h2>Settings & Log</h2>
+      <button class="close-btn" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="setting-section">
+      <h3>Pod Access Control</h3>
+      <div class="pod-status" id="pod-status">
+        <div class="pod-dot" id="pod-dot"></div>
+        <div class="pod-status-text">
+          <strong id="pod-status-text">Access allowed</strong>
+          <span id="pod-access-count"></span>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-label">Full pod access<small>Turn off to disable preference reading</small></div>
+        <label class="toggle"><input type="checkbox" id="toggle-pod" checked onchange="togglePod()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-label">Read topic preferences<small>Which topics you selected</small></div>
+        <label class="toggle"><input type="checkbox" id="toggle-topics" checked onchange="savePermissions()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-label">Read history<small>Posts you've already read</small></div>
+        <label class="toggle"><input type="checkbox" id="toggle-read" checked onchange="savePermissions()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+    </div>
+    <div class="setting-section">
+      <h3>Data Saving</h3>
+      <div class="setting-row">
+        <div class="setting-label">Auto-load images<small>Turn off to save mobile data</small></div>
+        <label class="toggle"><input type="checkbox" id="toggle-image" checked onchange="savePermissions()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+      <div class="setting-row">
+        <div class="setting-label">Wi-Fi only prefetch<small>Minimize mobile data usage</small></div>
+        <label class="toggle"><input type="checkbox" id="toggle-wifi" onchange="savePermissions()"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+    </div>
+    <div class="setting-section">
+      <h3>Custom Keywords</h3>
+      <div class="panel-keyword-row">
+        <input type="text" class="panel-keyword-input" id="panel-keyword-input" placeholder="Add keyword..." maxlength="30"/>
+        <button class="panel-keyword-add" onclick="addCustomKeywordFromPanel()">Add</button>
+      </div>
+      <div class="panel-keyword-tags" id="panel-keyword-tags"></div>
+    </div>
+    <div class="setting-section">
+      <h3>Access Log <span class="access-count" id="log-count">0</span></h3>
+      <div class="log-list" id="log-list"><div class="log-empty">No activity yet</div></div>
+    </div>
+    <div class="setting-section">
+      <h3>Extension Data</h3>
+      <button class="data-btn" onclick="loadExtensionData();alert('Extension data refreshed!')">Refresh from extension</button>
+      <p style="font-size:11px;color:#6bab90;margin-top:6px;line-height:1.6">Install the My AI Curator browser extension to auto-collect your Google searches and YouTube history.</p>
+    </div>
+    <div class="setting-section">
+      <h3>My Data</h3>
+      <button class="data-btn" onclick="exportData()">Export preferences (JSON)</button>
+      <button class="data-btn" onclick="importData()">Import preferences</button>
+      <button class="data-btn" onclick="clearReadHistory()">Clear read history</button>
+      <button class="data-btn danger" onclick="resetApp()">Reset all data</button>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.4.12/hls.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    const TOPICS = [
+      { id: 'tech',    label: 'Technology',  keywords: ['ai', 'tech', 'dev', 'code', 'software', '개발', '기술', 'programming', 'python', 'javascript'] },
+      { id: 'startup', label: 'Startups',    keywords: ['startup', 'founder', 'vc', '창업', 'saas', 'product', 'entrepreneur'] },
+      { id: 'design',  label: 'Design',      keywords: ['design', 'ui', 'ux', 'figma', 'typography', 'creative', 'branding'] },
+      { id: 'science', label: 'Science',     keywords: ['science', 'research', 'physics', 'biology', '과학', 'climate', 'space'] },
+      { id: 'crypto',  label: 'Web3',        keywords: ['crypto', 'web3', 'blockchain', 'nft', 'defi', 'bitcoin', 'ethereum'] },
+      { id: 'privacy', label: 'Privacy',     keywords: ['privacy', 'security', 'decentralized', '탈중앙화', 'fediverse', 'data rights'] },
+      { id: 'art',     label: 'Art & Photo', keywords: ['art', 'photo', 'photography', '사진', 'illustration', 'drawing', 'gallery'] },
+      { id: 'music',   label: 'Music',       keywords: ['music', 'song', 'album', 'artist', 'playlist', 'concert', 'band'] },
+      { id: 'game',    label: 'Gaming',      keywords: ['game', 'gaming', 'indie', 'steam', 'nintendo', 'playstation', 'xbox'] },
+      { id: 'sports',  label: 'Sports',      keywords: ['sports', 'football', 'soccer', 'basketball', 'baseball', 'tennis', 'nfl'] },
+      { id: 'news',    label: 'News',        keywords: ['news', 'politics', 'election', 'policy', 'government', 'media'] },
+      { id: 'life',    label: 'Lifestyle',   keywords: ['life', 'food', 'travel', 'coffee', 'health', 'fitness', 'cooking'] },
+    ]
+
+    const TOPIC_ACCOUNTS = {
+      tech:    ['theverge.com', 'wired.com', 'arstechnica.com'],
+      startup: ['ycombinator.bsky.social', 'techcrunch.com'],
+      design:  ['uxdesign.bsky.social', 'smashingmag.com'],
+      science: ['sciencealert.com', 'newscientist.com'],
+      privacy: ['eff.org', 'privacyguides.org'],
+      news:    ['bbc.com', 'reuters.com'],
+      life:    ['bonappetit.com'],
+      music:   ['pitchfork.com'],
+      game:    ['ign.com', 'kotaku.com'],
+      sports:  ['theathletic.com'],
+      crypto:  ['coindesk.com'],
+      art:     ['artstation.bsky.social'],
+    }
+
+    let selectedTopics = [], customKeywords = [], activeFilter = 'all'
+    let allPosts = [], readPosts = new Set(), accessLog = []
+    let permissions = { pod: true, topics: true, readHistory: true, images: true, wifiOnly: false }
+    let selectedFeedbackType = ''
+    let currentPlatform = 'bluesky'
+    let autoFeedActive = false
+    let currentModalPost = null
+    let savedPosts = JSON.parse(localStorage.getItem('curator-saved-posts') || '[]')
+
+    // ── 포스트 상세 모달 ──────────────────────────────────
+    function openPostModal(item) {
+      currentModalPost = item
+      const post = item.post
+      const author = post.author
+      const isMasto = item.platform === 'mastodon'
+
+      const avatarEl = document.getElementById('modal-avatar')
+      if (author.avatar) {
+        avatarEl.innerHTML = `<img src="${author.avatar}" alt="" onerror="this.style.display='none'">`
+      } else {
+        avatarEl.textContent = (author.displayName || author.handle || '?')[0].toUpperCase()
+      }
+
+      document.getElementById('modal-name').textContent = author.displayName || author.handle
+      document.getElementById('modal-handle').textContent = '@' + author.handle
+      document.getElementById('modal-text').textContent = post.record?.text || ''
+
+      // 미디어 표시
+      const modalMedia = document.getElementById('modal-media')
+      modalMedia.innerHTML = ''
+      const embed = post.embed || post.record?.embed
+      if (embed) {
+        const images = embed.images || embed?.media?.images || []
+        if (images.length > 0) {
+          const countClass = ['','one','two','three','four'][Math.min(images.length, 4)]
+          const imgTags = images.slice(0, 4).map(img => {
+            const src = img.fullsize || img.thumb
+            return src ? `<img src="${src}" alt="${img.alt || ''}" style="max-width:100%;border-radius:8px;margin-bottom:4px;" onerror="this.style.display='none'">` : ''
+          }).join('')
+          modalMedia.innerHTML = `<div class="post-images ${countClass}">${imgTags}</div>`
+        } else if (embed.external) {
+          const ext = embed.external
+          const thumb = ext.thumb
+          modalMedia.innerHTML = `
+            <a href="${ext.uri}" target="_blank" class="post-external" onclick="event.stopPropagation()">
+              ${thumb ? `<img src="${thumb}" class="post-external-thumb" onerror="this.style.display='none'">` : ''}
+              <div class="post-external-info">
+                <div class="post-external-title">${ext.title || ext.uri}</div>
+                ${ext.description ? `<div class="post-external-desc">${ext.description}</div>` : ''}
+              </div>
+            </a>`
+        } else if (embed.video || embed?.$type?.includes('video')) {
+          const playlist = embed.video?.playlist || embed.playlist
+          if (playlist) {
+            const videoId = 'modal-video-' + Date.now()
+            modalMedia.innerHTML = `<video id="${videoId}" class="post-video" controls style="width:100%;border-radius:8px;max-height:360px;background:#000;"></video>`
+            setTimeout(() => initHLS(videoId, playlist), 100)
+          }
+        }
+      }
+      document.getElementById('modal-likes').textContent = post.likeCount || 0
+      document.getElementById('modal-reposts').textContent = post.repostCount || 0
+
+      const ago = d => {
+        const s = (Date.now() - new Date(d)) / 1000
+        if (s < 60) return 'just now'
+        if (s < 3600) return Math.floor(s/60) + 'm ago'
+        if (s < 86400) return Math.floor(s/3600) + 'h ago'
+        return Math.floor(s/86400) + 'd ago'
+      }
+      document.getElementById('modal-time').textContent = ago(post.record?.createdAt)
+
+      const openBtn = document.getElementById('modal-open-btn')
+      if (isMasto) {
+        openBtn.href = `https://mastodon.social/@${author.handle}`
+        openBtn.textContent = '🐘 Open in Mastodon'
+      } else {
+        const postId = post.uri?.split('/').pop()
+        openBtn.href = `https://bsky.app/profile/${author.handle}/post/${postId}`
+        openBtn.textContent = '🦋 Open in Bluesky'
+      }
+
+      const saveBtn = document.getElementById('modal-save-btn')
+      const isSaved = savedPosts.some(p => p.post.uri === post.uri)
+      saveBtn.className = 'post-modal-save-btn' + (isSaved ? ' saved' : '')
+      saveBtn.textContent = isSaved ? '⭐ Favorited' : '☆ Favorite'
+
+      document.getElementById('post-modal-overlay').classList.add('open')
+    }
+
+    function closePostModal() {
+      document.getElementById('post-modal-overlay').classList.remove('open')
+      currentModalPost = null
+    }
+
+    function openAuthorProfile() {
+      if (!currentModalPost) return
+      const author = currentModalPost.post.author
+      const isMasto = currentModalPost.platform === 'mastodon'
+      openProfileModal(author.handle, isMasto)
+    }
+
+    async function openProfileModal(handle, isMasto) {
+      document.getElementById('profile-modal-overlay').classList.add('open')
+      document.getElementById('profile-modal-content').innerHTML = '<div class="profile-loading">Loading profile...</div>'
+
+      try {
+        let profile, posts
+
+        if (isMasto) {
+          const parts = handle.replace(/^@/, '').split('@')
+          const username = parts[0]
+          const instance = parts[1] || 'mastodon.social'
+          const lookupRes = await fetch(`https://${instance}/api/v1/accounts/lookup?acct=${username}`)
+          profile = await lookupRes.json()
+          const statusRes = await fetch(`https://${instance}/api/v1/accounts/${profile.id}/statuses?limit=10&exclude_replies=true`)
+          const statuses = await statusRes.json()
+          posts = statuses.map(s => ({
+            text: stripHtml(s.content),
+            likes: s.favourites_count || 0,
+            reposts: s.reblogs_count || 0,
+            createdAt: s.created_at,
+            authorHandle: `${profile.username}@${instance}`,
+            authorName: profile.display_name || profile.username,
+            authorAvatar: profile.avatar,
+            isMasto: true,
+          }))
+          renderProfileModal({
+            avatar: profile.avatar,
+            displayName: profile.display_name || profile.username,
+            handle: `${profile.username}@${instance}`,
+            bio: stripHtml(profile.note || ''),
+            followers: profile.followers_count || 0,
+            following: profile.following_count || 0,
+            postsCount: profile.statuses_count || 0,
+          }, posts, handle, isMasto)
+        } else {
+          const profileRes = await fetch(`https://api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${handle}`)
+          profile = await profileRes.json()
+          const feedRes = await fetch(`https://api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=10`)
+          const feedData = await feedRes.json()
+          posts = (feedData.feed || []).map(f => ({
+            text: f.post?.record?.text || '',
+            likes: f.post?.likeCount || 0,
+            reposts: f.post?.repostCount || 0,
+            createdAt: f.post?.record?.createdAt || '',
+            uri: f.post?.uri,
+            authorHandle: handle,
+            authorName: profile.displayName || handle,
+            authorAvatar: profile.avatar,
+            isMasto: false,
+          }))
+          renderProfileModal({
+            avatar: profile.avatar,
+            displayName: profile.displayName || handle,
+            handle: profile.handle,
+            bio: profile.description || '',
+            followers: profile.followersCount || 0,
+            following: profile.followsCount || 0,
+            postsCount: profile.postsCount || 0,
+          }, posts, handle, isMasto)
+        }
+      } catch(e) {
+        document.getElementById('profile-modal-content').innerHTML = `<div class="profile-loading">Failed to load profile</div>`
+      }
+    }
+
+    let profilePosts = []
+
+    function renderProfileModal(profile, posts, handle, isMasto) {
+      profilePosts = posts
+      const ago = d => {
+        const s = (Date.now() - new Date(d)) / 1000
+        if (s < 60) return 'just now'
+        if (s < 3600) return Math.floor(s/60) + 'm ago'
+        if (s < 86400) return Math.floor(s/3600) + 'h ago'
+        return Math.floor(s/86400) + 'd ago'
+      }
+
+      const favs = JSON.parse(localStorage.getItem('curator-fav-users') || '[]')
+      const isFav = favs.some(u => u.handle === profile.handle)
+
+      const avatarHtml = profile.avatar
+        ? `<img src="${profile.avatar}" alt="" onerror="this.style.display='none'">`
+        : (profile.displayName || profile.handle || '?')[0].toUpperCase()
+
+      const postsHtml = posts.map((p, idx) => `
+        <div class="profile-post-item" onclick="openPostFromProfile(${idx})">
+          <div class="profile-post-text">${(p.text || '').replace(/\n/g,'<br>').substring(0, 200)}${p.text?.length > 200 ? '...' : ''}</div>
+          <div class="profile-post-meta">
+            <span>♥ ${p.likes}</span>
+            <span>↻ ${p.reposts}</span>
+            <span>${ago(p.createdAt)}</span>
+          </div>
+        </div>`).join('')
+
+      document.getElementById('profile-modal-content').innerHTML = `
+        <div class="profile-hero">
+          <div class="profile-hero-avatar">${avatarHtml}</div>
+          <div class="profile-hero-name">${profile.displayName}</div>
+          <div class="profile-hero-handle">@${profile.handle}</div>
+          ${profile.bio ? `<div class="profile-hero-bio">${profile.bio}</div>` : ''}
+          <div class="profile-hero-stats">
+            <div class="profile-stat"><div class="profile-stat-num">${profile.followers.toLocaleString()}</div><div class="profile-stat-label">Followers</div></div>
+            <div class="profile-stat"><div class="profile-stat-num">${profile.following.toLocaleString()}</div><div class="profile-stat-label">Following</div></div>
+            <div class="profile-stat"><div class="profile-stat-num">${profile.postsCount.toLocaleString()}</div><div class="profile-stat-label">Posts</div></div>
+          </div>
+          <div class="profile-hero-btns">
+            <button class="profile-fav-btn ${isFav ? 'favorited' : ''}" id="profile-fav-btn" onclick="toggleProfileFavorite(${JSON.stringify(profile).replace(/"/g, '&quot;')})">
+              ${isFav ? '⭐ Favorited' : '☆ Add to Favorites'}
+            </button>
+            <button class="profile-ext-btn" onclick="window.open('${isMasto ? `https://mastodon.social/@${handle}` : `https://bsky.app/profile/${handle}`}','_blank')">
+              ${isMasto ? '🐘' : '🦋'} Open
+            </button>
+          </div>
+        </div>
+        <div class="profile-posts-title">Recent Posts</div>
+        ${postsHtml || '<div class="profile-loading">No posts found</div>'}
+      `
+    }
+
+    function openPostFromProfile(idx) {
+      const p = profilePosts[idx]
+      if (!p) return
+      const item = {
+        platform: p.isMasto ? 'mastodon' : 'bluesky',
+        post: {
+          uri: p.uri || String(idx),
+          author: {
+            displayName: p.authorName || p.authorHandle,
+            handle: p.authorHandle,
+            avatar: p.authorAvatar,
+          },
+          record: {
+            text: p.text || '',
+            createdAt: p.createdAt,
+          },
+          likeCount: p.likes || 0,
+          repostCount: p.reposts || 0,
+        }
+      }
+      openPostModal(item)
+    }
+
+    function toggleProfileFavorite(profile) {
+      let favs = JSON.parse(localStorage.getItem('curator-fav-users') || '[]')
+      const isFav = favs.some(u => u.handle === profile.handle)
+      if (isFav) {
+        favs = favs.filter(u => u.handle !== profile.handle)
+      } else {
+        favs.push(profile)
+      }
+      localStorage.setItem('curator-fav-users', JSON.stringify(favs))
+      const btn = document.getElementById('profile-fav-btn')
+      btn.className = 'profile-fav-btn' + (!isFav ? ' favorited' : '')
+      btn.textContent = !isFav ? '⭐ Favorited' : '☆ Add to Favorites'
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profile-modal-overlay').classList.remove('open')
+    }
+
+    function handleProfileModalOverlay(e) {
+      if (e.target === document.getElementById('profile-modal-overlay')) closeProfileModal()
+    }
+
+    function handlePostModalOverlay(e) {
+      if (e.target === document.getElementById('post-modal-overlay')) closePostModal()
+    }
+
+    function toggleSavePost() {
+      if (!currentModalPost) return
+      const uri = currentModalPost.post.uri
+      const isSaved = savedPosts.some(p => p.post.uri === uri)
+      if (isSaved) {
+        savedPosts = savedPosts.filter(p => p.post.uri !== uri)
+      } else {
+        savedPosts.push(currentModalPost)
+      }
+      localStorage.setItem('curator-saved-posts', JSON.stringify(savedPosts))
+      const saveBtn = document.getElementById('modal-save-btn')
+      saveBtn.className = 'post-modal-save-btn' + (!isSaved ? ' saved' : '')
+      saveBtn.textContent = !isSaved ? '⭐ Favorited' : '☆ Favorite'
+    }
+
+    // ── 자동 피드 ──────────────────────────────────────────
+    function toggleAutoFeed() {
+      const btn = document.getElementById('auto-feed-btn')
+      if (autoFeedActive) {
+        autoFeedActive = false
+        btn.classList.remove('active')
+        btn.textContent = '✨ Auto Feed'
+        allPosts = []
+        document.getElementById('feed-list').innerHTML = ''
+        document.getElementById('status-box').style.display = 'block'
+        document.getElementById('filter-info').textContent = ''
+        const banner = document.getElementById('auto-feed-banner')
+        if (banner) banner.remove()
+      } else {
+        autoFeedActive = true
+        btn.classList.add('active')
+        btn.textContent = '✨ Auto Feed ON'
+        loadAutoFeed()
+      }
+      trackEvent('auto_feed_toggle', 'feed', autoFeedActive ? 'on' : 'off')
+    }
+
+    async function loadAutoFeed() {
+      if (selectedTopics.length === 0 && customKeywords.length === 0) {
+        document.getElementById('status-box').style.display = 'none'
+        document.getElementById('feed-list').innerHTML = `<div class="status-box"><p>No interests selected yet</p><small>Select topics or add keywords to see your auto feed</small></div>`
+        return
+      }
+      document.getElementById('status-box').style.display = 'none'
+      document.getElementById('filter-info').textContent = ''
+      document.getElementById('feed-list').innerHTML = '<div class="loading">✨ Loading your personalized feed...</div>'
+      const searchSuccess = await tryBlueskySearch()
+      if (!searchSuccess) await loadCuratedAccountFeeds()
+    }
+
+    async function tryBlueskySearch() {
+      try {
+        const searchTerms = []
+        selectedTopics.forEach(id => {
+          const topic = TOPICS.find(t => t.id === id)
+          if (topic) searchTerms.push(topic.keywords[0])
+        })
+        customKeywords.forEach(kw => searchTerms.push(kw))
+        if (searchTerms.length === 0) return false
+        const query = encodeURIComponent(searchTerms[0])
+        const url = `https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${query}&limit=30&sort=latest`
+        const res = await fetch(url)
+        if (!res.ok) return false
+        const data = await res.json()
+        const posts = data.posts || []
+        if (posts.length === 0) return false
+        allPosts = posts.map(p => ({
+          platform: 'bluesky',
+          post: {
+            uri: p.uri,
+            author: { displayName: p.author?.displayName || p.author?.handle, handle: p.author?.handle, avatar: p.author?.avatar },
+            record: { text: p.record?.text || '', createdAt: p.record?.createdAt || p.indexedAt },
+            likeCount: p.likeCount || 0,
+            repostCount: p.repostCount || 0,
+          }
+        }))
+        renderFeed()
+        showAutoFeedBanner(`🔍 "${searchTerms[0]}" and more`, allPosts.length)
+        addLog(`Auto feed: search "${searchTerms[0]}" → ${allPosts.length} posts`, 'auto')
+        return true
+      } catch(e) { return false }
+    }
+
+    async function loadCuratedAccountFeeds() {
+      const accounts = []
+      selectedTopics.forEach(id => {
+        const accs = TOPIC_ACCOUNTS[id] || []
+        if (accs[0]) accounts.push(accs[0])
+      })
+      if (accounts.length === 0) accounts.push('bsky.app')
+      const results = await Promise.allSettled(
+        accounts.slice(0, 5).map(async handle => {
+          try {
+            const res = await fetch(`https://api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=15`)
+            if (!res.ok) return []
+            const data = await res.json()
+            return (data.feed || []).map(item => ({ platform: 'bluesky', ...item }))
+          } catch { return [] }
+        })
+      )
+      const seen = new Set()
+      const combined = results
+        .filter(r => r.status === 'fulfilled')
+        .flatMap(r => r.value)
+        .filter(item => {
+          const uri = item.post?.uri
+          if (!uri || seen.has(uri)) return false
+          seen.add(uri); return true
+        })
+        .sort((a, b) => new Date(b.post?.record?.createdAt || 0) - new Date(a.post?.record?.createdAt || 0))
+        .slice(0, 50)
+      if (combined.length === 0) {
+        document.getElementById('feed-list').innerHTML = `<div class="status-box"><p>Couldn't load auto feed</p><small>Try entering a Bluesky handle manually</small></div>`
+        return
+      }
+      allPosts = combined
+      renderFeed()
+      const labels = selectedTopics.map(id => TOPICS.find(t=>t.id===id)?.label).filter(Boolean).join(', ')
+      showAutoFeedBanner(`Curated: ${labels || 'your interests'}`, allPosts.length)
+      addLog(`Auto feed: ${allPosts.length} posts from ${accounts.length} accounts`, 'auto')
+    }
+
+    function showAutoFeedBanner(source, count) {
+      const existing = document.getElementById('auto-feed-banner')
+      if (existing) existing.remove()
+      const banner = document.createElement('div')
+      banner.id = 'auto-feed-banner'
+      banner.style.cssText = 'background:#f0fdf8;border-bottom:1px solid #d1fae5;padding:8px 24px;font-size:12px;color:#4b7360;display:flex;align-items:center;justify-content:space-between;'
+      banner.innerHTML = `<span>✨ ${count} posts | ${source}</span><button onclick="loadAutoFeed()" style="background:none;border:1px solid #d1fae5;border-radius:6px;padding:3px 10px;font-size:11px;color:#0d9e75;cursor:pointer;">↻ Refresh</button>`
+      const topicBar = document.getElementById('topic-bar')
+      if (topicBar) topicBar.after(banner)
+    }
+
+    // ── 플랫폼 전환 ──────────────────────────────────────
+    function switchPlatform(platform) {
+      currentPlatform = platform
+      const input = document.getElementById('handle-input')
+      const fetchBtn = document.getElementById('fetch-btn')
+      const hint = document.getElementById('platform-hint')
+      const tabBsky = document.getElementById('tab-bsky')
+      const tabMasto = document.getElementById('tab-masto')
+      if (platform === 'bluesky') {
+        tabBsky.className = 'platform-tab active-bsky'
+        tabMasto.className = 'platform-tab'
+        input.placeholder = 'Enter Bluesky handle (e.g. bsky.app)'
+        fetchBtn.className = 'fetch-btn'
+        hint.innerHTML = '<span>Bluesky</span>: Enter handle like <b>username.bsky.social</b>'
+      } else {
+        tabBsky.className = 'platform-tab'
+        tabMasto.className = 'platform-tab active-masto'
+        input.placeholder = 'Enter Mastodon handle (e.g. user@mastodon.social)'
+        fetchBtn.className = 'fetch-btn masto'
+        hint.innerHTML = '<span class="masto">Mastodon</span>: Enter handle like <b>username@mastodon.social</b>'
+      }
+      allPosts = []
+      document.getElementById('feed-list').innerHTML = ''
+      document.getElementById('filter-info').textContent = ''
+      document.getElementById('status-box').style.display = 'block'
+      trackEvent('platform_switch', 'feed', platform)
+    }
+
+    // ── Mastodon API ──────────────────────────────────────
+    async function loadMastodonFeed(handle) {
+      let username, instance
+      if (handle.includes('@')) {
+        const parts = handle.replace(/^@/, '').split('@')
+        username = parts[0]; instance = parts[1] || 'mastodon.social'
+      } else {
+        username = handle; instance = 'mastodon.social'
+      }
+      if (permissions.pod) addLog(`Fetching Mastodon: @${username}@${instance}`, 'network')
+      const lookupRes = await fetch(`https://${instance}/api/v1/accounts/lookup?acct=${username}`)
+      if (!lookupRes.ok) throw new Error(`Account not found on ${instance} (error ${lookupRes.status})`)
+      const account = await lookupRes.json()
+      const statusRes = await fetch(`https://${instance}/api/v1/accounts/${account.id}/statuses?limit=30&exclude_replies=true`)
+      if (!statusRes.ok) throw new Error(`Could not fetch statuses (error ${statusRes.status})`)
+      const statuses = await statusRes.json()
+      return statuses.map(s => ({
+        platform: 'mastodon',
+        post: {
+          uri: s.id,
+          author: { displayName: account.display_name || account.username, handle: `${account.username}@${instance}`, avatar: account.avatar },
+          record: { text: stripHtml(s.content), createdAt: s.created_at },
+          likeCount: s.favourites_count || 0, repostCount: s.reblogs_count || 0,
+        }
+      }))
+    }
+
+    function stripHtml(html) {
+      const tmp = document.createElement('div')
+      tmp.innerHTML = html
+      return tmp.textContent || tmp.innerText || ''
+    }
+
+    // ── Bluesky API ───────────────────────────────────────
+    async function loadBlueskyFeed(handle) {
+      if (permissions.pod) addLog(`Fetching Bluesky: @${handle}`, 'network')
+      const res = await fetch(`https://api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=30`)
+      if (!res.ok) throw new Error(`Handle not found (error ${res.status})`)
+      const data = await res.json()
+      return (data.feed || []).map(item => ({ platform: 'bluesky', ...item }))
+    }
+
+    // ── 피드 로드 ─────────────────────────────────────────
+    async function loadFeed() {
+      const handle = document.getElementById('handle-input').value.trim()
+      if (!handle) return
+      if (autoFeedActive) {
+        autoFeedActive = false
+        document.getElementById('auto-feed-btn').classList.remove('active')
+        document.getElementById('auto-feed-btn').textContent = '✨ Auto Feed'
+        const banner = document.getElementById('auto-feed-banner')
+        if (banner) banner.remove()
+      }
+      document.getElementById('status-box').style.display = 'none'
+      document.getElementById('filter-info').textContent = ''
+      document.getElementById('feed-list').innerHTML = '<div class="loading">Fetching feed...</div>'
+      trackEvent('feed_load', 'feed', `${currentPlatform}:${handle}`)
+      try {
+        if (currentPlatform === 'mastodon') {
+          allPosts = await loadMastodonFeed(handle)
+        } else {
+          allPosts = await loadBlueskyFeed(handle)
+        }
+        if (permissions.pod) addLog(`Received ${allPosts.length} posts`, 'read')
+        if (!allPosts.length) {
+          document.getElementById('feed-list').innerHTML = '<div class="status-box"><p>No posts found</p></div>'
+          return
+        }
+        renderFeed()
+      } catch(err) {
+        document.getElementById('feed-list').innerHTML = `<div class="error-box"><strong>Something went wrong</strong>${err.message}</div>`
+      }
+    }
+
+    // ── 저장/불러오기 ─────────────────────────────────────
+    function loadSaved() {
+      const t = localStorage.getItem('curator-topics')
+      const k = localStorage.getItem('curator-keywords')
+      if (t) selectedTopics = JSON.parse(t)
+      if (k) customKeywords = JSON.parse(k)
+      return !!t
+    }
+
+    function saveTopics() {
+      localStorage.setItem('curator-topics', JSON.stringify(selectedTopics))
+      localStorage.setItem('curator-keywords', JSON.stringify(customKeywords))
+    }
+
+    function loadPermissions() {
+      const s = localStorage.getItem('curator-permissions')
+      if (s) permissions = { ...permissions, ...JSON.parse(s) }
+    }
+
+    function savePermissions() {
+      permissions.pod = document.getElementById('toggle-pod').checked
+      permissions.topics = document.getElementById('toggle-topics').checked
+      permissions.readHistory = document.getElementById('toggle-read').checked
+      permissions.images = document.getElementById('toggle-image').checked
+      permissions.wifiOnly = document.getElementById('toggle-wifi').checked
+      localStorage.setItem('curator-permissions', JSON.stringify(permissions))
+      updatePodStatus()
+    }
+
+    function updatePodStatus() {
+      const dot = document.getElementById('pod-dot')
+      const text = document.getElementById('pod-status-text')
+      const count = document.getElementById('pod-access-count')
+      dot.classList.toggle('off', !permissions.pod)
+      text.textContent = permissions.pod ? 'Access allowed' : 'Access blocked'
+      text.style.color = permissions.pod ? '#0d9e75' : '#dc2626'
+      count.textContent = accessLog.length > 0 ? `${accessLog.length} events this session` : ''
+    }
+
+    function togglePod() {
+      permissions.pod = document.getElementById('toggle-pod').checked
+      ;['toggle-topics','toggle-read'].forEach(id => {
+        document.getElementById(id).checked = permissions.pod
+        document.getElementById(id).disabled = !permissions.pod
+      })
+      savePermissions()
+      addLog(permissions.pod ? 'Full access enabled' : 'Full access blocked', 'setting')
+    }
+
+    function addLog(action, type = 'read') {
+      const time = new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false })
+      accessLog.unshift({ time, action, type })
+      if (accessLog.length > 50) accessLog.pop()
+      renderLog(); updatePodStatus()
+    }
+
+    function renderLog() {
+      const list = document.getElementById('log-list')
+      const countEl = document.getElementById('log-count')
+      countEl.textContent = accessLog.length
+      if (!accessLog.length) { list.innerHTML = '<div class="log-empty">No activity yet</div>'; return }
+      list.innerHTML = accessLog.map(i => `<div class="log-item"><span class="log-time">${i.time}</span><span class="log-action"><span class="log-type">[${i.type}]</span> ${i.action}</span></div>`).join('')
+    }
+
+    function renderTopicGrid() {
+      document.getElementById('topic-grid').innerHTML = TOPICS.map(t => `
+        <div class="topic-btn" data-id="${t.id}" onclick="toggleTopic('${t.id}')">
+          <div class="topic-dot"></div>${t.label}
+        </div>`).join('')
+    }
+
+    function toggleTopic(id) {
+      selectedTopics = selectedTopics.includes(id) ? selectedTopics.filter(t => t !== id) : [...selectedTopics, id]
+      document.querySelectorAll('.topic-btn').forEach(b => { b.classList.toggle('selected', selectedTopics.includes(b.dataset.id)) })
+      updateStartBtn()
+    }
+
+    function updateStartBtn() {
+      const total = selectedTopics.length + customKeywords.length
+      const btn = document.getElementById('start-btn')
+      btn.disabled = total === 0
+      btn.textContent = total > 0 ? `Continue with ${total} interest${total > 1 ? 's' : ''}` : 'Select at least one topic to continue'
+    }
+
+    function addCustomKeyword() {
+      const input = document.getElementById('custom-keyword-input')
+      const val = input.value.trim().toLowerCase()
+      if (!val) return
+      if (customKeywords.length >= 10) { alert('Up to 10 custom keywords.'); return }
+      if (customKeywords.includes(val)) { input.value = ''; return }
+      customKeywords.push(val); input.value = ''
+      renderKeywordTags(); updateStartBtn()
+    }
+
+    function removeCustomKeyword(kw) {
+      customKeywords = customKeywords.filter(k => k !== kw)
+      renderKeywordTags(); renderPanelKeywordTags()
+      updateStartBtn(); saveTopics(); renderTopicBar()
+      if (allPosts.length > 0) renderFeed()
+    }
+
+    function renderKeywordTags() {
+      const c = document.getElementById('keyword-tags')
+      if (!c) return
+      c.innerHTML = customKeywords.map(kw => `<div class="keyword-tag">${kw}<button class="keyword-remove" onclick="removeCustomKeyword('${kw}')">✕</button></div>`).join('')
+    }
+
+    function addCustomKeywordFromPanel() {
+      const input = document.getElementById('panel-keyword-input')
+      const val = input.value.trim().toLowerCase()
+      if (!val) return
+      if (customKeywords.length >= 10) { alert('Up to 10 custom keywords.'); return }
+      if (customKeywords.includes(val)) { input.value = ''; return }
+      customKeywords.push(val); input.value = ''
+      renderPanelKeywordTags(); renderTopicBar(); saveTopics()
+      addLog(`Custom keyword added: "${val}"`, 'write')
+      if (allPosts.length > 0) renderFeed()
+    }
+
+    function removeCustomKeywordFromPanel(kw) {
+      customKeywords = customKeywords.filter(k => k !== kw)
+      renderPanelKeywordTags(); renderKeywordTags(); renderTopicBar(); saveTopics()
+      addLog(`Custom keyword removed: "${kw}"`, 'write')
+      if (allPosts.length > 0) renderFeed()
+    }
+
+    function renderPanelKeywordTags() {
+      const c = document.getElementById('panel-keyword-tags')
+      if (!c) return
+      c.innerHTML = customKeywords.length === 0
+        ? '<span style="font-size:11px;color:#a7c4b8">No custom keywords yet</span>'
+        : customKeywords.map(kw => `<div class="panel-keyword-tag">${kw}<button class="panel-keyword-remove" onclick="removeCustomKeywordFromPanel('${kw}')">✕</button></div>`).join('')
+    }
+
+    function startApp() {
+      saveTopics()
+      const all = [...selectedTopics.map(id => TOPICS.find(t=>t.id===id)?.label), ...customKeywords]
+      addLog('Preferences saved: ' + all.join(', '), 'write')
+      trackEvent('onboarding_complete', 'onboarding', `${selectedTopics.length} topics`)
+      showMainView()
+    }
+
+    function showMainView() {
+      document.getElementById('onboarding').style.display = 'none'
+      document.getElementById('main-view').style.display = 'block'
+      renderTopicBar(); renderPanelKeywordTags()
+    }
+
+    function openSettings() {
+      document.getElementById('settings-panel').classList.add('open')
+      document.getElementById('overlay').classList.add('open')
+      renderLog(); renderPanelKeywordTags()
+    }
+
+    function closeSettings() {
+      document.getElementById('settings-panel').classList.remove('open')
+      document.getElementById('overlay').classList.remove('open')
+    }
+
+    function renderTopicBar() {
+      const myTopics = TOPICS.filter(t => selectedTopics.includes(t.id))
+      document.getElementById('topic-bar').innerHTML = [
+        `<span class="topic-tag active" data-filter="all" onclick="setFilter('all')">All</span>`,
+        ...myTopics.map(t => `<span class="topic-tag" data-filter="${t.id}" onclick="setFilter('${t.id}')">${t.label}</span>`),
+        ...customKeywords.map(kw => `<span class="topic-tag custom" data-filter="custom:${kw}" onclick="setFilter('custom:${kw}')">${kw}</span>`)
+      ].join('')
+    }
+
+    function setFilter(filterId) {
+      activeFilter = filterId
+      document.querySelectorAll('.topic-tag').forEach(tag => { tag.classList.toggle('active', tag.dataset.filter === filterId) })
+      if (permissions.pod && permissions.topics) {
+        const label = filterId === 'all' ? 'All' : filterId.startsWith('custom:') ? filterId.replace('custom:','') : TOPICS.find(t=>t.id===filterId)?.label
+        addLog(`Filter applied: ${label}`, 'read')
+      }
+      trackEvent('filter_change', 'feed', filterId)
+      renderFeed()
+    }
+
+    function matchScore(text, topicIds, customKws) {
+      const lower = text.toLowerCase()
+      let score = 0, matched = []
+      topicIds.forEach(id => {
+        const topic = TOPICS.find(t=>t.id===id)
+        if (!topic) return
+        topic.keywords.forEach(kw => {
+          if (lower.includes(kw.toLowerCase())) { score++; if (!matched.includes(topic.label)) matched.push(topic.label) }
+        })
+      })
+      customKws.forEach(kw => {
+        if (lower.includes(kw.toLowerCase())) { score++; if (!matched.includes(kw)) matched.push(kw) }
+      })
+      return { score, matched }
+    }
+
+    function renderFeed() {
+      const feedList = document.getElementById('feed-list')
+      const filterInfo = document.getElementById('filter-info')
+      const useFilter = permissions.pod && permissions.topics
+      let filterTopics = [], filterKws = []
+
+      if (useFilter) {
+        if (activeFilter === 'all') { filterTopics = selectedTopics; filterKws = customKeywords }
+        else if (activeFilter.startsWith('custom:')) filterKws = [activeFilter.replace('custom:','')]
+        else filterTopics = [activeFilter]
+      }
+
+      const scored = allPosts.map(item => {
+        const text = item.post.record?.text || ''
+        const { score, matched } = useFilter ? matchScore(text, filterTopics, filterKws) : { score:0, matched:[] }
+        return { ...item, score, matched }
+      })
+      scored.sort((a,b) => b.score - a.score)
+      const hits = scored.filter(p => p.score > 0)
+      const others = scored.filter(p => p.score === 0)
+
+      if (!useFilter) filterInfo.textContent = 'Pod access is off — showing chronological feed'
+      else if (activeFilter === 'all') filterInfo.textContent = hits.length > 0 ? `${hits.length} posts match your interests — shown first` : 'No matches found — showing all posts chronologically'
+      else {
+        const label = activeFilter.startsWith('custom:') ? `"${activeFilter.replace('custom:','')}"` : `"${TOPICS.find(t=>t.id===activeFilter)?.label}"`
+        filterInfo.textContent = `${hits.length} posts matching ${label}`
+      }
+
+      const ago = d => {
+        const s = (Date.now() - new Date(d)) / 1000
+        if (s < 60) return 'just now'
+        if (s < 3600) return Math.floor(s/60) + 'm ago'
+        if (s < 86400) return Math.floor(s/3600) + 'h ago'
+        return Math.floor(s/86400) + 'd ago'
+      }
+
+      const card = (item, idx) => {
+        const post = item.post
+        const author = post.author
+        const text = post.record?.text || ''
+        const isRead = readPosts.has(post.uri)
+        const isMasto = item.platform === 'mastodon'
+        const avatarEl = author.avatar ? `<img src="${author.avatar}" alt="" onerror="this.style.display='none'">` : (author.displayName || author.handle || '?')[0].toUpperCase()
+
+        // 이미지 처리
+        let mediaHtml = ''
+        const embed = post.embed || post.record?.embed
+        if (embed) {
+          // 이미지
+          const images = embed.images || embed?.media?.images || []
+          if (images.length > 0) {
+            const countClass = ['','one','two','three','four'][Math.min(images.length, 4)]
+            const imgTags = images.slice(0, 4).map(img => {
+              const src = img.fullsize || img.thumb || img.image?.ref?.$link
+              return src ? `<img src="${src}" alt="${img.alt || ''}" onerror="this.style.display='none'" loading="lazy">` : ''
+            }).join('')
+            mediaHtml = `<div class="post-images ${countClass}">${imgTags}</div>`
+          }
+          // 외부 링크 카드
+          else if (embed.external) {
+            const ext = embed.external
+            const thumb = ext.thumb?.ref?.$link ? `https://cdn.bsky.app/img/feed_thumbnail/plain/${post.author?.did}/${ext.thumb.ref.$link}@jpeg` : ext.thumb
+            mediaHtml = `
+              <a href="${ext.uri}" target="_blank" class="post-external" onclick="event.stopPropagation()">
+                ${thumb ? `<img src="${thumb}" class="post-external-thumb" onerror="this.style.display='none'">` : ''}
+                <div class="post-external-info">
+                  <div class="post-external-title">${ext.title || ext.uri}</div>
+                  ${ext.description ? `<div class="post-external-desc">${ext.description}</div>` : ''}
+                </div>
+              </a>`
+          }
+          // 비디오
+          else if (embed.video || embed?.$type?.includes('video')) {
+            const playlist = embed.video?.playlist || embed.playlist
+            if (playlist) {
+              const videoId = `video-${idx}-${Date.now()}`
+              mediaHtml = `<video id="${videoId}" class="post-video" controls preload="none" onclick="event.stopPropagation();initHLS('${videoId}','${playlist}')"></video>`
+            }
+          }
+        }
+
+        const itemJson = JSON.stringify(item).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;')
+        return `
+          <div class="post-card ${isRead?'read':''} ${item.score>0?'highlighted':''} ${isMasto?'masto-card':''}"
+               onclick="markRead('${post.uri}',this);openPostModal(allPosts[${scored.indexOf(item)}])">
+            <div class="post-author">
+              <div class="avatar ${isMasto?'masto-avatar':''}">${avatarEl}</div>
+              <div class="author-info">
+                <div class="name">${author.displayName || author.handle}<span class="platform-badge ${isMasto?'badge-masto':'badge-bsky'}">${isMasto?'Mastodon':'Bluesky'}</span></div>
+                <div class="handle">@${author.handle}</div>
+              </div>
+            </div>
+            <div class="post-text">${text.replace(/\n/g,'<br>')}</div>
+            ${mediaHtml}
+            <div class="post-footer">
+              <span>${isMasto?'⭐':'♥'} ${post.likeCount||0}</span>
+              <span>↻ ${post.repostCount||0}</span>
+              <span>${ago(post.record?.createdAt)}</span>
+              ${item.matched.length ? `<span class="match-badge">${item.matched.join(', ')}</span>` : ''}
+            </div>
+          </div>`
+      }
+
+      const sortedAll = [...hits, ...others]
+      allPosts = sortedAll
+      feedList.innerHTML = sortedAll.map((item, idx) => card(item, idx)).join('')
+    }
+
+    function markRead(uri, el) {
+      readPosts.add(uri); el.classList.add('read')
+      if (permissions.pod && permissions.readHistory) {
+        localStorage.setItem('curator-read', JSON.stringify([...readPosts]))
+        addLog('Post marked as read', 'write')
+      }
+      trackEvent('post_read', 'feed', 'mark_read')
+    }
+
+    // ── 피드백 ────────────────────────────────────────────
+    function openFeedback() {
+      document.getElementById('feedback-overlay').classList.add('open')
+      document.getElementById('feedback-form-view').style.display = 'block'
+      document.getElementById('feedback-success-view').style.display = 'none'
+      document.getElementById('feedback-text').value = ''
+      selectedFeedbackType = ''
+      document.querySelectorAll('.feedback-type-btn').forEach(b => b.classList.remove('selected'))
+      trackEvent('feedback_open', 'feedback', 'open_modal')
+    }
+
+    function closeFeedback() { document.getElementById('feedback-overlay').classList.remove('open') }
+    function handleOverlayClick(e) { if (e.target === document.getElementById('feedback-overlay')) closeFeedback() }
+
+    function selectFeedbackType(btn, type) {
+      selectedFeedbackType = type
+      document.querySelectorAll('.feedback-type-btn').forEach(b => b.classList.remove('selected'))
+      btn.classList.add('selected')
+    }
+
+    function submitFeedback() {
+      const text = document.getElementById('feedback-text').value.trim()
+      if (!selectedFeedbackType && !text) { alert('Please select a feedback type or write something!'); return }
+      trackEvent('feedback_submit', 'feedback', selectedFeedbackType || 'general')
+      gtag('event', 'feedback', { feedback_type: selectedFeedbackType, feedback_text: text.substring(0,100) })
+      document.getElementById('feedback-form-view').style.display = 'none'
+      document.getElementById('feedback-success-view').style.display = 'block'
+      setTimeout(() => { closeFeedback() }, 2500)
+    }
+
+    function exportData() {
+      const data = { exportedAt: new Date().toISOString(), selectedTopics, customKeywords, permissions, readCount: readPosts.size }
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}))
+      a.download = 'my-curator-data.json'
+      a.click()
+      addLog('Data exported', 'export')
+    }
+
+    function importData() {
+      const input = document.createElement('input')
+      input.type = 'file'; input.accept = '.json'
+      input.onchange = e => {
+        const reader = new FileReader()
+        reader.onload = ev => {
+          try {
+            const data = JSON.parse(ev.target.result)
+            if (data.selectedTopics) {
+              selectedTopics = data.selectedTopics
+              customKeywords = data.customKeywords || []
+              saveTopics(); renderTopicBar(); renderPanelKeywordTags()
+              addLog('Data imported', 'import')
+              alert('Preferences imported successfully!')
+            }
+          } catch { alert('Invalid file format') }
+        }
+        reader.readAsText(e.target.files[0])
+      }
+      input.click()
+    }
+
+    function clearReadHistory() {
+      if (!confirm('Clear all read history?')) return
+      readPosts.clear(); localStorage.removeItem('curator-read')
+      addLog('Read history cleared', 'delete'); renderFeed()
+    }
+
+    function resetApp() {
+      if (!confirm('Reset all data and start over?')) return
+      localStorage.clear(); location.reload()
+    }
+
+    function applyPermissionsToUI() {
+      document.getElementById('toggle-pod').checked = permissions.pod
+      document.getElementById('toggle-topics').checked = permissions.topics
+      document.getElementById('toggle-read').checked = permissions.readHistory
+      document.getElementById('toggle-image').checked = permissions.images
+      document.getElementById('toggle-wifi').checked = permissions.wifiOnly
+      ;['toggle-topics','toggle-read'].forEach(id => { document.getElementById(id).disabled = !permissions.pod })
+      updatePodStatus()
+    }
+
+    async function loadExtensionData() {
+      try {
+        if (typeof chrome !== 'undefined' && chrome.storage) {
+          chrome.storage.local.get(['curator_searches','curator_videos','curator_shopping','curator_streaming','curator_products','curator_cart','curator_topics_count','curator_sensitive_count'], function(result) {
+            if (chrome.runtime.lastError) return;
+            applyExtensionData(result);
+          });
+        }
+      } catch(e) {}
+    }
+
+    function applyExtensionData(result) {
+      const topicsCount = result.curator_topics_count || {};
+      const searches = result.curator_searches || [];
+      const videos = result.curator_videos || [];
+      const shopping = result.curator_shopping || [];
+      const streaming = result.curator_streaming || [];
+      const sensitiveCount = result.curator_sensitive_count || 0;
+      const total = searches.length + videos.length + shopping.length + streaming.length;
+      if (total === 0 && Object.keys(topicsCount).length === 0) return;
+      const topTopics = Object.entries(topicsCount).sort((a,b) => b[1]-a[1]).slice(0,4).map(([topic]) => topic);
+      if (selectedTopics.length === 0 && topTopics.length > 0) {
+        selectedTopics = topTopics.filter(t => TOPICS.find(tp => tp.id === t));
+        saveTopics();
+        document.querySelectorAll('.topic-btn').forEach(b => { b.classList.toggle('selected', selectedTopics.includes(b.dataset.id)); });
+        updateStartBtn();
+      }
+      if (customKeywords.length === 0 && (searches.length > 0 || shopping.length > 0)) {
+        const freqMap = {};
+        searches.forEach(s => { const kw = s.keyword.toLowerCase().trim(); if (kw.length >= 2 && kw.length <= 20) freqMap[kw] = (freqMap[kw] || 0) + (s.count || 1); });
+        shopping.forEach(s => { const kw = s.keyword.toLowerCase().trim(); if (kw.length >= 2 && kw.length <= 20) freqMap[kw] = (freqMap[kw] || 0) + (s.count || 1) * 2; });
+        const topKeywords = Object.entries(freqMap).sort((a,b) => b[1]-a[1]).slice(0,5).map(([kw]) => kw);
+        topKeywords.forEach(kw => { if (!customKeywords.includes(kw) && customKeywords.length < 10) customKeywords.push(kw); });
+        if (customKeywords.length > 0) { saveTopics(); renderKeywordTags(); renderPanelKeywordTags(); updateStartBtn(); }
+      }
+      if (total > 0) {
+        addLog(`Extension: ${searches.length} searches, ${videos.length} videos, ${shopping.length} shopping`, 'extension');
+        if (sensitiveCount > 0) addLog(`Sensitive keywords blocked: ${sensitiveCount}`, 'privacy');
+      }
+    }
+
+    // ── Favorites 패널 ──────────────────────────────────
+    let currentFavTab = 'posts'
+
+    function openFavPanel() {
+      renderFavPanel()
+      document.getElementById('fav-panel').classList.add('open')
+      document.getElementById('fav-overlay').classList.add('open')
+    }
+
+    function closeFavPanel() {
+      document.getElementById('fav-panel').classList.remove('open')
+      document.getElementById('fav-overlay').classList.remove('open')
+    }
+
+    function switchFavTab(tab) {
+      currentFavTab = tab
+      document.getElementById('fav-tab-posts').classList.toggle('active', tab === 'posts')
+      document.getElementById('fav-tab-users').classList.toggle('active', tab === 'users')
+      document.getElementById('fav-posts-section').style.display = tab === 'posts' ? 'block' : 'none'
+      document.getElementById('fav-users-section').style.display = tab === 'users' ? 'block' : 'none'
+    }
+
+    function renderFavPanel() {
+      const favPosts = JSON.parse(localStorage.getItem('curator-saved-posts') || '[]')
+      const favUsers = JSON.parse(localStorage.getItem('curator-fav-users') || '[]')
+
+      // 배지 업데이트
+      document.getElementById('fav-posts-count').innerHTML = favPosts.length > 0 ? `<span class="fav-count-badge">${favPosts.length}</span>` : ''
+      document.getElementById('fav-users-count').innerHTML = favUsers.length > 0 ? `<span class="fav-count-badge">${favUsers.length}</span>` : ''
+
+      const ago = d => {
+        const s = (Date.now() - new Date(d)) / 1000
+        if (s < 60) return 'just now'
+        if (s < 3600) return Math.floor(s/60) + 'm ago'
+        if (s < 86400) return Math.floor(s/3600) + 'h ago'
+        return Math.floor(s/86400) + 'd ago'
+      }
+
+      // Posts 섹션
+      const postsSection = document.getElementById('fav-posts-section')
+      if (favPosts.length === 0) {
+        postsSection.innerHTML = `<div class="fav-empty"><div class="fav-empty-icon">📄</div>No favorite posts yet<br><small>Click ☆ Favorite on any post</small></div>`
+      } else {
+        postsSection.innerHTML = favPosts.map((item, idx) => {
+          const post = item.post
+          const author = post.author
+          const avatarHtml = author.avatar
+            ? `<img src="${author.avatar}" alt="" onerror="this.style.display='none'">`
+            : (author.displayName || author.handle || '?')[0].toUpperCase()
+          return `
+            <div class="fav-post-item" onclick="openFavPost(${idx})">
+              <div class="fav-post-author">
+                <div class="fav-post-avatar">${avatarHtml}</div>
+                <div>
+                  <div class="fav-post-name">${author.displayName || author.handle}</div>
+                  <div class="fav-post-handle">@${author.handle}</div>
+                </div>
+              </div>
+              <div class="fav-post-text">${(post.record?.text || '').substring(0, 120)}${(post.record?.text || '').length > 120 ? '...' : ''}</div>
+              <div class="fav-post-meta">
+                <span>♥ ${post.likeCount || 0}</span>
+                <span>↻ ${post.repostCount || 0}</span>
+                <span>${ago(post.record?.createdAt)}</span>
+                <button class="fav-post-remove" onclick="removeFavPost(event, ${idx})">✕</button>
+              </div>
+            </div>`
+        }).join('')
+      }
+
+      // Users 섹션
+      const usersSection = document.getElementById('fav-users-section')
+      if (favUsers.length === 0) {
+        usersSection.innerHTML = `<div class="fav-empty"><div class="fav-empty-icon">👤</div>No favorite users yet<br><small>Click ☆ Add to Favorites on any profile</small></div>`
+      } else {
+        usersSection.innerHTML = favUsers.map((user, idx) => {
+          const avatarHtml = user.avatar
+            ? `<img src="${user.avatar}" alt="" onerror="this.style.display='none'">`
+            : (user.displayName || user.handle || '?')[0].toUpperCase()
+          return `
+            <div class="fav-user-item" onclick="openFavUser('${user.handle}')">
+              <div class="fav-user-avatar">${avatarHtml}</div>
+              <div class="fav-user-info">
+                <div class="fav-user-name">${user.displayName || user.handle}</div>
+                <div class="fav-user-handle">@${user.handle}</div>
+              </div>
+              <button class="fav-user-remove" onclick="removeFavUser(event, ${idx})">✕</button>
+            </div>`
+        }).join('')
+      }
+    }
+
+    function openFavPost(idx) {
+      const favPosts = JSON.parse(localStorage.getItem('curator-saved-posts') || '[]')
+      const item = favPosts[idx]
+      if (!item) return
+      openPostModal(item)
+    }
+
+    function openFavUser(handle) {
+      const favUsers = JSON.parse(localStorage.getItem('curator-fav-users') || '[]')
+      const user = favUsers.find(u => u.handle === handle)
+      openProfileModal(handle, false)
+    }
+
+    function removeFavPost(e, idx) {
+      e.stopPropagation()
+      let favPosts = JSON.parse(localStorage.getItem('curator-saved-posts') || '[]')
+      favPosts.splice(idx, 1)
+      localStorage.setItem('curator-saved-posts', JSON.stringify(favPosts))
+      savedPosts = favPosts
+      renderFavPanel()
+    }
+
+    function removeFavUser(e, idx) {
+      e.stopPropagation()
+      let favUsers = JSON.parse(localStorage.getItem('curator-fav-users') || '[]')
+      favUsers.splice(idx, 1)
+      localStorage.setItem('curator-fav-users', JSON.stringify(favUsers))
+      renderFavPanel()
+    }
+
+    // ── HLS 영상 재생 ──────────────────────────────────
+    function initHLS(videoId, src) {
+      const video = document.getElementById(videoId)
+      if (!video) return
+      if (Hls.isSupported()) {
+        const hls = new Hls()
+        hls.loadSource(src)
+        hls.attachMedia(video)
+        hls.on(Hls.Events.MANIFEST_PARSED, () => video.play())
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = src
+        video.play()
+      }
+    }
+
+    // ── QR 코드 생성 ──────────────────────────────────
+    function openQRModal() {
+      const data = {
+        selectedTopics,
+        customKeywords,
+        source: 'my-curator-web',
+        exportedAt: new Date().toISOString(),
+      };
+      const jsonStr = JSON.stringify(data);
+
+      document.getElementById('qr-info').innerHTML = `
+        <strong>Topics:</strong> ${selectedTopics.map(id => TOPICS.find(t=>t.id===id)?.label).filter(Boolean).join(', ') || 'None'}<br>
+        <strong>Keywords:</strong> ${customKeywords.join(', ') || 'None'}
+      `;
+
+      document.getElementById('qr-modal-overlay').classList.add('open');
+
+      // QR 코드 생성 (qrcodejs)
+      const canvas = document.getElementById('qr-canvas');
+      canvas.innerHTML = '';
+      new QRCode(canvas, {
+        text: jsonStr,
+        width: 240,
+        height: 240,
+        colorDark: '#052e20',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M,
+      });
+
+      trackEvent('qr_sync_open', 'sync', 'qr_modal');
+    }
+
+    function closeQRModal() {
+      document.getElementById('qr-modal-overlay').classList.remove('open');
+    }
+
+    function handleQROverlay(e) {
+      if (e.target === document.getElementById('qr-modal-overlay')) closeQRModal();
+    }
+
+    renderTopicGrid()
+    loadPermissions()
+    applyPermissionsToUI()
+    loadExtensionData()
+    if (loadSaved()) {
+      showMainView()
+      addLog('Saved preferences loaded', 'read')
+    } else {
+      renderKeywordTags()
+    }
+  </script>
+</body>
+</html>
