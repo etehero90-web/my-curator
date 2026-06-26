@@ -1,29 +1,22 @@
 {
   "expo": {
-    "name": "my-curator-v2",
-    "slug": "my-curator-v2",
+    "name": "My AI Curator",
+    "slug": "my-curator-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
+    "userInterfaceStyle": "automatic",
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "edgeToEdgeEnabled": true
+      "package": "com.mycurator.app"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "scheme": "mycurator",
+    "extra": {
+      "eas": {
+        "projectId": "bb9b6679-bdb2-41fb-b89f-3e2ca8b7a10b"
+      }
+    },
+    "plugins": [
+      "expo-font",
+      "expo-video"
+    ]
   }
 }

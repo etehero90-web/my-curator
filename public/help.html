@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My AI Curator — Help & Guide</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f0fdf8; color: #052e20; line-height: 1.7; }
+
+.header { background: #0d9e75; padding: 32px 20px; text-align: center; }
+.header-logo { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: #a7f3d0; text-transform: uppercase; margin-bottom: 8px; }
+.header-title { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.header-sub { font-size: 14px; color: #a7f3d0; }
+.header-badge { display: inline-block; margin-top: 12px; padding: 4px 14px; background: rgba(255,255,255,0.2); border-radius: 20px; font-size: 12px; color: #fff; }
+
+.nav { background: #fff; border-bottom: 1px solid #d1fae5; position: sticky; top: 0; z-index: 100; overflow-x: auto; }
+.nav-inner { display: flex; gap: 0; max-width: 720px; margin: 0 auto; }
+.nav-item { padding: 12px 16px; font-size: 12px; font-weight: 600; color: #6bab90; white-space: nowrap; cursor: pointer; border-bottom: 2px solid transparent; text-decoration: none; }
+.nav-item:hover { color: #0d9e75; border-bottom-color: #0d9e75; }
+
+.container { max-width: 720px; margin: 0 auto; padding: 0 20px 60px; }
+
+.section { margin-top: 40px; }
+.section-badge { display: inline-block; padding: 3px 10px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 20px; font-size: 11px; font-weight: 700; color: #065f46; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+.section-title { font-size: 22px; font-weight: 700; color: #052e20; margin-bottom: 8px; }
+.section-desc { font-size: 14px; color: #4b7360; margin-bottom: 20px; }
+
+.feature-card { background: #fff; border: 1px solid #d1fae5; border-radius: 12px; padding: 20px; margin-bottom: 12px; }
+.feature-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.feature-icon { font-size: 24px; }
+.feature-title { font-size: 15px; font-weight: 700; color: #052e20; }
+.feature-sub { font-size: 12px; color: #6bab90; margin-top: 2px; }
+.feature-desc { font-size: 13px; color: #4b7360; line-height: 1.7; }
+
+.tab-card { background: #fff; border: 1px solid #d1fae5; border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+.tab-card-header { padding: 14px 20px; background: #f0fdf8; border-bottom: 1px solid #d1fae5; display: flex; align-items: center; gap: 10px; }
+.tab-card-icon { font-size: 18px; }
+.tab-card-title { font-size: 15px; font-weight: 700; color: #052e20; }
+.tab-card-badge { font-size: 10px; padding: 2px 8px; background: #0d9e75; color: #fff; border-radius: 10px; }
+.tab-card-body { padding: 16px 20px; }
+.tab-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0fdf8; }
+.tab-item:last-child { border-bottom: none; }
+.tab-item-dot { width: 6px; height: 6px; border-radius: 50%; background: #0d9e75; flex-shrink: 0; margin-top: 7px; }
+.tab-item-content { flex: 1; }
+.tab-item-title { font-size: 13px; font-weight: 600; color: #052e20; }
+.tab-item-desc { font-size: 12px; color: #6bab90; margin-top: 2px; }
+
+.steps { display: flex; flex-direction: column; gap: 12px; }
+.step { display: flex; gap: 14px; align-items: flex-start; }
+.step-num { width: 28px; height: 28px; border-radius: 50%; background: #0d9e75; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-content { flex: 1; padding-top: 4px; }
+.step-title { font-size: 14px; font-weight: 600; color: #052e20; }
+.step-desc { font-size: 12px; color: #6bab90; margin-top: 3px; }
+
+.faq-item { background: #fff; border: 1px solid #d1fae5; border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; }
+.faq-q { font-size: 14px; font-weight: 600; color: #052e20; margin-bottom: 8px; }
+.faq-q::before { content: "Q. "; color: #0d9e75; }
+.faq-a { font-size: 13px; color: #4b7360; line-height: 1.7; }
+.faq-a::before { content: "A. "; color: #6bab90; font-weight: 600; }
+
+.sites-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.site-chip { background: #fff; border: 1px solid #d1fae5; border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #4b7360; text-align: center; }
+
+.score-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+.score-table th { background: #f0fdf8; padding: 8px 12px; font-size: 11px; color: #6bab90; text-align: left; border-bottom: 1px solid #d1fae5; }
+.score-table td { padding: 8px 12px; font-size: 12px; color: #052e20; border-bottom: 1px solid #f0fdf8; background: #fff; }
+.score-table tr:last-child td { border-bottom: none; }
+
+.cpm-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+.cpm-table th { background: #f0fdf8; padding: 8px 12px; font-size: 11px; color: #6bab90; text-align: left; border-bottom: 1px solid #d1fae5; }
+.cpm-table td { padding: 8px 12px; font-size: 12px; color: #052e20; border-bottom: 1px solid #f0fdf8; background: #fff; }
+.cpm-table tr:last-child td { border-bottom: none; }
+
+.cta-box { background: #0d9e75; border-radius: 16px; padding: 32px 24px; text-align: center; margin-top: 40px; }
+.cta-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.cta-sub { font-size: 13px; color: #a7f3d0; margin-bottom: 20px; }
+.cta-btn { display: inline-block; padding: 12px 28px; background: #fff; color: #0d9e75; border-radius: 30px; font-size: 14px; font-weight: 700; text-decoration: none; margin: 4px; }
+.cta-btn-outline { display: inline-block; padding: 12px 28px; border: 2px solid rgba(255,255,255,0.5); color: #fff; border-radius: 30px; font-size: 14px; font-weight: 700; text-decoration: none; margin: 4px; }
+
+.info-box { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 10px; padding: 14px 16px; margin: 16px 0; font-size: 13px; color: #78350f; }
+.info-box::before { content: "⚠️  "; }
+.tip-box { background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 10px; padding: 14px 16px; margin: 16px 0; font-size: 13px; color: #065f46; }
+.tip-box::before { content: "💡  "; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">My AI Curator</div>
+  <div class="header-title">Help & User Guide</div>
+  <div class="header-sub">Privacy-first Chrome Extension</div>
+  <div class="header-badge">v2.9 Guide</div>
+</div>
+
+<div class="nav">
+  <div class="nav-inner">
+    <a class="nav-item" href="#intro">Introduction</a>
+    <a class="nav-item" href="#install">Installation</a>
+    <a class="nav-item" href="#overview">Overview</a>
+    <a class="nav-item" href="#alldata">All Data</a>
+    <a class="nav-item" href="#myvalue">My Value</a>
+    <a class="nav-item" href="#export">Export</a>
+    <a class="nav-item" href="#settings">Settings</a>
+    <a class="nav-item" href="#sites">Supported Sites</a>
+    <a class="nav-item" href="#faq">FAQ</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Introduction -->
+  <div class="section" id="intro">
+    <div class="section-badge">Introduction</div>
+    <div class="section-title">What is My AI Curator?</div>
+    <div class="section-desc">A privacy-first Chrome extension that keeps your browsing data on your device — no servers, no tracking, no accounts required.</div>
+
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon">🛡️</div>
+        <div>
+          <div class="feature-title">Block 800+ Trackers</div>
+          <div class="feature-sub">Network-level blocking of ad, analytics, and social trackers</div>
+        </div>
+      </div>
+      <div class="feature-desc">Automatically blocks over 800 known tracking domains including ad networks, analytics tools, and social tracking pixels. Pages load faster too.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon">📊</div>
+        <div>
+          <div class="feature-title">Collect Your Browsing Data (Locally)</div>
+          <div class="feature-sub">Searches, YouTube, shopping, streaming — stored only on your device</div>
+        </div>
+      </div>
+      <div class="feature-desc">Your Google searches, YouTube views, shopping activity, and streaming history are stored only in your browser's local storage. Nothing is ever sent to any server.</div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header">
+        <div class="feature-icon">💎</div>
+        <div>
+          <div class="feature-title">See Your Data's Value</div>
+          <div class="feature-sub">Find out how much your browsing profile is worth to advertisers</div>
+        </div>
+      </div>
+      <div class="feature-desc">Based on real advertising industry CPM rates, My AI Curator estimates what your browsing data is worth in dollars. In the future, you'll be able to sell it directly.</div>
+    </div>
+
+    <div class="tip-box">All data stays on your device. No servers. No tracking. No account needed. Completely free.</div>
+  </div>
+
+  <!-- Installation -->
+  <div class="section" id="install">
+    <div class="section-badge">Installation</div>
+    <div class="section-title">How to Install</div>
+    <div class="section-desc">Available for free on the Chrome Web Store.</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Open the Chrome Web Store</div>
+          <div class="step-desc">Search for "My AI Curator" in the Chrome Web Store.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Click "Add to Chrome"</div>
+          <div class="step-desc">Click the "Add to Chrome" button and accept the permissions.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Pin the Extension</div>
+          <div class="step-desc">Click the puzzle icon 🧩 in your toolbar → find My AI Curator → click the pin icon for easy access.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Start Using It</div>
+          <div class="step-desc">Tracker blocking starts immediately. Visit any website and click the icon to see what's being blocked!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">When prompted for permissions, click "Allow" to enable tracker blocking and data collection features.</div>
+  </div>
+
+  <!-- Overview -->
+  <div class="section" id="overview">
+    <div class="section-badge">Tabs</div>
+    <div class="section-title">📊 Overview Tab</div>
+    <div class="section-desc">The main screen you see when you open the extension. Shows your privacy status at a glance.</div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">🔒</div>
+        <div class="tab-card-title">Privacy Score</div>
+        <div class="tab-card-badge">Real-time</div>
+      </div>
+      <div class="tab-card-body">
+        <table class="score-table">
+          <tr><th>Score</th><th>Status</th><th>Trackers Blocked</th></tr>
+          <tr><td style="color:#0d9e75;font-weight:700;">100</td><td>Safe ✅</td><td>None detected</td></tr>
+          <tr><td style="color:#0d9e75;font-weight:700;">80</td><td>Low Risk 🟢</td><td>1–2 blocked</td></tr>
+          <tr><td style="color:#f59e0b;font-weight:700;">60</td><td>Moderate 🟡</td><td>3–5 blocked</td></tr>
+          <tr><td style="color:#f97316;font-weight:700;">35</td><td>High Risk 🟠</td><td>6–10 blocked</td></tr>
+          <tr><td style="color:#dc2626;font-weight:700;">10</td><td>Danger 🔴</td><td>10+ blocked</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">💎</div>
+        <div class="tab-card-title">My Data Value</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Total estimated value ($)</div>
+            <div class="tab-item-desc">The estimated market value of your collected browsing data based on advertising industry rates.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Monthly estimate ($)</div>
+            <div class="tab-item-desc">Projected monthly value if your current browsing pattern continues.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">🛡️</div>
+        <div class="tab-card-title">Blocked on this page</div>
+        <div class="tab-card-badge">Real-time</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Live tracker list</div>
+            <div class="tab-item-desc">Shows the domain and category (Ad / Analytics / Social / CRM) of every tracker blocked on the current page.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">📊</div>
+        <div class="tab-card-title">Data Collection Toggle</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Turn data collection ON/OFF</div>
+            <div class="tab-item-desc">Toggle whether your browsing activity is recorded locally. Tracker blocking always stays active regardless of this setting.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Data -->
+  <div class="section" id="alldata">
+    <div class="section-title">📋 All Data Tab</div>
+    <div class="section-desc">Browse, search, and manage all your collected browsing data.</div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">📋</div>
+        <div class="tab-card-title">Data Management</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Filter by type</div>
+            <div class="tab-item-desc">Filter by Google searches, YouTube, Shopping, or Streaming to find what you're looking for.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Filter by date</div>
+            <div class="tab-item-desc">View data from today, last 7 days, last 30 days, or all time.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Delete individual items</div>
+            <div class="tab-item-desc">Click the X button next to any item to remove it from your history.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Search</div>
+            <div class="tab-item-desc">Use the search bar to quickly find specific keywords or titles in your data.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- My Value -->
+  <div class="section" id="myvalue">
+    <div class="section-title">💎 My Value Tab</div>
+    <div class="section-desc">See the estimated value of your browsing data broken down by category.</div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">💰</div>
+        <div class="tab-card-title">How Value is Calculated</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">CPM-based calculation</div>
+            <div class="tab-item-desc">Uses real advertising industry CPM (cost per 1,000 users) rates. Finance ($12.5), Automotive ($11.0), Travel ($9.0) etc.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Purchase intent weighting</div>
+            <div class="tab-item-desc">Cart adds (×10) > Product views (×4) > Shopping searches (×3) > General searches (×1). The closer to a purchase, the more valuable.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">TOP 3 categories</div>
+            <div class="tab-item-desc">Your three most valuable data categories shown with gold, silver, and bronze medals.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Intent level</div>
+            <div class="tab-item-desc">HIGH / MED / LOW indicates how much advertiser demand exists for each category based on your activity volume.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">📈</div>
+        <div class="tab-card-title">CPM Rates by Category</div>
+      </div>
+      <div class="tab-card-body">
+        <table class="cpm-table">
+          <tr><th>Category</th><th>CPM Rate</th><th>Why high?</th></tr>
+          <tr><td>Finance / Investment</td><td style="color:#0d9e75;font-weight:700;">$12.5</td><td>High-value purchases</td></tr>
+          <tr><td>Automotive</td><td style="color:#0d9e75;font-weight:700;">$11.0</td><td>Big-ticket items</td></tr>
+          <tr><td>Real Estate</td><td style="color:#0d9e75;font-weight:700;">$10.5</td><td>Largest purchase in life</td></tr>
+          <tr><td>Travel</td><td style="color:#0d9e75;font-weight:700;">$9.0</td><td>High spending intent</td></tr>
+          <tr><td>Electronics</td><td style="color:#2563eb;font-weight:700;">$8.0</td><td>Frequent purchases</td></tr>
+          <tr><td>Tech / IT</td><td style="color:#2563eb;font-weight:700;">$7.0</td><td>B2B demand</td></tr>
+          <tr><td>Fashion / Beauty</td><td style="color:#6b7280;font-weight:700;">$6.0</td><td>High repeat buying</td></tr>
+          <tr><td>Education</td><td style="color:#6b7280;font-weight:700;">$5.5</td><td>Subscription-based</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="tip-box">The more you browse, the more accurate your value estimate becomes. Try Google, YouTube, and shopping sites to build your profile!</div>
+  </div>
+
+  <!-- Export -->
+  <div class="section" id="export">
+    <div class="section-title">📤 Export Tab</div>
+    <div class="section-desc">Export your data selectively by category, type, and date range.</div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">📤</div>
+        <div class="tab-card-title">Export Options</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Select categories</div>
+            <div class="tab-item-desc">Choose from 12 categories (Electronics, Fashion, Travel, Finance, etc.) to include only what you want.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Select data types</div>
+            <div class="tab-item-desc">Pick from searches, YouTube, shopping, streaming, product views, and cart items.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Date range filter</div>
+            <div class="tab-item-desc">Export data from a specific time period by setting a start and end date.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">JSON or CSV format</div>
+            <div class="tab-item-desc">JSON for developers, CSV for opening in Excel or Google Sheets.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box">Always export a backup before clearing your data or uninstalling the extension. Your data cannot be recovered once deleted.</div>
+  </div>
+
+  <!-- Settings -->
+  <div class="section" id="settings">
+    <div class="section-title">⚙️ Settings Tab</div>
+    <div class="section-desc">Customize how the extension behaves.</div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">⚙️</div>
+        <div class="tab-card-title">Settings Options</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Ad Tracker Blocking</div>
+            <div class="tab-item-desc">Toggle blocking of 800+ tracker domains. Default: ON. Disabling may make some blocked ads visible again.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Smart Cookie Minimizer</div>
+            <div class="tab-item-desc">Automatically removes tracking cookies while keeping login cookies intact. Default: ON.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Sensitive Keywords</div>
+            <div class="tab-item-desc">Add words that, when found on a page, will prevent data collection. Useful for protecting personal or private browsing.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Custom Block Domains</div>
+            <div class="tab-item-desc">Add extra domains to block beyond the default 777. Enter just the domain name (e.g. tracker.example.com).</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Clear All Data</div>
+            <div class="tab-item-desc">Permanently deletes all collected data. This cannot be undone — export a backup first if needed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supported Sites -->
+  <div class="section" id="sites">
+    <div class="section-title">🌐 Supported Sites for Data Collection</div>
+    <div class="section-desc">My AI Curator collects browsing data from these sites. Everything stays on your device.</div>
+
+    <div class="feature-card">
+      <div class="feature-header"><div class="feature-icon">🔍</div><div><div class="feature-title">Search</div></div></div>
+      <div class="sites-grid">
+        <div class="site-chip">Google</div>
+        <div class="site-chip">Google.co.kr</div>
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header"><div class="feature-icon">▶️</div><div><div class="feature-title">Video</div></div></div>
+      <div class="sites-grid">
+        <div class="site-chip">YouTube</div>
+        <div class="site-chip">Twitch</div>
+        <div class="site-chip">AfreecaTV</div>
+        <div class="site-chip">Chzzk</div>
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header"><div class="feature-icon">🛒</div><div><div class="feature-title">Shopping</div></div></div>
+      <div class="sites-grid">
+        <div class="site-chip">Coupang</div>
+        <div class="site-chip">Naver Shopping</div>
+        <div class="site-chip">Amazon</div>
+        <div class="site-chip">eBay</div>
+        <div class="site-chip">AliExpress</div>
+        <div class="site-chip">Walmart</div>
+        <div class="site-chip">Etsy</div>
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header"><div class="feature-icon">🎬</div><div><div class="feature-title">Streaming</div></div></div>
+      <div class="sites-grid">
+        <div class="site-chip">Netflix</div>
+        <div class="site-chip">Disney+</div>
+        <div class="site-chip">Watcha</div>
+        <div class="site-chip">Wavve</div>
+        <div class="site-chip">Hulu</div>
+        <div class="site-chip">Max</div>
+        <div class="site-chip">Prime Video</div>
+      </div>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-header"><div class="feature-icon">🎵</div><div><div class="feature-title">Music</div></div></div>
+      <div class="sites-grid">
+        <div class="site-chip">Spotify</div>
+        <div class="site-chip">Melon</div>
+        <div class="site-chip">YouTube Music</div>
+        <div class="site-chip">Apple Music</div>
+        <div class="site-chip">Amazon Music</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section" id="faq">
+    <div class="section-badge">FAQ</div>
+    <div class="section-title">Frequently Asked Questions</div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is my data sent to any server?</div>
+      <div class="faq-a">No. All data is stored only in your browser's local storage. Nothing is ever transmitted to any external server.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Will tracker blocking break websites?</div>
+      <div class="faq-a">Most websites work fine. In rare cases where a site breaks, you can temporarily disable blocking in Settings, or add a domain exception via the Custom Block Domains setting.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is the data value ($) real money I can receive?</div>
+      <div class="faq-a">Not yet. The current value is an estimate based on advertising industry CPM rates. Direct data selling is planned for a future version (v4.0) of the Data Marketplace feature.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Will my data disappear if I switch browsers?</div>
+      <div class="faq-a">Yes. Data is stored in your current browser only. Use the Export tab to save a JSON backup before switching.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What happens to my data if I uninstall the extension?</div>
+      <div class="faq-a">All stored data will be permanently deleted along with the extension. Export a backup first if you want to keep it.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is there a mobile version?</div>
+      <div class="faq-a">An Android app is coming soon and is currently in closed beta testing. Follow us on Bluesky for updates.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How do I add more sites to block?</div>
+      <div class="faq-a">Go to Settings → Custom Block Domains and enter the domain you want to block (e.g. ads.example.com). It will be added on top of the existing 777 blocked domains.</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <div class="cta-title">Have more questions?</div>
+    <div class="cta-sub">Try the web app or reach out on Bluesky</div>
+    <a href="https://my-curator.vercel.app" class="cta-btn" target="_blank">Open Web App</a>
+    <a href="https://bsky.app/profile/eno86.bsky.social" class="cta-btn-outline" target="_blank">Follow on Bluesky</a>
+  </div>
+
+</div>
+</body>
+</html>
