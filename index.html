@@ -21,6 +21,67 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #ecfdf5; color: #052e20; min-height: 100vh; }
 
+    /* ── 랜딩 페이지 ── */
+    .landing { display: block; }
+    .landing-hero { background: linear-gradient(135deg, #052e20, #0d9e75); padding: 60px 24px 80px; text-align: center; }
+    .landing-logo { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: #a7f3d0; text-transform: uppercase; margin-bottom: 20px; }
+    .landing-title { font-size: 40px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 16px; }
+    .landing-title span { color: #6ee7b7; }
+    .landing-sub { font-size: 16px; color: #a7f3d0; margin-bottom: 32px; line-height: 1.7; max-width: 540px; margin-left: auto; margin-right: auto; }
+    .landing-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .landing-btn-primary { padding: 14px 32px; background: #fff; color: #0d9e75; border: none; border-radius: 30px; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; }
+    .landing-btn-primary:hover { background: #ecfdf5; }
+    .landing-btn-secondary { padding: 14px 32px; background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.4); border-radius: 30px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
+    .landing-btn-secondary:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+    .landing-stats { display: flex; gap: 40px; justify-content: center; margin-top: 40px; }
+    .landing-stat { text-align: center; }
+    .landing-stat-num { font-size: 28px; font-weight: 700; color: #fff; }
+    .landing-stat-label { font-size: 12px; color: #a7f3d0; margin-top: 4px; }
+
+    /* 기능 섹션 */
+    .landing-features { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+    .landing-section-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #6bab90; text-transform: uppercase; text-align: center; margin-bottom: 8px; }
+    .landing-section-heading { font-size: 28px; font-weight: 700; color: #052e20; text-align: center; margin-bottom: 8px; }
+    .landing-section-desc { font-size: 15px; color: #4b7360; text-align: center; margin-bottom: 40px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 60px; }
+    .feature-card { background: #fff; border: 1px solid #d1fae5; border-radius: 14px; padding: 24px; }
+    .feature-card-icon { font-size: 28px; margin-bottom: 12px; }
+    .feature-card-title { font-size: 15px; font-weight: 700; color: #052e20; margin-bottom: 8px; }
+    .feature-card-desc { font-size: 13px; color: #4b7360; line-height: 1.7; }
+
+    /* 데이터 가치 섹션 */
+    .value-section { background: #fff; border: 1px solid #d1fae5; border-radius: 16px; padding: 40px; margin-bottom: 40px; }
+    .value-hero-num { font-size: 48px; font-weight: 700; color: #0d9e75; text-align: center; margin: 16px 0 8px; }
+    .value-hero-label { font-size: 13px; color: #6bab90; text-align: center; margin-bottom: 32px; }
+    .value-cpm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
+    .value-cpm-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; background: #f0fdf8; border-radius: 8px; font-size: 13px; color: #052e20; }
+    .value-cpm-price { font-weight: 700; color: #0d9e75; }
+
+    /* 로드맵 섹션 */
+    .roadmap { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 60px; }
+    .roadmap-item { flex: 1; min-width: 180px; background: #fff; border: 1px solid #d1fae5; border-radius: 12px; padding: 20px; }
+    .roadmap-step { font-size: 11px; font-weight: 700; color: #6bab90; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .roadmap-title { font-size: 14px; font-weight: 600; color: #052e20; margin-bottom: 6px; }
+    .roadmap-desc { font-size: 12px; color: #4b7360; line-height: 1.6; }
+    .roadmap-badge { display: inline-block; margin-top: 8px; padding: 2px 8px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 10px; font-size: 10px; color: #065f46; font-weight: 600; }
+    .roadmap-badge.soon { background: #f0f0ff; border-color: #c4b5fd; color: #6d28d9; }
+
+    /* 설치 섹션 */
+    .install-section { background: #0d9e75; border-radius: 16px; padding: 48px 40px; text-align: center; margin-bottom: 60px; }
+    .install-title { font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .install-sub { font-size: 14px; color: #a7f3d0; margin-bottom: 28px; }
+    .install-steps { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+    .install-step { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 16px 20px; text-align: center; min-width: 140px; }
+    .install-step-num { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .install-step-label { font-size: 12px; color: #a7f3d0; }
+    .install-btn { display: inline-block; padding: 14px 36px; background: #fff; color: #0d9e75; border: none; border-radius: 30px; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; margin: 4px; }
+    .install-btn-outline { display: inline-block; padding: 14px 36px; background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.5); border-radius: 30px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; margin: 4px; }
+    .install-btn:hover { background: #ecfdf5; }
+
+    /* 랜딩 푸터 */
+    .landing-footer { text-align: center; padding: 32px 24px; border-top: 1px solid #d1fae5; font-size: 12px; color: #6bab90; }
+    .landing-footer a { color: #0d9e75; text-decoration: none; margin: 0 8px; }
+
     /* ── 온보딩 ── */
     .onboarding { max-width: 520px; margin: 0 auto; padding: 64px 24px 48px; }
     .onboarding .logo { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #0d9e75; text-transform: uppercase; margin-bottom: 32px; }
@@ -311,8 +372,169 @@
 </head>
 <body>
 
+<body>
+
+  <!-- ── 랜딩 페이지 ── -->
+  <div class="landing" id="landing">
+
+    <!-- 히어로 -->
+    <div class="landing-hero">
+      <div class="landing-logo">My AI Curator</div>
+      <div class="landing-title">Your Data.<br><span>Your Asset.</span></div>
+      <div class="landing-sub">Privacy-first browser extension that blocks 800+ trackers, shows your real-time privacy score, and calculates the dollar value of your browsing data.</div>
+      <div class="landing-btns">
+        <a href="https://chromewebstore.google.com/detail/my-ai-curator/fmoagpmjakpdabjekhhldlihpnkjlfep" class="landing-btn-primary" target="_blank">🛡️ Add to Chrome — Free</a>
+        <button class="landing-btn-secondary" onclick="document.getElementById('landing').style.display='none'; document.getElementById('onboarding').style.display='block';">Try Web App →</button>
+      </div>
+      <div class="landing-stats">
+        <div class="landing-stat">
+          <div class="landing-stat-num">800+</div>
+          <div class="landing-stat-label">Trackers blocked</div>
+        </div>
+        <div class="landing-stat">
+          <div class="landing-stat-num">88+</div>
+          <div class="landing-stat-label">Users installed</div>
+        </div>
+        <div class="landing-stat">
+          <div class="landing-stat-num">$0</div>
+          <div class="landing-stat-label">Cost forever</div>
+        </div>
+        <div class="landing-stat">
+          <div class="landing-stat-num">0</div>
+          <div class="landing-stat-label">Servers used</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 기능 섹션 -->
+    <div class="landing-features">
+
+      <div class="landing-section-title">Features</div>
+      <div class="landing-section-heading">Everything you need to take back control</div>
+      <div class="landing-section-desc">All features work locally on your device. No account, no server, no tracking.</div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-icon">🛡️</div>
+          <div class="feature-card-title">Block 800+ Trackers</div>
+          <div class="feature-card-desc">Network-level blocking of ad networks, analytics tools, and social tracking pixels. Pages load faster too.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">🔒</div>
+          <div class="feature-card-title">Real-time Privacy Score</div>
+          <div class="feature-card-desc">See your privacy score (0–100) on every page you visit. Know instantly which sites are tracking you the most.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">💎</div>
+          <div class="feature-card-title">Your Data Value in $</div>
+          <div class="feature-card-desc">Based on real advertising CPM rates, see exactly how much your browsing profile is worth. Finance $12.5, Travel $9.0...</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">📂</div>
+          <div class="feature-card-title">Category Classification</div>
+          <div class="feature-card-desc">12 categories automatically classified — Electronics, Fashion, Finance, Travel and more. Export only what you want.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">📤</div>
+          <div class="feature-card-title">Selective Data Export</div>
+          <div class="feature-card-desc">Export your data by category, type, and date range. JSON for developers, CSV for spreadsheets.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">📈</div>
+          <div class="feature-card-title">Weekly Activity Report</div>
+          <div class="feature-card-desc">See this week's searches, videos, shopping activity and your top data category at a glance.</div>
+        </div>
+      </div>
+
+      <!-- 데이터 가치 섹션 -->
+      <div class="landing-section-title">Data Value</div>
+      <div class="landing-section-heading">How much is your data worth?</div>
+      <div class="landing-section-desc">Advertisers pay different rates for different types of browsing data. My AI Curator shows you the real numbers.</div>
+
+      <div class="value-section">
+        <div class="value-hero-num">$12.50 / 1,000 users</div>
+        <div class="value-hero-label">Finance & Investment data — the most valuable category</div>
+        <div class="value-cpm-grid">
+          <div class="value-cpm-item"><span>Finance / Investment</span><span class="value-cpm-price">$12.5</span></div>
+          <div class="value-cpm-item"><span>Automotive</span><span class="value-cpm-price">$11.0</span></div>
+          <div class="value-cpm-item"><span>Real Estate</span><span class="value-cpm-price">$10.5</span></div>
+          <div class="value-cpm-item"><span>Travel</span><span class="value-cpm-price">$9.0</span></div>
+          <div class="value-cpm-item"><span>Electronics</span><span class="value-cpm-price">$8.0</span></div>
+          <div class="value-cpm-item"><span>Tech / IT</span><span class="value-cpm-price">$7.0</span></div>
+          <div class="value-cpm-item"><span>Fashion / Beauty</span><span class="value-cpm-price">$6.0</span></div>
+          <div class="value-cpm-item"><span>Education</span><span class="value-cpm-price">$5.5</span></div>
+          <div class="value-cpm-item"><span>Food & Health</span><span class="value-cpm-price">$5.0</span></div>
+          <div class="value-cpm-item"><span>Entertainment</span><span class="value-cpm-price">$4.0</span></div>
+          <div class="value-cpm-item"><span>Lifestyle</span><span class="value-cpm-price">$4.0</span></div>
+          <div class="value-cpm-item"><span>News / Info</span><span class="value-cpm-price">$3.0</span></div>
+        </div>
+      </div>
+
+      <!-- 로드맵 -->
+      <div class="landing-section-title">Roadmap</div>
+      <div class="landing-section-heading">The future of data ownership</div>
+      <div class="landing-section-desc">We're building toward a world where you own and profit from your own data.</div>
+
+      <div class="roadmap">
+        <div class="roadmap-item">
+          <div class="roadmap-step">Step 1</div>
+          <div class="roadmap-title">Track & Classify</div>
+          <div class="roadmap-desc">Collect and categorize your browsing data locally. See its real dollar value.</div>
+          <div class="roadmap-badge">✅ Available now</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-step">Step 2</div>
+          <div class="roadmap-title">Choose & Control</div>
+          <div class="roadmap-desc">Select which categories to share and which advertisers can access your data.</div>
+          <div class="roadmap-badge soon">v3.0 Coming</div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-step">Step 3</div>
+          <div class="roadmap-title">Sell Directly</div>
+          <div class="roadmap-desc">Sell your data directly to advertisers. 100% of revenue goes to you.</div>
+          <div class="roadmap-badge soon">v4.0 Future</div>
+        </div>
+      </div>
+
+      <!-- 설치 CTA -->
+      <div class="install-section">
+        <div class="install-title">Start protecting your privacy today</div>
+        <div class="install-sub">Free forever · No account · No servers · All data stays on your device</div>
+        <div class="install-steps">
+          <div class="install-step">
+            <div class="install-step-num">1</div>
+            <div class="install-step-label">Add to Chrome</div>
+          </div>
+          <div class="install-step">
+            <div class="install-step-num">2</div>
+            <div class="install-step-label">Browse normally</div>
+          </div>
+          <div class="install-step">
+            <div class="install-step-num">3</div>
+            <div class="install-step-label">See your value</div>
+          </div>
+        </div>
+        <a href="https://chromewebstore.google.com/detail/my-ai-curator/fmoagpmjakpdabjekhhldlihpnkjlfep" class="install-btn" target="_blank">🛡️ Add to Chrome — Free</a>
+        <a href="https://play.google.com/apps/internaltest/4701031047279273362" class="install-btn-outline" target="_blank">📱 Android Beta</a>
+      </div>
+
+    </div>
+
+    <!-- 푸터 -->
+    <div class="landing-footer">
+      <a href="/help.html">Help</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/support.html">Support</a>
+      <a href="https://bsky.app/profile/eno86.bsky.social" target="_blank">Bluesky</a>
+      <a href="https://x.com/mycurator86" target="_blank">X</a>
+      <br><br>
+      © 2026 My AI Curator · All data stays on your device
+    </div>
+
+  </div>
+
   <!-- ── 온보딩 ── -->
-  <div class="onboarding" id="onboarding">
+  <div class="onboarding" id="onboarding" style="display:none;">
     <div class="logo">My AI Curator</div>
     <h2>What are you interested in?</h2>
     <p>Select topics you care about. We'll surface relevant posts from Bluesky and Mastodon — and keep your preferences on your device. Nothing leaves your browser.</p>
