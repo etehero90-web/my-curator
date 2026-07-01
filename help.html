@@ -62,15 +62,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
 .sites-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
 .site-chip { background: #fff; border: 1px solid #d1fae5; border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #4b7360; text-align: center; }
 
-.score-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
-.score-table th { background: #f0fdf8; padding: 8px 12px; font-size: 11px; color: #6bab90; text-align: left; border-bottom: 1px solid #d1fae5; }
-.score-table td { padding: 8px 12px; font-size: 12px; color: #052e20; border-bottom: 1px solid #f0fdf8; background: #fff; }
-.score-table tr:last-child td { border-bottom: none; }
+.score-table, .cpm-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+.score-table th, .cpm-table th { background: #f0fdf8; padding: 8px 12px; font-size: 11px; color: #6bab90; text-align: left; border-bottom: 1px solid #d1fae5; }
+.score-table td, .cpm-table td { padding: 8px 12px; font-size: 12px; color: #052e20; border-bottom: 1px solid #f0fdf8; background: #fff; }
+.score-table tr:last-child td, .cpm-table tr:last-child td { border-bottom: none; }
 
-.cpm-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
-.cpm-table th { background: #f0fdf8; padding: 8px 12px; font-size: 11px; color: #6bab90; text-align: left; border-bottom: 1px solid #d1fae5; }
-.cpm-table td { padding: 8px 12px; font-size: 12px; color: #052e20; border-bottom: 1px solid #f0fdf8; background: #fff; }
-.cpm-table tr:last-child td { border-bottom: none; }
+.signal-example { background: #fff; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; border-left: 3px solid #0d9e75; }
+.signal-example.churn { border-left-color: #dc2626; }
+.signal-example.trend { border-left-color: #7c3aed; }
+.signal-example-title { font-size: 13px; font-weight: 600; color: #052e20; margin-bottom: 4px; }
+.signal-example-desc { font-size: 12px; color: #4b7360; }
 
 .cta-box { background: #0d9e75; border-radius: 16px; padding: 32px 24px; text-align: center; margin-top: 40px; }
 .cta-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
@@ -90,7 +91,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
   <div class="header-logo">My AI Curator</div>
   <div class="header-title">Help & User Guide</div>
   <div class="header-sub">Privacy-first Chrome Extension</div>
-  <div class="header-badge">v2.9 Guide</div>
+  <div class="header-badge">v2.9.4 Guide</div>
 </div>
 
 <div class="nav">
@@ -100,6 +101,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
     <a class="nav-item" href="#overview">Overview</a>
     <a class="nav-item" href="#alldata">All Data</a>
     <a class="nav-item" href="#myvalue">My Value</a>
+    <a class="nav-item" href="#signals">Signals</a>
     <a class="nav-item" href="#export">Export</a>
     <a class="nav-item" href="#settings">Settings</a>
     <a class="nav-item" href="#sites">Supported Sites</a>
@@ -145,7 +147,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
           <div class="feature-sub">Find out how much your browsing profile is worth to advertisers</div>
         </div>
       </div>
-      <div class="feature-desc">Based on real advertising industry CPM rates, My AI Curator estimates what your browsing data is worth in dollars. In the future, you'll be able to sell it directly.</div>
+      <div class="feature-desc">Based on real advertising industry CPM rates, My AI Curator estimates what your browsing data is worth in dollars — boosted by behavioral signals like purchase intent.</div>
     </div>
 
     <div class="tip-box">All data stays on your device. No servers. No tracking. No account needed. Completely free.</div>
@@ -195,7 +197,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
   <div class="section" id="overview">
     <div class="section-badge">Tabs</div>
     <div class="section-title">📊 Overview Tab</div>
-    <div class="section-desc">The main screen you see when you open the extension. Shows your privacy status at a glance.</div>
+    <div class="section-desc">The main screen — kept simple and clean. Shows only the essentials: your privacy status and blocking on the current page.</div>
 
     <div class="tab-card">
       <div class="tab-card-header">
@@ -217,22 +219,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
 
     <div class="tab-card">
       <div class="tab-card-header">
-        <div class="tab-card-icon">💎</div>
-        <div class="tab-card-title">My Data Value</div>
+        <div class="tab-card-icon">📊</div>
+        <div class="tab-card-title">Data Collection Toggle</div>
       </div>
       <div class="tab-card-body">
         <div class="tab-item">
           <div class="tab-item-dot"></div>
           <div class="tab-item-content">
-            <div class="tab-item-title">Total estimated value ($)</div>
-            <div class="tab-item-desc">The estimated market value of your collected browsing data based on advertising industry rates.</div>
-          </div>
-        </div>
-        <div class="tab-item">
-          <div class="tab-item-dot"></div>
-          <div class="tab-item-content">
-            <div class="tab-item-title">Monthly estimate ($)</div>
-            <div class="tab-item-desc">Projected monthly value if your current browsing pattern continues.</div>
+            <div class="tab-item-title">Turn data collection ON/OFF</div>
+            <div class="tab-item-desc">Tracker blocking always stays active regardless of this setting.</div>
           </div>
         </div>
       </div>
@@ -255,21 +250,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
       </div>
     </div>
 
-    <div class="tab-card">
-      <div class="tab-card-header">
-        <div class="tab-card-icon">📊</div>
-        <div class="tab-card-title">Data Collection Toggle</div>
-      </div>
-      <div class="tab-card-body">
-        <div class="tab-item">
-          <div class="tab-item-dot"></div>
-          <div class="tab-item-content">
-            <div class="tab-item-title">Turn data collection ON/OFF</div>
-            <div class="tab-item-desc">Toggle whether your browsing activity is recorded locally. Tracker blocking always stays active regardless of this setting.</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="tip-box">Looking for the weekly report or duplicate cleanup? Those moved to the My Value and Settings tabs to keep Overview clean. Tap the <b>?</b> icon in the top-right corner anytime to come back here.</div>
   </div>
 
   <!-- All Data -->
@@ -287,7 +268,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
           <div class="tab-item-dot"></div>
           <div class="tab-item-content">
             <div class="tab-item-title">Filter by type</div>
-            <div class="tab-item-desc">Filter by Google searches, YouTube, Shopping, or Streaming to find what you're looking for.</div>
+            <div class="tab-item-desc">Filter by Google searches, YouTube, Shopping, or Streaming.</div>
           </div>
         </div>
         <div class="tab-item">
@@ -304,13 +285,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
             <div class="tab-item-desc">Click the X button next to any item to remove it from your history.</div>
           </div>
         </div>
-        <div class="tab-item">
-          <div class="tab-item-dot"></div>
-          <div class="tab-item-content">
-            <div class="tab-item-title">Search</div>
-            <div class="tab-item-desc">Use the search bar to quickly find specific keywords or titles in your data.</div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -318,7 +292,30 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
   <!-- My Value -->
   <div class="section" id="myvalue">
     <div class="section-title">💎 My Value Tab</div>
-    <div class="section-desc">See the estimated value of your browsing data broken down by category.</div>
+    <div class="section-desc">See the estimated value of your browsing data, your weekly activity, and behavioral signals — all in one place.</div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">📈</div>
+        <div class="tab-card-title">Weekly Activity Report</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Last 7 days at a glance</div>
+            <div class="tab-item-desc">Searches, videos, shopping, and streaming counts for the past week.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Top category & top search</div>
+            <div class="tab-item-desc">Your most active category and most searched keyword this week.</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="tab-card">
       <div class="tab-card-header">
@@ -330,14 +327,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
           <div class="tab-item-dot"></div>
           <div class="tab-item-content">
             <div class="tab-item-title">CPM-based calculation</div>
-            <div class="tab-item-desc">Uses real advertising industry CPM (cost per 1,000 users) rates. Finance ($12.5), Automotive ($11.0), Travel ($9.0) etc.</div>
+            <div class="tab-item-desc">Uses real advertising industry CPM (cost per 1,000 users) rates.</div>
           </div>
         </div>
         <div class="tab-item">
           <div class="tab-item-dot"></div>
           <div class="tab-item-content">
-            <div class="tab-item-title">Purchase intent weighting</div>
-            <div class="tab-item-desc">Cart adds (×10) > Product views (×4) > Shopping searches (×3) > General searches (×1). The closer to a purchase, the more valuable.</div>
+            <div class="tab-item-title">Signal bonus multiplier</div>
+            <div class="tab-item-desc">Behavioral signals (see below) boost your estimated value beyond the base category rate.</div>
           </div>
         </div>
         <div class="tab-item">
@@ -345,13 +342,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
           <div class="tab-item-content">
             <div class="tab-item-title">TOP 3 categories</div>
             <div class="tab-item-desc">Your three most valuable data categories shown with gold, silver, and bronze medals.</div>
-          </div>
-        </div>
-        <div class="tab-item">
-          <div class="tab-item-dot"></div>
-          <div class="tab-item-content">
-            <div class="tab-item-title">Intent level</div>
-            <div class="tab-item-desc">HIGH / MED / LOW indicates how much advertiser demand exists for each category based on your activity volume.</div>
           </div>
         </div>
       </div>
@@ -364,20 +354,59 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
       </div>
       <div class="tab-card-body">
         <table class="cpm-table">
-          <tr><th>Category</th><th>CPM Rate</th><th>Why high?</th></tr>
-          <tr><td>Finance / Investment</td><td style="color:#0d9e75;font-weight:700;">$12.5</td><td>High-value purchases</td></tr>
-          <tr><td>Automotive</td><td style="color:#0d9e75;font-weight:700;">$11.0</td><td>Big-ticket items</td></tr>
-          <tr><td>Real Estate</td><td style="color:#0d9e75;font-weight:700;">$10.5</td><td>Largest purchase in life</td></tr>
-          <tr><td>Travel</td><td style="color:#0d9e75;font-weight:700;">$9.0</td><td>High spending intent</td></tr>
-          <tr><td>Electronics</td><td style="color:#2563eb;font-weight:700;">$8.0</td><td>Frequent purchases</td></tr>
-          <tr><td>Tech / IT</td><td style="color:#2563eb;font-weight:700;">$7.0</td><td>B2B demand</td></tr>
-          <tr><td>Fashion / Beauty</td><td style="color:#6b7280;font-weight:700;">$6.0</td><td>High repeat buying</td></tr>
-          <tr><td>Education</td><td style="color:#6b7280;font-weight:700;">$5.5</td><td>Subscription-based</td></tr>
+          <tr><th>Category</th><th>CPM Rate</th></tr>
+          <tr><td>Finance / Investment</td><td style="color:#0d9e75;font-weight:700;">$12.5</td></tr>
+          <tr><td>Automotive</td><td style="color:#0d9e75;font-weight:700;">$11.0</td></tr>
+          <tr><td>Real Estate</td><td style="color:#0d9e75;font-weight:700;">$10.5</td></tr>
+          <tr><td>Travel</td><td style="color:#0d9e75;font-weight:700;">$9.0</td></tr>
+          <tr><td>Electronics</td><td style="color:#2563eb;font-weight:700;">$8.0</td></tr>
+          <tr><td>Tech / IT</td><td style="color:#2563eb;font-weight:700;">$7.0</td></tr>
+          <tr><td>Fashion / Beauty</td><td style="color:#6b7280;font-weight:700;">$6.0</td></tr>
+          <tr><td>Education</td><td style="color:#6b7280;font-weight:700;">$5.5</td></tr>
         </table>
       </div>
     </div>
 
     <div class="tip-box">The more you browse, the more accurate your value estimate becomes. Try Google, YouTube, and shopping sites to build your profile!</div>
+  </div>
+
+  <!-- Signals (NEW) -->
+  <div class="section" id="signals">
+    <div class="section-badge">New in v2.9.4</div>
+    <div class="section-title">🎯 Your Signals</div>
+    <div class="section-desc">Beyond simple category tracking, My AI Curator detects behavioral signals that make your data more (or less) valuable — the same way real advertisers evaluate audiences.</div>
+
+    <div class="signal-example">
+      <div class="signal-example-title">🔥 High Purchase Intent</div>
+      <div class="signal-example-desc">Detected when you search or view the same category 3+ times within 3 days. Signals you're close to making a purchase decision.</div>
+    </div>
+
+    <div class="signal-example">
+      <div class="signal-example-title">🛒 Cart Abandonment</div>
+      <div class="signal-example-desc">Detected when items sit in your cart for 24+ hours without purchase. One of the strongest purchase-intent signals advertisers look for.</div>
+    </div>
+
+    <div class="signal-example trend">
+      <div class="signal-example-title">📈 Rising / New Interest</div>
+      <div class="signal-example-desc">Detected when a category shows a new or 50%+ increase in activity compared to last week — signals a shift in what you care about.</div>
+    </div>
+
+    <div class="signal-example trend">
+      <div class="signal-example-title">📉 Declining Interest</div>
+      <div class="signal-example-desc">Detected when a category drops 50%+ compared to last week.</div>
+    </div>
+
+    <div class="signal-example churn">
+      <div class="signal-example-title">💔 Churn Risk</div>
+      <div class="signal-example-desc">Detected when you search things like "cancel Netflix" or "alternative to Spotify" — signals you might be switching services.</div>
+    </div>
+
+    <div class="signal-example">
+      <div class="signal-example-title">💎 Value Tier (Premium / Budget)</div>
+      <div class="signal-example-desc">Detected from the brands you search — premium brands (Chanel, Rolex...) vs budget brands (Daiso, clearance sales...).</div>
+    </div>
+
+    <div class="tip-box">Signals are calculated 100% locally on your device. They only affect your estimated data value display — nothing is sent anywhere.</div>
   </div>
 
   <!-- Export -->
@@ -395,21 +424,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
           <div class="tab-item-dot"></div>
           <div class="tab-item-content">
             <div class="tab-item-title">Select categories</div>
-            <div class="tab-item-desc">Choose from 12 categories (Electronics, Fashion, Travel, Finance, etc.) to include only what you want.</div>
+            <div class="tab-item-desc">Choose from 12 categories to include only what you want.</div>
           </div>
         </div>
         <div class="tab-item">
           <div class="tab-item-dot"></div>
           <div class="tab-item-content">
             <div class="tab-item-title">Select data types</div>
-            <div class="tab-item-desc">Pick from searches, YouTube, shopping, streaming, product views, and cart items.</div>
-          </div>
-        </div>
-        <div class="tab-item">
-          <div class="tab-item-dot"></div>
-          <div class="tab-item-content">
-            <div class="tab-item-title">Date range filter</div>
-            <div class="tab-item-desc">Export data from a specific time period by setting a start and end date.</div>
+            <div class="tab-item-desc">Pick from searches, YouTube, shopping, streaming, products, and cart.</div>
           </div>
         </div>
         <div class="tab-item">
@@ -422,53 +444,62 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
       </div>
     </div>
 
-    <div class="tip-box">Always export a backup before clearing your data or uninstalling the extension. Your data cannot be recovered once deleted.</div>
+    <div class="tip-box">Always export a backup before clearing your data or uninstalling the extension.</div>
   </div>
 
   <!-- Settings -->
   <div class="section" id="settings">
     <div class="section-title">⚙️ Settings Tab</div>
-    <div class="section-desc">Customize how the extension behaves.</div>
+    <div class="section-desc">Customize the extension and manage your data.</div>
 
     <div class="tab-card">
       <div class="tab-card-header">
-        <div class="tab-card-icon">⚙️</div>
-        <div class="tab-card-title">Settings Options</div>
+        <div class="tab-card-icon">📦</div>
+        <div class="tab-card-title">Data Collection Status</div>
       </div>
       <div class="tab-card-body">
         <div class="tab-item">
           <div class="tab-item-dot"></div>
           <div class="tab-item-content">
-            <div class="tab-item-title">Ad Tracker Blocking</div>
-            <div class="tab-item-desc">Toggle blocking of 800+ tracker domains. Default: ON. Disabling may make some blocked ads visible again.</div>
+            <div class="tab-item-title">Collected today / Total data points</div>
+            <div class="tab-item-desc">See how much data you've collected today and in total.</div>
           </div>
         </div>
         <div class="tab-item">
           <div class="tab-item-dot"></div>
           <div class="tab-item-content">
-            <div class="tab-item-title">Smart Cookie Minimizer</div>
-            <div class="tab-item-desc">Automatically removes tracking cookies while keeping login cookies intact. Default: ON.</div>
+            <div class="tab-item-title">🧹 Clean (Remove duplicates)</div>
+            <div class="tab-item-desc">One click removes duplicate searches, videos, and shopping entries for cleaner, more accurate data.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">⚙️</div>
+        <div class="tab-card-title">Other Settings</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Ad Tracker Blocking / Smart Cookie Minimizer</div>
+            <div class="tab-item-desc">Toggle core protection features on/off.</div>
           </div>
         </div>
         <div class="tab-item">
           <div class="tab-item-dot"></div>
           <div class="tab-item-content">
-            <div class="tab-item-title">Sensitive Keywords</div>
-            <div class="tab-item-desc">Add words that, when found on a page, will prevent data collection. Useful for protecting personal or private browsing.</div>
-          </div>
-        </div>
-        <div class="tab-item">
-          <div class="tab-item-dot"></div>
-          <div class="tab-item-content">
-            <div class="tab-item-title">Custom Block Domains</div>
-            <div class="tab-item-desc">Add extra domains to block beyond the default 777. Enter just the domain name (e.g. tracker.example.com).</div>
+            <div class="tab-item-title">Sensitive Keywords / Custom Block Domains</div>
+            <div class="tab-item-desc">Fine-tune what gets blocked and what data collection skips.</div>
           </div>
         </div>
         <div class="tab-item">
           <div class="tab-item-dot"></div>
           <div class="tab-item-content">
             <div class="tab-item-title">Clear All Data</div>
-            <div class="tab-item-desc">Permanently deletes all collected data. This cannot be undone — export a backup first if needed.</div>
+            <div class="tab-item-desc">Permanently deletes all collected data. Export a backup first if needed.</div>
           </div>
         </div>
       </div>
@@ -543,37 +574,32 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
 
     <div class="faq-item">
       <div class="faq-q">Is my data sent to any server?</div>
-      <div class="faq-a">No. All data is stored only in your browser's local storage. Nothing is ever transmitted to any external server.</div>
+      <div class="faq-a">No. All data, including signal calculations, is stored and processed only in your browser's local storage.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Where did the weekly report and duplicate cleaner go?</div>
+      <div class="faq-a">We simplified the Overview tab. The weekly report moved to My Value, and duplicate cleanup moved to Settings → Data Collection Status.</div>
     </div>
 
     <div class="faq-item">
       <div class="faq-q">Will tracker blocking break websites?</div>
-      <div class="faq-a">Most websites work fine. In rare cases where a site breaks, you can temporarily disable blocking in Settings, or add a domain exception via the Custom Block Domains setting.</div>
+      <div class="faq-a">Most websites work fine. You can temporarily disable blocking in Settings, or add a domain exception.</div>
     </div>
 
     <div class="faq-item">
       <div class="faq-q">Is the data value ($) real money I can receive?</div>
-      <div class="faq-a">Not yet. The current value is an estimate based on advertising industry CPM rates. Direct data selling is planned for a future version (v4.0) of the Data Marketplace feature.</div>
+      <div class="faq-a">Not yet. It's an estimate based on advertising industry CPM rates, boosted by behavioral signals. Direct data selling is planned for a future Data Marketplace (v4.0).</div>
     </div>
 
     <div class="faq-item">
       <div class="faq-q">Will my data disappear if I switch browsers?</div>
-      <div class="faq-a">Yes. Data is stored in your current browser only. Use the Export tab to save a JSON backup before switching.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q">What happens to my data if I uninstall the extension?</div>
-      <div class="faq-a">All stored data will be permanently deleted along with the extension. Export a backup first if you want to keep it.</div>
+      <div class="faq-a">Yes. Data is stored in your current browser only. Use the Export tab to save a backup before switching.</div>
     </div>
 
     <div class="faq-item">
       <div class="faq-q">Is there a mobile version?</div>
-      <div class="faq-a">An Android app is coming soon and is currently in closed beta testing. Follow us on Bluesky for updates.</div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q">How do I add more sites to block?</div>
-      <div class="faq-a">Go to Settings → Custom Block Domains and enter the domain you want to block (e.g. ads.example.com). It will be added on top of the existing 777 blocked domains.</div>
+      <div class="faq-a">Yes! An Android app is in public beta testing. Check the extension header for the latest link.</div>
     </div>
   </div>
 
