@@ -91,7 +91,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
   <div class="header-logo">My AI Curator</div>
   <div class="header-title">Help & User Guide</div>
   <div class="header-sub">Privacy-first Chrome Extension</div>
-  <div class="header-badge">v2.9.4 Guide</div>
+  <div class="header-badge">v2.9.7 Guide</div>
 </div>
 
 <div class="nav">
@@ -99,6 +99,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
     <a class="nav-item" href="#intro">Introduction</a>
     <a class="nav-item" href="#install">Installation</a>
     <a class="nav-item" href="#overview">Overview</a>
+    <a class="nav-item" href="#profile">Profile Card</a>
     <a class="nav-item" href="#alldata">All Data</a>
     <a class="nav-item" href="#myvalue">My Value</a>
     <a class="nav-item" href="#signals">Signals</a>
@@ -250,7 +251,123 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
       </div>
     </div>
 
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">💎</div>
+        <div class="tab-card-title">Consumer Profile Card</div>
+        <div class="tab-card-badge">New</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Your profile, front and center</div>
+            <div class="tab-item-desc">A dark green card right at the top of Overview shows your Data Age, Buyer Readiness score, Value Tier, top category, and estimated value — all at a glance.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Tap for full details</div>
+            <div class="tab-item-desc">Tap the card anytime to jump to the My Value tab for the complete breakdown.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="tip-box">Looking for the weekly report or duplicate cleanup? Those moved to the My Value and Settings tabs to keep Overview clean. Tap the <b>?</b> icon in the top-right corner anytime to come back here.</div>
+  </div>
+
+  <!-- Profile Card (NEW) -->
+  <div class="section" id="profile">
+    <div class="section-badge">New in v2.9.7</div>
+    <div class="section-title">💎 Consumer Profile Card</div>
+    <div class="section-desc">A snapshot of "you as a consumer" — the same kind of profile advertisers would pay to see, but built for and owned by you.</div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">📅</div>
+        <div class="tab-card-title">Data Age</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">🌱 Beginner (0–30 days)</div>
+            <div class="tab-item-desc">Just getting started. Keep browsing to build history.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">🌿 Growing (30–90 days)</div>
+            <div class="tab-item-desc">Your profile is developing a track record.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">🌳 Established (90+ days)</div>
+            <div class="tab-item-desc">A mature, hard-to-replicate data history.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">🎯</div>
+        <div class="tab-card-title">Buyer Readiness Index (0–100)</div>
+      </div>
+      <div class="tab-card-body">
+        <table class="score-table">
+          <tr><th>Score</th><th>Level</th><th>Meaning</th></tr>
+          <tr><td style="color:#dc2626;font-weight:700;">70–100</td><td>HOT 🔥</td><td>Ready to buy — high advertiser demand</td></tr>
+          <tr><td style="color:#f59e0b;font-weight:700;">40–69</td><td>WARM 🟡</td><td>Building intent — worth watching</td></tr>
+          <tr><td style="color:#0d9e75;font-weight:700;">15–39</td><td>COOL 🟢</td><td>Early signals detected</td></tr>
+          <tr><td style="color:#6bab90;font-weight:700;">0–14</td><td>NEW ⚪</td><td>Just getting started</td></tr>
+        </table>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">How it's calculated</div>
+            <div class="tab-item-desc">Combines High-Intent signals (40pt), rising trends (20pt), Value Tier (15pt), and total data volume (25pt) into a single score.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-card">
+      <div class="tab-card-header">
+        <div class="tab-card-icon">📊</div>
+        <div class="tab-card-title">Card Summary Fields</div>
+      </div>
+      <div class="tab-card-body">
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Value Tier</div>
+            <div class="tab-item-desc">💎 Premium or 💰 Budget, based on the brands you search for.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Top Category</div>
+            <div class="tab-item-desc">Your single most valuable data category right now.</div>
+          </div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-item-dot"></div>
+          <div class="tab-item-content">
+            <div class="tab-item-title">Est. Value</div>
+            <div class="tab-item-desc">Same estimate shown in My Value, boosted by your signal multiplier.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box">Your data history can't be created overnight. Every day you browse adds to a profile that gets more valuable and more accurate over time — the earlier you start, the further ahead you are.</div>
   </div>
 
   <!-- All Data -->
@@ -292,7 +409,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
   <!-- My Value -->
   <div class="section" id="myvalue">
     <div class="section-title">💎 My Value Tab</div>
-    <div class="section-desc">See the estimated value of your browsing data, your weekly activity, and behavioral signals — all in one place.</div>
+    <div class="section-desc">Your full Consumer Profile Card, weekly activity, data value, and behavioral signals — all in one place. This is the expanded view of the card shown on Overview.</div>
 
     <div class="tab-card">
       <div class="tab-card-header">
@@ -574,7 +691,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
 
     <div class="faq-item">
       <div class="faq-q">Is my data sent to any server?</div>
-      <div class="faq-a">No. All data, including signal calculations, is stored and processed only in your browser's local storage.</div>
+      <div class="faq-a">No. All data, including the Consumer Profile Card, Data Age, and Buyer Readiness score, is calculated and stored only in your browser's local storage. Nothing is transmitted anywhere.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What is the Consumer Profile Card for?</div>
+      <div class="faq-a">It's a snapshot of your value as a consumer — the kind of profile advertisers already build about you, except this one is visible to you and stored only on your device. Nothing on the card is shared or sold; it's for your own awareness today, and preparation for a future where you may choose to share it.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Does my Buyer Readiness score reset if I reinstall the extension?</div>
+      <div class="faq-a">If you update through the Chrome Web Store (the normal way), your data and score history are preserved. Only a full manual uninstall + fresh install would clear local data.</div>
     </div>
 
     <div class="faq-item">
